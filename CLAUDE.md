@@ -49,6 +49,14 @@ Buttons say what happens ("Take a free mock"). "W.P.M." in labels, "WPM" inline 
 - Public routes are prerendered to static HTML (`client/prerender.js`) for SEO.
 - Build: `npm run build` (client build + prerender). Dev: `npm run dev`.
 
-## Phase status
-- Phase 1 (scaffold, tokens, public routes, prerender): DONE.
-- Phases 2–7: see the build brief. One phase per session.
+## Phase status — all built
+- Phase 1 — scaffold, tokens, public routes, prerender: DONE.
+- Phase 2 — typing engine (tests-first), runner, result, 8 passages: DONE.
+- Phase 3 — Excel simulator, grader, 8 mocks: DONE.
+- Phase 4 — guest-first auth, phone OTP, Razorpay pass, entitlements: DONE (needs live MySQL to run end-to-end).
+- Phase 5 — rank list, rebuild, boards, share card: DONE (needs live MySQL).
+- Phase 6 — exam mode, A4 PDFs, progress chart, result share card: DONE.
+- Phase 7 — CSP/rate-limits/zod, nginx/PM2/deploy/backup, README VPS runbook, SEO (FAQ/Breadcrumb/hreflang): DONE.
+
+Pending verification against a live database + Razorpay keys (see README): OTP send/
+verify, pass grant, order persistence, and the leaderboard queries. Price is ₹119.

@@ -88,7 +88,28 @@ export function metaFor(pathname) {
   return ROUTES[pathname] || ROUTES['/'];
 }
 
-// JSON-LD graph for a route (Organization always; Course/FAQ where relevant).
+const CRUMB = {
+  '/the-exam': 'The exam', '/syllabus': 'Syllabus', '/rank': 'Rank list',
+  '/pricing': 'Pricing', '/scoring': 'How scoring works', '/contact': 'Contact',
+  '/sign-in': 'Sign in', '/pass': 'Get the pass',
+};
+
+const FAQ = {
+  '/the-exam': [
+    ['What is the C.P.T. for the High Court Clerk recruitment?',
+      'A 20-minute practical test in two qualifying papers — English typing and an MS Excel spreadsheet practical — taken after the written exam. Both are pass/fail and do not add to the merit list.'],
+    ['What are the passing marks in the C.P.T.?',
+      'Typing must reach 30 W.P.M.; the Excel paper must score 4 out of 10. Both papers must be cleared.'],
+  ],
+  '/scoring': [
+    ['How is the typing speed calculated?',
+      'Speed is (words typed − mistakes) ÷ minutes. This is the S.S.S.C. rule — not conventional gross or net WPM. A word is five characters including spaces.'],
+    ['How is the Excel paper marked?',
+      'Five parts of two marks each, out of ten, pass at four. There is no negative marking; a wrong answer scores zero.'],
+  ],
+};
+
+// JSON-LD graph for a route (Organization + Breadcrumb always; Course/FAQ where relevant).
 export function jsonLdFor(pathname) {
   const org = {
     '@type': 'Organization',
@@ -98,6 +119,13 @@ export function jsonLdFor(pathname) {
       'Practice platform for the Punjab & Haryana High Court / S.S.S.C. Clerk Computer Proficiency Test.',
   };
   const graph = [org];
+
+  const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url }];
+  if (CRUMB[pathname]) {
+    crumbs.push({ '@type': 'ListItem', position: 2, name: CRUMB[pathname], item: SITE.url + pathname });
+  }
+  graph.push({ '@type': 'BreadcrumbList', itemListElement: crumbs });
+
   if (pathname === '/') {
     graph.push({
       '@type': 'Course',
@@ -105,6 +133,15 @@ export function jsonLdFor(pathname) {
       description:
         'Practice material for the Computer Proficiency Test: MS Excel spreadsheet practical and English typing.',
       provider: { '@type': 'Organization', name: SITE.name, sameAs: SITE.url },
+    });
+  }
+  if (FAQ[pathname]) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: FAQ[pathname].map(([q, a]) => ({
+        '@type': 'Question', name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
     });
   }
   return { '@context': 'https://schema.org', '@graph': graph };

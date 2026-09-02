@@ -45,6 +45,9 @@ app.use('/api/orders', ordersRouter);
 app.use('/api/leaderboard', leaderboardRouter);
 app.use('/api/profile', profileRouter);
 
+// Unknown API routes return JSON, not HTML.
+app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));
+
 // Global error handler — leaks no stack traces (brief §7).
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
