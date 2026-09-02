@@ -52,6 +52,22 @@ typingRouter.post('/start', async (req, res) => {
   });
 });
 
+// GET /api/typing/history — last 50 attempts for the signed-in candidate.
+typingRouter.get('/history', async (req, res, next) => {
+  try {
+    const userId = getUserId(req);
+    if (!userId) return res.status(401).json({ error: 'Sign in to see your history.', needsAuth: true });
+    const [rows] = await pool.query(
+      `SELECT ta.created_at, ta.mode, ta.sssc_wpm, ta.accuracy_pct, ta.mistakes_char,
+              ta.passed, p.title, p.slug
+       FROM typing_attempts ta JOIN passages p ON p.id = ta.passage_id
+       WHERE ta.user_id = ? ORDER BY ta.created_at DESC LIMIT 50`,
+      [userId],
+    );
+    return res.json({ attempts: rows });
+  } catch (e) { return next(e); }
+});
+
 const submitBody = z.object({
   attemptId: z.string().uuid(),
   typed: z.string().max(20000), // 20,000-char cap at the API boundary (brief §5)

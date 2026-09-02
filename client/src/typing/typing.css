@@ -73,6 +73,22 @@
 }
 .run-submit { padding: 12px 22px; }
 
+/* 3-2-1 pre-roll */
+.preroll { text-align: center; }
+.preroll-hint {
+  font-weight: 600; font-size: var(--t-body); color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 0.11em;
+}
+.preroll-count {
+  margin-top: 20px;
+  font-weight: 800;
+  font-size: 140px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
 /* loading skeleton at the real geometry */
 .skeleton-pane {
   height: 420px;

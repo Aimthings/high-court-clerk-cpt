@@ -15,8 +15,9 @@ export const api = {
   listPassages: () => request('/passages'),
   getPassage: (slug) => request(`/passages/${slug}`),
   startTyping: (slug, mode) => request('/typing/start', { method: 'POST', body: { slug, mode } }),
-  submitTyping: (attemptId, typed) =>
-    request('/typing/attempt', { method: 'POST', body: { attemptId, typed } }),
+  submitTyping: (attemptId, typed, telemetry = {}) =>
+    request('/typing/attempt', { method: 'POST', body: { attemptId, typed, ...telemetry } }),
+  typingHistory: () => request('/typing/history'),
   listMocks: () => request('/excel/mocks'),
   startExcel: (mockCode) => request('/excel/start', { method: 'POST', body: { mockCode } }),
   submitExcel: (attemptId, workbook) =>

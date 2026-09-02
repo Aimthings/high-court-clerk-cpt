@@ -1,0 +1,10 @@
+.chart-wrap { width: 100%; overflow-x: auto; }
+.progress-chart { width: 100%; min-width: 420px; height: auto; display: block; }
+.chart-grid { stroke: var(--hairline); stroke-width: 1; }
+.chart-axis-label { font: 500 10px var(--font-mono); fill: var(--ink-3); }
+.chart-threshold { stroke: var(--amber); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.chart-threshold-label { font: 700 10px var(--font-sans); fill: var(--amber); }
+.chart-line { stroke: var(--blue); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart-dot.pass { fill: var(--mint); }
+.chart-dot.fail { fill: var(--rose); }
+.chart-empty { padding: 40px 0; text-align: center; font-size: var(--t-body); }

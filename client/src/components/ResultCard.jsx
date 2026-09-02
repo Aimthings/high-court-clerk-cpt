@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './resultcard.css';
+import { downloadResultCard } from './resultShareCard.js';
 
 // Typing result screen — deck artboard 11. One hero number (the S.S.S.C. W.P.M.),
 // then quiet detail. The stricter (char) model is the default and it is stated.
@@ -34,7 +35,7 @@ export default function ResultCard({ result }) {
           <div className="card-h" style={{ fontSize: 14 }}>{passage.title}</div>
           <div className="muted" style={{ fontSize: 11.5 }}>Part II — Typing</div>
         </div>
-        <button className="link-btn" style={{ marginLeft: 'auto' }}>Share result</button>
+        <button className="link-btn" style={{ marginLeft: 'auto' }} onClick={() => downloadResultCard(result)}>Share result</button>
       </header>
 
       <div className="page result-body">

@@ -18,17 +18,19 @@ export default function TypingTest() {
   const mode = ['practice', 'drill', 'exam'].includes(params.get('mode')) ? params.get('mode') : 'practice';
   const draftKey = `typing:draft:${slug}:${mode}`;
 
-  const [phase, setPhase] = useState('loading'); // loading | running | submitting | done | error
+  const [phase, setPhase] = useState('loading'); // loading | preroll | running | submitting | done | error
   const [error, setError] = useState('');
   const [attempt, setAttempt] = useState(null); // { attemptId, durationSec, passage }
   const [typed, setTyped] = useState('');
   const [remainingMs, setRemainingMs] = useState(0);
   const [result, setResult] = useState(null);
+  const [preroll, setPreroll] = useState(0);
 
   const endAtRef = useRef(0);
   const totalMsRef = useRef(0);
   const typedRef = useRef('');
   typedRef.current = typed;
+  const keyTimesRef = useRef([]); // keystroke timestamps for anomaly detection
 
   // ---- start (or resume) the attempt ----
   useEffect(() => {
@@ -48,12 +50,18 @@ export default function TypingTest() {
         const a = await api.startTyping(slug, mode);
         if (cancelled) return;
         const total = a.durationSec * 1000;
-        endAtRef.current = Date.now() + total;
         totalMsRef.current = total;
         setAttempt(a);
         setRemainingMs(total);
-        setPhase('running');
-        writeDraft(draftKey, { attempt: a, typed: '', endAt: endAtRef.current });
+        if (mode === 'exam') {
+          // 3-2-1 pre-roll before the clock starts (brief §6).
+          setPreroll(3);
+          setPhase('preroll');
+        } else {
+          endAtRef.current = Date.now() + total;
+          setPhase('running');
+          writeDraft(draftKey, { attempt: a, typed: '', endAt: endAtRef.current });
+        }
       } catch (e) {
         if (!cancelled) { setError(e.message); setPhase('error'); }
       }
@@ -67,7 +75,7 @@ export default function TypingTest() {
     if (!attempt) return;
     setPhase('submitting');
     try {
-      const r = await api.submitTyping(attempt.attemptId, typedRef.current);
+      const r = await api.submitTyping(attempt.attemptId, typedRef.current, keyTelemetry(keyTimesRef.current));
       clearDraft(draftKey);
       setResult(r);
       setPhase('done');
@@ -76,6 +84,21 @@ export default function TypingTest() {
       setPhase('error');
     }
   }, [attempt, draftKey]);
+
+  // ---- 3-2-1 pre-roll (exam mode) ----
+  useEffect(() => {
+    if (phase !== 'preroll') return undefined;
+    if (preroll <= 0) {
+      const total = totalMsRef.current;
+      endAtRef.current = Date.now() + total;
+      setRemainingMs(total);
+      setPhase('running');
+      if (attempt) writeDraft(draftKey, { attempt, typed: '', endAt: endAtRef.current });
+      return undefined;
+    }
+    const id = setTimeout(() => setPreroll((n) => n - 1), 1000);
+    return () => clearTimeout(id);
+  }, [phase, preroll, attempt, draftKey]);
 
   // ---- countdown tick ----
   useEffect(() => {
@@ -124,6 +147,17 @@ export default function TypingTest() {
     );
   }
 
+  if (phase === 'preroll') {
+    return (
+      <div className="run-screen run-center">
+        <div className="preroll">
+          <div className="preroll-hint">Get the printed passage ready</div>
+          <div className="preroll-count">{preroll}</div>
+        </div>
+      </div>
+    );
+  }
+
   const wordsSoFar = tokenize(typed).length;
   const showPassage = mode !== 'exam';
 
@@ -139,9 +173,9 @@ export default function TypingTest() {
               <div className="passage-sheet-body">{attempt.passage.body}</div>
             </div>
           ) : (
-            <button className="btn btn-ghost printed-btn" type="button" disabled>
+            <a className="btn btn-ghost printed-btn" href={`/api/passages/${slug}/pdf`} target="_blank" rel="noreferrer">
               ▤ Printed passage (A4)
-            </button>
+            </a>
           )}
 
           <textarea
@@ -152,6 +186,7 @@ export default function TypingTest() {
             autoCorrect="off"
             autoCapitalize="off"
             autoComplete="off"
+            onKeyDown={() => keyTimesRef.current.push(Date.now())}
             onPaste={(e) => e.preventDefault()}
             onDrop={(e) => e.preventDefault()}
             onCopy={(e) => e.preventDefault()}
@@ -175,6 +210,18 @@ export default function TypingTest() {
       </div>
     </div>
   );
+}
+
+// keystroke telemetry for the server's anomaly check (median inter-key interval)
+function keyTelemetry(times) {
+  const keyEvents = times.length;
+  if (keyEvents < 2) return { keyEvents };
+  const gaps = [];
+  for (let i = 1; i < times.length; i += 1) gaps.push(times[i] - times[i - 1]);
+  gaps.sort((a, b) => a - b);
+  const mid = Math.floor(gaps.length / 2);
+  const medianIntervalMs = gaps.length % 2 ? gaps[mid] : (gaps[mid - 1] + gaps[mid]) / 2;
+  return { keyEvents, medianIntervalMs };
 }
 
 // ---- localStorage draft helpers (resume on refresh) ----

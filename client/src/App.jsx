@@ -12,6 +12,7 @@ import Paywall from './pages/Paywall.jsx';
 import PaymentStatus from './pages/PaymentStatus.jsx';
 import RankList from './rank/RankList.jsx';
 import MockList from './pages/MockList.jsx';
+import Home from './pages/Home.jsx';
 import { Account, NotFound } from './pages/Placeholder.jsx';
 
 // Exam runners are lazy-loaded so the heavy formula engine (formulajs) stays out
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/pass" element={<Paywall />} />
         <Route path="/pass/status" element={<PaymentStatus />} />
         <Route path="/mocks" element={<MockList />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Route>
