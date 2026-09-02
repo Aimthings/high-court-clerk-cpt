@@ -4,6 +4,10 @@ import { z } from 'zod';
 import { getPassage } from '../content.js';
 import { scoreTyping } from '../grading/typing.js';
 import { passOk } from '../requirePass.js';
+import { getUserId } from '../auth.js';
+import { pool } from '../db.js';
+import { typingRankable } from '../services/rank.js';
+import { personalRank } from '../services/leaderboard.js';
 
 // Typing runner API. Scoring is server-authoritative; elapsed time is derived
 // server-side from the recorded start (brief §5.1, §5.4). Persistence to MySQL
@@ -51,31 +55,65 @@ typingRouter.post('/start', async (req, res) => {
 const submitBody = z.object({
   attemptId: z.string().uuid(),
   typed: z.string().max(20000), // 20,000-char cap at the API boundary (brief §5)
+  keyEvents: z.number().int().nonnegative().optional(),
+  medianIntervalMs: z.number().nonnegative().optional(),
 });
 
-typingRouter.post('/attempt', (req, res) => {
-  const parsed = submitBody.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: 'Could not read the submission.' });
-  const { attemptId, typed } = parsed.data;
+typingRouter.post('/attempt', async (req, res, next) => {
+  try {
+    const parsed = submitBody.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Could not read the submission.' });
+    const { attemptId, typed, keyEvents, medianIntervalMs } = parsed.data;
 
-  const rec = attempts.get(attemptId);
-  if (!rec) return res.status(404).json({ error: 'This attempt has expired. Start the passage again.' });
-  const p = getPassage(rec.slug);
+    const rec = attempts.get(attemptId);
+    if (!rec) return res.status(404).json({ error: 'This attempt has expired. Start the passage again.' });
+    const p = getPassage(rec.slug);
 
-  // Elapsed derived server-side, capped at the paper duration.
-  const elapsedSec = Math.min(DURATION_SEC, Math.round((Date.now() - rec.startedAt) / 1000));
-  const durationSec = rec.mode === 'exam' ? DURATION_SEC : Math.max(1, elapsedSec);
+    // Elapsed derived server-side, capped at the paper duration.
+    const elapsedSec = Math.min(DURATION_SEC, Math.round((Date.now() - rec.startedAt) / 1000));
+    const durationSec = rec.mode === 'exam' ? DURATION_SEC : Math.max(1, elapsedSec);
 
-  const result = scoreTyping({ passage: p.body, typed, durationSec });
-  attempts.delete(attemptId);
+    const result = scoreTyping({ passage: p.body, typed, durationSec });
+    attempts.delete(attemptId);
 
-  res.json({
-    attemptId,
-    mode: rec.mode,
-    passage: { slug: p.slug, title: p.title, word_count: p.word_count },
-    durationSec,
-    ...result,
-    // The stricter (char) model is the default; both are returned and labelled.
-    displayModel: 'char',
-  });
+    // Persist + set rankability at WRITE time for signed-in candidates.
+    const userId = getUserId(req);
+    let ranked = null;
+    if (userId) {
+      try {
+        const [[prof]] = await pool.query('SELECT listed FROM profiles WHERE user_id = ?', [userId]);
+        const [[prior]] = await pool.query(
+          'SELECT COUNT(*) AS n FROM typing_attempts WHERE user_id = ? AND passage_id = ? AND status <> \'abandoned\'',
+          [userId, p.id],
+        );
+        const isFirst = (prior?.n || 0) === 0;
+        const { rankable, status } = typingRankable({
+          mode: rec.mode, durationSec, isFirst, verified: true, listed: prof?.listed === 1,
+          ssscWpm: result.ssscWpm, keyEvents, chars: typed.length, medianIntervalMs,
+        });
+        await pool.query(
+          `INSERT INTO typing_attempts
+             (user_id, passage_id, mode, duration_sec, typed_text, words_typed, mistakes_word,
+              mistakes_char, sssc_wpm, gross_wpm, accuracy_pct, taxonomy, passed, rankable, status, key_events)
+           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          [userId, p.id, rec.mode, durationSec, typed, result.wordsTyped, result.mistakesWord,
+            result.mistakesChar, result.ssscWpm, result.grossWpm, result.accuracyPct,
+            JSON.stringify(result.taxonomy), result.passed ? 1 : 0, rankable, status, keyEvents ?? null],
+        );
+        if (rankable) {
+          ranked = await personalRank('typing', result.ssscWpm).catch(() => null);
+        }
+      } catch { /* scoring already returned; persistence is best-effort here */ }
+    }
+
+    return res.json({
+      attemptId,
+      mode: rec.mode,
+      passage: { slug: p.slug, title: p.title, word_count: p.word_count },
+      durationSec,
+      ...result,
+      displayModel: 'char', // stricter (char) model is the default
+      ranked, // { rnk, total } when this attempt is rankable, else null
+    });
+  } catch (e) { return next(e); }
 });

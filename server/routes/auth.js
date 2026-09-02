@@ -72,6 +72,11 @@ authRouter.post('/otp/verify', verifyLimiter, async (req, res, next) => {
       const [ins] = await pool.query('INSERT INTO users (phone) VALUES (?)', [phone]);
       userId = ins.insertId;
     }
+    // ensure a profile exists (listed on by default; handle is editable)
+    await pool.query(
+      'INSERT INTO profiles (user_id, handle, listed) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE user_id = user_id',
+      [userId, `clerk_${phone.slice(-4)}`],
+    );
 
     // merge guest data (attempts) into this account, then retire the guest
     const anon = getAnon(req);
@@ -106,7 +111,13 @@ authRouter.get('/me', async (req, res, next) => {
     const user = rows[0];
     if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null }); }
     const pass = await activePass(userId);
-    return res.json({ user, hasPass: Boolean(pass), expiresAt: pass?.expires_at || null });
+    const [[profile]] = await pool.query('SELECT handle, region, listed FROM profiles WHERE user_id = ?', [userId]);
+    return res.json({
+      user,
+      profile: profile ? { ...profile, listed: profile.listed === 1 } : null,
+      hasPass: Boolean(pass),
+      expiresAt: pass?.expires_at || null,
+    });
   } catch (e) { return next(e); }
 });
 

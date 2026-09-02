@@ -257,6 +257,27 @@ img, svg {
   box-shadow: 0 0 0 1px var(--blue);
 }
 
+/* ---------- Toggle ---------- */
+.toggle {
+  width: 44px; height: 26px;
+  border-radius: 13px;
+  border: none;
+  background: var(--border-strong);
+  position: relative;
+  transition: background 0.15s ease;
+  flex: none;
+  cursor: pointer;
+}
+.toggle-on { background: var(--mint); }
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s ease;
+}
+.toggle-on .toggle-knob { transform: translateX(18px); }
+
 /* ---------- Stat cluster ---------- */
 .stats { display: flex; gap: 36px; flex-wrap: wrap; }
 .stat .n {

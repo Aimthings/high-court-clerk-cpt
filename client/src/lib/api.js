@@ -26,4 +26,8 @@ export const api = {
   verifyOtp: (phone, code) => request('/auth/otp/verify', { method: 'POST', body: { phone, code } }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   createOrder: () => request('/orders/create', { method: 'POST' }),
+  leaderboard: (board) => request(`/leaderboard?board=${board}`),
+  myRank: (board) => request(`/leaderboard/me?board=${board}`),
+  setHandle: (handle) => request('/profile/handle', { method: 'PATCH', body: { handle } }),
+  setListed: (listed) => request('/profile/listed', { method: 'PATCH', body: { listed } }),
 };

@@ -4,12 +4,12 @@ import { api } from '../lib/api.js';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [state, setState] = useState({ user: null, hasPass: false, expiresAt: null, loading: true });
+  const [state, setState] = useState({ user: null, profile: null, hasPass: false, expiresAt: null, loading: true });
 
   const refresh = useCallback(async () => {
     try {
       const me = await api.me();
-      setState({ user: me.user, hasPass: me.hasPass, expiresAt: me.expiresAt, loading: false });
+      setState({ user: me.user, profile: me.profile || null, hasPass: me.hasPass, expiresAt: me.expiresAt, loading: false });
       return me;
     } catch {
       setState((s) => ({ ...s, loading: false }));
@@ -21,13 +21,13 @@ export function AuthProvider({ children }) {
 
   const verifyOtp = useCallback(async (phone, code) => {
     const res = await api.verifyOtp(phone, code);
-    setState({ user: res.user, hasPass: res.hasPass, expiresAt: res.expiresAt, loading: false });
+    await refresh();
     return res;
-  }, []);
+  }, [refresh]);
 
   const logout = useCallback(async () => {
     await api.logout();
-    setState({ user: null, hasPass: false, expiresAt: null, loading: false });
+    setState({ user: null, profile: null, hasPass: false, expiresAt: null, loading: false });
   }, []);
 
   const value = {

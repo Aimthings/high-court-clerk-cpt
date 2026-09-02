@@ -12,7 +12,9 @@ import { typingRouter } from './routes/typing.js';
 import { excelRouter } from './routes/excel.js';
 import { authRouter } from './routes/auth.js';
 import { ordersRouter, webhookHandler } from './routes/orders.js';
+import { leaderboardRouter, profileRouter } from './routes/leaderboard.js';
 import { startReconcileCron } from './jobs/reconcileOrders.js';
+import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
 const app = express();
 
@@ -40,6 +42,8 @@ app.use('/api/passages', passagesRouter);
 app.use('/api/typing', typingRouter);
 app.use('/api/excel', excelRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/leaderboard', leaderboardRouter);
+app.use('/api/profile', profileRouter);
 
 // Global error handler — leaks no stack traces (brief §7).
 // eslint-disable-next-line no-unused-vars
@@ -63,7 +67,7 @@ async function boot() {
       console.error('migration on boot failed', e.message);
     }
   }
-  if (NODE_ENV === 'production') startReconcileCron();
+  if (NODE_ENV === 'production') { startReconcileCron(); startLeaderboardCron(); }
   app.listen(PORT, '127.0.0.1', () => {
     // eslint-disable-next-line no-console
     console.log(`API listening on http://127.0.0.1:${PORT} (${NODE_ENV})`);
