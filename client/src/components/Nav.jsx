@@ -1,9 +1,11 @@
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import './nav.css';
 
 // Public top nav — 60px white bar on a hairline (deck artboard 16).
 // Blue is only ever a link / active tab; navy is only ever the button fill.
 export default function Nav() {
+  const { user, hasPass, expiresAt } = useAuth();
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -16,9 +18,23 @@ export default function Nav() {
           <NavLink to="/rank" className="nav-link">Rank list</NavLink>
           <NavLink to="/pricing" className="nav-link">Pricing</NavLink>
         </nav>
-        <Link to="/sign-in" className="nav-signin">Sign in</Link>
+        {user ? (
+          <Link to="/account" className="nav-account">
+            {hasPass
+              ? <span className="pill pill-amber pill-sans">Pass · {daysLeft(expiresAt)} days</span>
+              : <span className="nav-signin">Account</span>}
+          </Link>
+        ) : (
+          <Link to="/sign-in" className="nav-signin">Sign in</Link>
+        )}
         <Link to="/mocks" className="btn btn-primary nav-cta">Take a free mock</Link>
       </div>
     </header>
   );
+}
+
+function daysLeft(expiresAt) {
+  if (!expiresAt) return 0;
+  const ms = new Date(expiresAt).getTime() - Date.now();
+  return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
 }

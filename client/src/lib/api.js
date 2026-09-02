@@ -21,4 +21,9 @@ export const api = {
   startExcel: (mockCode) => request('/excel/start', { method: 'POST', body: { mockCode } }),
   submitExcel: (attemptId, workbook) =>
     request('/excel/submit', { method: 'POST', body: { attemptId, workbook } }),
+  me: () => request('/auth/me'),
+  sendOtp: (phone) => request('/auth/otp/send', { method: 'POST', body: { phone } }),
+  verifyOtp: (phone, code) => request('/auth/otp/verify', { method: 'POST', body: { phone, code } }),
+  logout: () => request('/auth/logout', { method: 'POST' }),
+  createOrder: () => request('/orders/create', { method: 'POST' }),
 };

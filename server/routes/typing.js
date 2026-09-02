@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { getPassage } from '../content.js';
 import { scoreTyping } from '../grading/typing.js';
+import { passOk } from '../requirePass.js';
 
 // Typing runner API. Scoring is server-authoritative; elapsed time is derived
 // server-side from the recorded start (brief §5.1, §5.4). Persistence to MySQL
@@ -17,12 +18,17 @@ const startBody = z.object({
   mode: z.enum(['practice', 'drill', 'exam']).default('practice'),
 });
 
-typingRouter.post('/start', (req, res) => {
+typingRouter.post('/start', async (req, res) => {
   const parsed = startBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'Choose a passage to start.' });
   const { slug, mode } = parsed.data;
   const p = getPassage(slug);
   if (!p) return res.status(404).json({ error: 'That passage does not exist.' });
+
+  // Entitlement checked at start only (brief §5.5); free passages are exempt.
+  if (!p.is_free && !(await passOk(req))) {
+    return res.status(402).json({ error: 'This passage needs the ₹119 pass.', paywall: true });
+  }
 
   const attemptId = randomUUID();
   attempts.set(attemptId, { slug, mode, startedAt: Date.now() });

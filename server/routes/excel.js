@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { mocks, mockSummary, getMock, sanitizeSpec } from '../content.js';
 import { gradeExcel } from '../grading/excel.js';
+import { passOk } from '../requirePass.js';
 
 // Excel simulator API (brief §4). /start returns the spec WITHOUT assertions,
 // answers or hints; grading is server-side; elapsed derived from the recorded
@@ -17,12 +18,17 @@ excelRouter.get('/mocks', (_req, res) => {
 
 const startBody = z.object({ mockCode: z.string().min(1) });
 
-excelRouter.post('/start', (req, res) => {
+excelRouter.post('/start', async (req, res) => {
   const parsed = startBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'Choose a mock to start.' });
   const m = getMock(parsed.data.mockCode);
   if (!m) return res.status(404).json({ error: 'That mock does not exist.' });
-  // TODO Phase 4: requirePass for non-free mocks, checked here only.
+
+  // Entitlement is checked HERE ONLY (brief §5.5): a pass expiring mid-attempt
+  // cannot eject the candidate, because it is never re-checked at /submit.
+  if (!m.is_free && !(await passOk(req))) {
+    return res.status(402).json({ error: 'This mock needs the ₹119 pass.', paywall: true });
+  }
 
   const attemptId = randomUUID();
   attempts.set(attemptId, { code: m.code, startedAt: Date.now() });

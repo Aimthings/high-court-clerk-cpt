@@ -1,37 +1,48 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import './reference.css';
+import { Row1 } from './refparts.jsx';
 
-// Empty-state placeholders for routes built in later phases. Every nav/footer
-// link resolves to a designed screen (no dead links), naming the reason + the
-// single action that fixes it.
-export function MockList() {
-  return (
-    <EmptyState
-      title="Mocks"
-      reason="The Excel simulator and typing runner arrive in the next build phase."
-      action={['Read how scoring works', '/scoring']}
-      note="The first mock will need no sign-up and no payment."
-    />
-  );
-}
-
+// Account — identity, pass and receipts. Board-visibility toggle (the only
+// setting that changes public data) lands with the rank list in Phase 5.
 export function Account() {
+  const { user, hasPass, expiresAt, loading, logout } = useAuth();
+  if (loading) {
+    return <div className="page centre-wrap"><div className="skeleton-pane" style={{ width: 420, height: 200 }} /></div>;
+  }
+  if (!user) {
+    return (
+      <EmptyState
+        title="Account"
+        reason="Sign in to see your pass, receipts, handle and board visibility."
+        action={['Sign in', '/sign-in']}
+      />
+    );
+  }
   return (
-    <EmptyState
-      title="Account"
-      reason="Sign in to see your pass, receipts, handle and board visibility."
-      action={['Sign in', '/sign-in']}
-    />
+    <div className="page centre-wrap">
+      <div className="card-420">
+        <h1 className="page-title" style={{ marginBottom: 16 }}>Account</h1>
+        <div className="card">
+          <div className="card-simple-head">Identity</div>
+          <Row1 label="Mobile number" val={<span className="mono">+91 {user.phone}</span>} />
+          <Row1
+            label="Pass"
+            val={hasPass
+              ? <span className="v-mint">Active · ends {new Date(expiresAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              : <span className="v-amber">No pass</span>}
+          />
+        </div>
+        {!hasPass && <Link to="/pass" className="btn btn-primary btn-block" style={{ marginTop: 16 }}>Get the ₹119 pass</Link>}
+        <button className="btn btn-ghost btn-block" style={{ marginTop: 12 }} onClick={logout}>Sign out</button>
+      </div>
+    </div>
   );
 }
 
 export function NotFound() {
   return (
-    <EmptyState
-      title="Page not found"
-      reason="That page does not exist, or has moved."
-      action={['Go to the home page', '/']}
-    />
+    <EmptyState title="Page not found" reason="That page does not exist, or has moved." action={['Go to the home page', '/']} />
   );
 }
 
