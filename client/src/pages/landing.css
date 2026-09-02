@@ -1,0 +1,192 @@
+/* Landing — artboards 16 & 17. Reuses the shared Daylight primitives. */
+
+.landing-hero {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  padding-bottom: 40px;
+}
+.hero-main { width: var(--col-main); max-width: 100%; }
+.hero-rail { width: var(--col-rail); flex: none; }
+
+.hero-title {
+  margin-top: 20px;
+  font-weight: 800;
+  font-size: 52px;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+  text-wrap: pretty;
+}
+.hero-sub {
+  margin-top: 18px;
+  font-weight: 500;
+  font-size: var(--t-body-lg);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 640px;
+  text-wrap: pretty;
+}
+.hero-cta {
+  margin-top: 26px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-cta-note {
+  font-weight: 600;
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.hero-stats { margin-top: 34px; }
+
+/* free-mock card */
+.free-mock-chip {
+  display: inline-block;
+  background: var(--violet-tint);
+  color: var(--violet);
+  border-radius: 15px 0 10px 0;
+  padding: 5px 11px;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1;
+}
+.free-mock-head { padding: 10px 16px 14px; }
+.free-mock .rows { padding: 0; }
+.free-mock .row { padding: 11px 16px; }
+.dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700; font-size: 9px; color: #fff;
+  flex: none;
+}
+.dot-amber { background: var(--amber); }
+.fineprint {
+  margin-top: 14px;
+  font-weight: 500;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+/* two paper cards */
+.landing-papers { padding-top: 6px; padding-bottom: 6px; }
+.paper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.paper-card-body {
+  padding: 16px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.paper-badge {
+  width: 34px; height: 34px;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+  flex: none;
+}
+.paper-xl { background: var(--blue-tint); color: var(--navy); }
+.paper-key { background: var(--mint-tint); color: var(--mint); font-size: 14px; }
+.paper-card-text { flex: 1; }
+.paper-card-val { text-align: right; }
+.paper-val-n { font-weight: 800; font-size: 16px; line-height: 1; }
+.paper-val-k { margin-top: 4px; font-weight: 600; font-size: 11px; color: var(--ink-3); }
+
+/* lower page */
+.landing-lower { padding-top: 24px; }
+.steps { margin-top: 14px; }
+.step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  border-top: 1px solid var(--hairline);
+}
+.step:first-child { border-top: none; }
+.step-n { font-weight: 800; font-size: 15px; line-height: 1.4; color: var(--ink-3); }
+.step-text { flex: 1; }
+.step-head { display: block; font-weight: 700; font-size: 15px; line-height: 1.2; }
+.step-sub { display: block; margin-top: 5px; font-weight: 500; font-size: var(--t-meta); line-height: 1.4; color: var(--ink-3); }
+
+.lower-rank-head {
+  margin-top: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.rank-teaser { margin-top: 14px; }
+.rank-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-top: 1px solid var(--hairline);
+}
+.rank-row:first-child { border-top: none; }
+.rank-num-wrap { width: 40px; display: flex; justify-content: flex-end; }
+.rank-num { padding: 4px 7px; }
+.rank-avatar {
+  width: 28px; height: 28px;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px;
+  flex: none;
+}
+.av-amber { background: var(--amber-tint); color: var(--amber); }
+.av-neutral { background: var(--sunken); color: var(--ink-2); }
+.av-flame { background: var(--flame-tint); color: var(--flame); }
+.rank-id { flex: 1; }
+.rank-handle { display: block; font-weight: 700; font-size: 13.5px; line-height: 1.2; }
+.rank-region { display: block; margin-top: 3px; font-weight: 500; font-size: 10.5px; color: var(--ink-3); }
+.rank-metric { text-align: right; }
+.rank-wpm { display: block; font-weight: 800; font-size: 14px; line-height: 1; }
+.rank-wpm-k { display: block; margin-top: 4px; font-weight: 600; font-size: 9.5px; color: var(--ink-3); }
+.rank-teaser-foot { justify-content: space-between; }
+
+/* price card (shared with paywall) */
+.price-card { margin-top: 14px; }
+.price-head {
+  padding: 20px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--hairline);
+}
+.price-amount {
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+}
+.price-term { margin-top: 9px; font-weight: 600; font-size: var(--t-meta); color: var(--ink-3); }
+.price-features { }
+.price-feature {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 16px;
+  border-top: 1px solid var(--hairline);
+  font-weight: 500;
+  font-size: var(--t-body);
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+.price-feature:first-child { border-top: none; }
+.price-tick { width: 16px; text-align: center; font-weight: 700; font-size: 15px; color: var(--mint); flex: none; }
+.price-cta { padding: 14px 16px; border-top: 1px solid var(--hairline); }
+
+@media (max-width: 980px) {
+  .landing-hero { flex-direction: column; }
+  .hero-main, .hero-rail { width: 100%; }
+  .hero-title { font-size: 34px; }
+  .paper-grid { grid-template-columns: 1fr; }
+}

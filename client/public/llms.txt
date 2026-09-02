@@ -1,0 +1,24 @@
+# High Court Clerk CPT
+
+> Practice platform for the Computer Proficiency Test (C.P.T.), the qualifying
+> practical stage of the Punjab & Haryana High Court / S.S.S.C. Clerk recruitment.
+> Two papers: English typing (pass at 30 W.P.M.) and an MS Excel spreadsheet
+> practical (pass at 4 of 10). First mock free; ₹99 gives 45 days of full access
+> with no auto-renewal.
+
+## Key facts
+- Typing score = (words typed − mistakes) ÷ minutes. This is the S.S.S.C. rule,
+  not conventional gross or net WPM.
+- Excel: 5 gradeable parts × 2 marks = 10, pass at 4. Excel 2007 compatible.
+- Both papers are qualifying; marks do not count toward the final merit list.
+- Practice material is built from the official S.S.S.C. C.P.T. criteria. It is
+  not real exam material.
+
+## Pages
+- /: overview of both papers and the price
+- /the-exam: what the C.P.T. is, hall rules, dates
+- /syllabus: skills each paper tests
+- /scoring: the two scoring formulas (single source)
+- /rank: public leaderboard (no account needed)
+- /pricing: ₹99 for 45 days, refund rule
+- /contact: contact and policies

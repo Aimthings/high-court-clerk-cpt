@@ -1,0 +1,99 @@
+/*
+ * High Court Clerk CPT — design tokens ("Daylight" system).
+ * Transcribed VERBATIM from the design deck README (design_handoff_registry_daylight).
+ * These are the single source of truth for every colour, radius, shadow and type size.
+ * DO NOT edit a value here to make a screen match — surface the discrepancy instead.
+ */
+
+:root {
+  /* ---- Colour: structure ---- */
+  --canvas: #f5f7fb;        /* page background */
+  --app-canvas: #f1f4f9;    /* exam runner background */
+  --surface: #ffffff;       /* cards, nav, panes */
+  --sunken: #eff2f8;        /* table headers, card sub-headers, chips */
+  --header-fill: #eff2f8;   /* alias of sunken, deck naming */
+  --hairline: #e6eaf2;      /* card borders, dividers */
+  --border-strong: #d5dce9; /* input borders */
+
+  /* ---- Colour: ink ---- */
+  --navy: #0d2846;          /* headings, PRIMARY BUTTON FILL, dark text */
+  --navy-underline: #08192e;/* 2px bottom-border under primary buttons */
+  --ink: #0f1e33;           /* body text default */
+  --ink-2: #4a5a70;         /* supporting copy, row labels (secondary) */
+  --ink-3: #8494a8;         /* captions, meta, uppercase eyebrows (muted) */
+
+  /* ---- Colour: accent ---- */
+  --blue: #2d6be4;          /* links, active cell ring, chart bars, "Sign in" */
+  --blue-tint: #dce8ff;     /* info pills, selected-tag background */
+  --blue-hover: #1e4faf;    /* a:hover, same family */
+
+  /* ---- Colour: status pairs ---- */
+  --mint: #0e9f6e;          /* pass ticks, qualified, positive values */
+  --mint-tint: #e4f7ef;
+  --amber: #b47500;         /* "not stated in the notice", awaited, running-down */
+  --amber-tint: #fff6e0;
+  --flame: #e1620e;         /* editorial highlight chips ONLY, never a verdict */
+  --flame-tint: #ffeee2;
+  --rose: #d93b47;          /* below the bar, failed, not attempted */
+  --rose-tint: #fde9eb;
+  --rose-border: #e5a5ac;
+
+  /* editorial accent used on the free-mock chip in the deck */
+  --violet: #6a3fd1;
+  --violet-tint: #eee9fd;
+
+  /* ---- Exam paper (serif sheet) ---- */
+  --exam-paper: #fbf8f1;
+  --exam-paper-border: #e0d9c9;
+  --exam-paper-ink: #1a1712;
+
+  /* ---- Spreadsheet ---- */
+  --grid-line: #e7ebf2;
+
+  /* ---- Footer field ---- */
+  --footer-fill: #0d2846;
+  --footer-ink: #8fa9ce;
+
+  /* ---- Radius ladder (16 / 12 / 8) ---- */
+  --r-card: 16px;   /* cards */
+  --r-btn: 12px;    /* buttons, inputs, inner panels */
+  --r-chip: 8px;    /* chips, pills */
+  --r-pill: 9px;    /* small tags / icon squares (7-9px band) */
+  --r-sheet: 6px;   /* exam sheet */
+
+  /* ---- Shadow ---- */
+  --shadow-card: 0 1px 2px rgba(15, 30, 51, 0.05);
+  --shadow-sheet: 0 10px 30px rgba(40, 33, 20, 0.12);
+  --shadow-float: 0 12px 30px rgba(15, 30, 51, 0.18);
+
+  /* ---- Type families ---- */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', monospace;
+  --font-serif: Georgia, 'Times New Roman', serif; /* exam paper ONLY */
+
+  /* ---- Type scale (desktop; hierarchy is weight+colour, not size) ---- */
+  --t-hero: 64px;      /* hero score only — the only type above 22px */
+  --t-title: 22px;     /* page title, 700, -0.02em */
+  --t-card-h: 16px;    /* card headline, 700, -0.015em */
+  --t-section: 15px;   /* section label, 700 */
+  --t-body: 13px;
+  --t-body-lg: 17px;   /* landing intro paragraph */
+  --t-meta: 12.5px;
+  --t-chip: 11px;      /* chips 700, uppercase micro labels */
+
+  /* ---- Layout frame ---- */
+  --page-max: 1160px;   /* content column: 760 + 40 gap + 360 */
+  --col-main: 760px;
+  --col-rail: 360px;
+  --gutter: 64px;
+}
+
+/* Reduced motion: respected globally. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

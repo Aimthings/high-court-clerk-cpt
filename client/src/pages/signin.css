@@ -1,0 +1,48 @@
+.phone-input {
+  margin-top: 8px;
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-btn);
+  overflow: hidden;
+}
+.phone-input:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+.phone-cc {
+  padding: 13px 14px;
+  border-right: 1px solid var(--hairline);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.phone-field {
+  flex: 1;
+  border: none;
+  padding: 13px 14px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  background: transparent;
+}
+.phone-field:focus { outline: none; }
+
+.code-field {
+  margin-top: 20px;
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-btn);
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 22px;
+  text-align: center;
+  letter-spacing: 0.5em;
+  color: var(--ink);
+  background: var(--surface);
+}
+.code-field:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}

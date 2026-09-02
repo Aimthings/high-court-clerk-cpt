@@ -1,0 +1,28 @@
+{
+  "name": "@hcc/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "test": "vitest run",
+    "migrate": "node db-migrate.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.4.0",
+    "mysql2": "^3.11.3",
+    "zod": "^3.23.8",
+    "pino": "^9.4.0",
+    "pino-http": "^10.3.0",
+    "cookie-parser": "^1.4.7",
+    "razorpay": "^2.9.4",
+    "pdfkit": "^0.15.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.2"
+  }
+}

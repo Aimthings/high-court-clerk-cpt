@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /pass/status
+Disallow: /account
+
+Sitemap: https://highcourtclerkcpt.in/sitemap.xml

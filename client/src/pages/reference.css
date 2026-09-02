@@ -1,0 +1,164 @@
+/* Shared styles for the reference / policy public pages:
+ * The exam, Syllabus, Pricing, How scoring works, Contact.
+ * Two-column 760 + 420 layout with hairline row lists and tinted strips. */
+
+.ref-header { margin-bottom: 22px; }
+.ref-header .page-title { font-size: var(--t-title); }
+.ref-header .page-sub {
+  margin-top: 6px;
+  font-size: var(--t-body);
+  color: var(--ink-3);
+}
+
+.split-ref {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+.split-ref .ref-main { width: var(--col-main); max-width: 100%; }
+.split-ref .ref-rail { width: 420px; flex: none; }
+
+.stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* card with an icon-badge header */
+.card-head {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.card-badge {
+  width: 30px; height: 30px;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+  flex: none;
+}
+.badge-xl { background: var(--blue-tint); color: var(--navy); }
+.badge-key { background: var(--mint-tint); color: var(--mint); font-size: 13px; }
+.card-head-text { flex: 1; }
+.card-head-text .card-h { font-size: var(--t-card-h); }
+.card-head-text .card-meta { margin-top: 4px; }
+.card-head-chip {
+  background: var(--sunken);
+  border-radius: var(--r-chip);
+  padding: 6px 11px;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.card-simple-head {
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.card-block-head {
+  padding: 16px 18px 12px;
+}
+.card-block-head .card-h { font-size: var(--t-card-h); }
+.card-block-head .card-meta { margin-top: 5px; }
+
+/* row with a two-line label + trailing chip/value */
+.row-2 {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 18px;
+  border-top: 1px solid var(--hairline);
+}
+.row-2 .ico { width: 16px; flex: none; color: var(--ink-3); font-size: 16px; text-align: center; }
+.row-2 .r2-text { flex: 1; }
+.row-2 .r2-head { display: block; font-weight: 600; font-size: var(--t-body); line-height: 1.2; }
+.row-2 .r2-sub { display: block; margin-top: 4px; font-weight: 500; font-size: 11px; color: var(--ink-3); }
+.row-2 .r2-val { font-weight: 700; font-size: var(--t-body); }
+
+/* simple single-line row (label left, value right) */
+.row-1 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 16px;
+  border-top: 1px solid var(--hairline);
+}
+.row-1 .r1-label { flex: 1; font-weight: 500; font-size: var(--t-body); color: var(--ink-2); }
+.row-1 .r1-val { font-weight: 700; font-size: var(--t-body); }
+
+/* policy block (title + summary + body) */
+.policy {
+  padding: 18px;
+  border-top: 1px solid var(--hairline);
+}
+.policy:first-child { border-top: none; }
+.policy-h { font-weight: 700; font-size: var(--t-card-h); letter-spacing: -0.015em; }
+.policy-sum { margin-top: 6px; font-weight: 600; font-size: var(--t-body); line-height: 1.35; color: var(--ink); }
+.policy-body { margin-top: 8px; font-weight: 500; font-size: var(--t-meta); line-height: 1.55; color: var(--ink-3); max-width: 660px; text-wrap: pretty; }
+
+/* formula band inside scoring cards */
+.formula {
+  padding: 16px 18px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+.formula-mint { background: var(--mint-tint); color: var(--mint); }
+.formula-blue { background: var(--blue-tint); color: var(--navy); }
+
+/* pricing comparison table */
+.compare-head {
+  display: flex;
+  padding: 14px 18px;
+  background: var(--sunken);
+}
+.compare-head .c-what { flex: 1; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.compare-head .c-col { width: 120px; text-align: right; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.compare-head .c-free { color: var(--ink-3); }
+.compare-head .c-pass { color: var(--navy); }
+.compare-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  border-top: 1px solid var(--hairline);
+}
+.compare-row .c-what { flex: 1; font-weight: 500; font-size: var(--t-body); line-height: 1.3; color: var(--ink-2); }
+.compare-row .c-free { width: 120px; text-align: right; font-weight: 600; font-size: var(--t-body); color: var(--ink-3); }
+.compare-row .c-pass { width: 120px; text-align: right; font-weight: 800; font-size: var(--t-body); color: var(--ink); }
+
+/* dates row with a mono status pill */
+.date-pill {
+  border-radius: var(--r-chip);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* centred single-card layouts (paywall, payment) */
+.centre-wrap {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.card-420 { width: 420px; max-width: 100%; }
+
+/* payment banner */
+.pay-banner { padding: 18px; text-align: center; }
+.pay-banner-mint { background: var(--mint-tint); }
+.pay-banner-rose { background: var(--rose-tint); }
+.pay-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px; color: #fff;
+}
+.pay-title { margin-top: 12px; font-weight: 700; font-size: var(--t-card-h); }
+.pay-sub { margin-top: 6px; font-weight: 600; font-size: 12px; line-height: 1.3; color: var(--ink-2); }
+
+@media (max-width: 980px) {
+  .split-ref { flex-direction: column; }
+  .split-ref .ref-main, .split-ref .ref-rail { width: 100%; }
+}

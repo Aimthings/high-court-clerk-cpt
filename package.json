@@ -1,0 +1,21 @@
+{
+  "name": "high-court-clerk-cpt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "High Court Clerk CPT — practice platform for the P&H High Court / S.S.S.C. Clerk Computer Proficiency Test",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace server & npm run dev --workspace client",
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "build": "npm run build --workspace client",
+    "test": "npm run test --workspace client && npm run test --workspace server",
+    "seed": "node server/seed/run.js"
+  }
+}
