@@ -16,7 +16,6 @@ export default function Paywall() {
           <Feature>60 court-English passages</Feature>
           <Feature>Printed-passage exam mode with A4 PDFs</Feature>
           <Feature>Mistake breakdown and key heat map</Feature>
-          <Feature>Result-day alerts on WhatsApp</Feature>
           <div className="price-cta">
             {/* Phase 4 wires this to POST /api/orders/create + Razorpay checkout. */}
             <Link to="/pass/status?state=pending" className="btn btn-primary btn-block">

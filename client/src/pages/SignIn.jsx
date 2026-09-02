@@ -60,8 +60,8 @@ export default function SignIn() {
                 Send the code
               </button>
               <p className="fineprint">
-                Your number is used for sign-in and result-day alerts. It is never shown on the rank
-                list — the board shows the handle you choose.
+                Your number is used only to sign in. It is never shown on the rank list — the board
+                shows the handle you choose.
               </p>
             </form>
           ) : (

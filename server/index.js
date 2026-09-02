@@ -8,6 +8,8 @@ import rateLimit from 'express-rate-limit';
 import { pinoHttp } from 'pino-http';
 import { PORT, NODE_ENV, COOKIE_SECRET } from './config.js';
 import { ping } from './db.js';
+import { passagesRouter } from './routes/passages.js';
+import { typingRouter } from './routes/typing.js';
 
 const app = express();
 
@@ -35,6 +37,9 @@ app.get('/api/health', async (_req, res) => {
   const db = await ping();
   res.json({ status: 'ok', db, env: NODE_ENV });
 });
+
+app.use('/api/passages', passagesRouter);
+app.use('/api/typing', typingRouter);
 
 // Global error handler — leaks no stack traces (brief §7).
 // eslint-disable-next-line no-unused-vars

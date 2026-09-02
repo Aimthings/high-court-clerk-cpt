@@ -10,7 +10,9 @@ import SignIn from './pages/SignIn.jsx';
 import Paywall from './pages/Paywall.jsx';
 import PaymentStatus from './pages/PaymentStatus.jsx';
 import RankList from './rank/RankList.jsx';
-import { MockList, Account, NotFound } from './pages/Placeholder.jsx';
+import MockList from './pages/MockList.jsx';
+import TypingTest from './typing/TypingTest.jsx';
+import { Account, NotFound } from './pages/Placeholder.jsx';
 
 // All routes render under the public layout (nav + footer + SEO) for Phase 1.
 // Signed-in shells and exam runners get their own layouts in later phases.
@@ -32,6 +34,8 @@ export default function App() {
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      {/* Exam runner is a standalone full-screen route — no nav/footer. */}
+      <Route path="/mocks/:slug/run" element={<TypingTest />} />
     </Routes>
   );
 }
