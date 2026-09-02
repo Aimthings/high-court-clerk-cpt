@@ -17,4 +17,8 @@ export const api = {
   startTyping: (slug, mode) => request('/typing/start', { method: 'POST', body: { slug, mode } }),
   submitTyping: (attemptId, typed) =>
     request('/typing/attempt', { method: 'POST', body: { attemptId, typed } }),
+  listMocks: () => request('/excel/mocks'),
+  startExcel: (mockCode) => request('/excel/start', { method: 'POST', body: { mockCode } }),
+  submitExcel: (attemptId, workbook) =>
+    request('/excel/submit', { method: 'POST', body: { attemptId, workbook } }),
 };

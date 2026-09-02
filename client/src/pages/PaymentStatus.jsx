@@ -25,7 +25,7 @@ function Success() {
         <div className="pay-title v-mint">Payment received</div>
         <div className="pay-sub">Everything is unlocked now</div>
       </div>
-      <Row1 label="Amount paid" val={<span className="num">₹99</span>} />
+      <Row1 label="Amount paid" val={<span className="num">₹119</span>} />
       <Row1 label="Method" val="UPI · 1 Sep, 8:52 pm" />
       <Row1 label="Pass ends" val="16 Oct 2026" />
       <Row1 label="Reference" val={<span className="mono">RG-4471-2280</span>} />
@@ -45,12 +45,12 @@ function Failure() {
         <div className="pay-title v-rose">The payment did not go through</div>
         <div className="pay-sub">Your bank declined the request. Nothing was charged.</div>
       </div>
-      <Row1 label="Amount attempted" val={<span className="num">₹99</span>} />
+      <Row1 label="Amount attempted" val={<span className="num">₹119</span>} />
       <Row1 label="Reason given" val={<span className="v-rose">Declined by bank</span>} />
       <Row1 label="Attempted" val="1 Sep, 8:49 pm" />
       <Row1 label="Reference" val={<span className="mono">RG-4471-2279</span>} />
       <div className="price-cta" style={{ textAlign: 'center' }}>
-        <Link to="/pass" className="btn btn-primary btn-block">Try again · ₹99</Link>
+        <Link to="/pass" className="btn btn-primary btn-block">Try again · ₹119</Link>
         <button className="link-btn" style={{ marginTop: 10 }}>Pay with UPI instead</button>
       </div>
       <InfoStrip tone="amber">

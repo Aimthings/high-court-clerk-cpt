@@ -15,7 +15,7 @@ export const DB = {
 
 // Product prices, in paise. Constant — never trust a client amount.
 export const PRICES = {
-  pass99: 9900,
+  pass119: 11900,
 };
 
 export const RAZORPAY = {

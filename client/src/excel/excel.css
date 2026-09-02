@@ -1,0 +1,192 @@
+/* Excel runner — deck artboard 20. App-canvas background; two panes. */
+.xl-screen {
+  min-height: 100vh;
+  background: var(--app-canvas);
+  display: flex;
+  flex-direction: column;
+}
+.xl-center { align-items: center; justify-content: center; }
+
+.xl-header {
+  height: 52px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  flex: none;
+}
+.xl-header-title { font-weight: 700; font-size: var(--t-body); }
+.xl-header-meta { margin-left: auto; font-weight: 500; font-size: 12px; color: var(--ink-3); }
+
+.xl-body {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  min-height: 0;
+}
+
+/* ---- paper pane (40%) ---- */
+.paper-pane { width: 40%; min-width: 320px; overflow-y: auto; }
+.exam-sheet {
+  background: var(--exam-paper);
+  border: 1px solid var(--exam-paper-border);
+  border-radius: var(--r-sheet);
+  box-shadow: var(--shadow-sheet);
+  color: var(--exam-paper-ink);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 22px 24px;
+}
+.exam-title { font-weight: 700; text-decoration: underline; letter-spacing: 0.02em; margin-bottom: 12px; }
+.exam-scenario { margin-bottom: 14px; }
+.exam-table-wrap { margin: 12px 0; }
+.exam-table-name { font-style: italic; margin-bottom: 4px; }
+.exam-table-scroll { overflow-x: auto; }
+.exam-table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.exam-table th, .exam-table td {
+  border: 1px solid var(--exam-paper-ink);
+  padding: 3px 8px;
+  text-align: center;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.exam-table th { font-weight: 700; }
+.exam-parts { margin: 14px 0 0; }
+.exam-part {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 0;
+}
+.exam-tick { width: 14px; flex: none; color: var(--mint); font-weight: 700; }
+.exam-part-label { flex: 1; }
+.exam-part-marks { white-space: nowrap; }
+.exam-part-marks i { font-style: italic; }
+.exam-summary {
+  margin-top: 14px;
+  padding: 8px 12px;
+  border-radius: var(--r-sheet);
+  font-weight: 700;
+  font-family: var(--font-sans);
+}
+.exam-pass { background: var(--mint-tint); color: var(--mint); }
+.exam-fail { background: var(--rose-tint); color: var(--rose); }
+.exam-footnote { margin-top: 16px; font-size: 11px; font-style: italic; color: #6a6154; }
+
+/* ---- workbook pane (60%) ---- */
+.wb-pane {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  transition: opacity 0.2s ease;
+}
+.wb-locked { opacity: 0.42; pointer-events: none; }
+
+.wb-filebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+.wb-file-label { font-weight: 700; font-size: 12px; color: var(--ink-2); }
+.wb-filename { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border-strong); border-radius: var(--r-pill); padding: 4px 10px; }
+.wb-filename-input { border: none; background: transparent; font-size: 13px; width: 120px; }
+.wb-filename-input:focus { outline: none; }
+.wb-pencil { color: var(--ink-3); font-size: 12px; }
+.wb-save { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-strong); border-radius: var(--r-btn); background: var(--surface); padding: 6px 12px; font-weight: 700; font-size: 12px; color: var(--navy); }
+.wb-kbd { font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); background: var(--sunken); border-radius: 4px; padding: 2px 5px; }
+.wb-saved { font-weight: 700; font-size: 11px; color: var(--mint); }
+.wb-chart-btn { margin-left: auto; border: 1px solid var(--border-strong); border-radius: var(--r-btn); background: var(--surface); padding: 6px 12px; font-weight: 700; font-size: 12px; color: var(--navy); }
+
+.wb-formulabar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+.wb-namebox { min-width: 46px; font-weight: 700; font-size: 12px; color: var(--navy); border: 1px solid var(--hairline); border-radius: 6px; padding: 4px 8px; text-align: center; }
+.wb-fx { font-style: italic; color: var(--ink-3); font-family: var(--font-serif); }
+.wb-formula-input { flex: 1; border: 1px solid var(--hairline); border-radius: 6px; padding: 5px 10px; font-size: 13px; }
+.wb-formula-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+
+.wb-grid-scroll { flex: 1; overflow: auto; position: relative; }
+.wb-grid { border-collapse: collapse; table-layout: fixed; }
+.wb-grid th, .wb-grid td {
+  border: 1px solid var(--grid-line);
+  height: 26px;
+  padding: 0;
+}
+.wb-corner { width: 34px; background: var(--sunken); position: sticky; left: 0; top: 0; z-index: 3; }
+.wb-colhead { width: 62px; background: var(--sunken); font: 700 11px/1 var(--font-mono); color: var(--ink-2); text-align: center; position: sticky; top: 0; z-index: 2; }
+.wb-rowhead { width: 34px; background: var(--sunken); font-size: 11px; color: var(--ink-2); text-align: center; position: sticky; left: 0; z-index: 1; }
+.wb-cell { width: 62px; background: var(--surface); cursor: cell; }
+.wb-active { box-shadow: inset 0 0 0 2px var(--blue); }
+.wb-cell-val { display: block; padding: 0 6px; font-size: 12px; line-height: 26px; white-space: nowrap; overflow: hidden; text-align: right; }
+.wb-cell-input { width: 100%; height: 24px; border: none; padding: 0 6px; font-size: 12px; text-align: right; }
+.wb-cell-input:focus { outline: none; }
+
+.wb-lock-badge {
+  position: absolute; top: 10px; right: 12px;
+  background: var(--sunken); color: var(--ink-2);
+  border-radius: var(--r-chip); padding: 5px 10px; font-weight: 700; font-size: 11px;
+}
+
+/* embedded chart (CSS boxes) */
+.wb-chart {
+  position: absolute; top: 70px; right: 30px; width: 320px; height: 220px;
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+  box-shadow: var(--shadow-float); padding: 12px 14px; display: flex; flex-direction: column;
+}
+.wb-chart-title { font-weight: 700; font-size: 12px; text-align: center; color: var(--navy); }
+.wb-chart-plot { flex: 1; display: flex; align-items: flex-end; gap: 6px; padding: 10px 4px 0; }
+.wb-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+.wb-bar { width: 70%; background: var(--blue); border-radius: 3px 3px 0 0; box-shadow: inset -3px 0 rgba(0,0,0,.15), inset 0 3px rgba(255,255,255,.25); }
+.wb-bar-label { font-size: 8px; color: var(--ink-3); margin-top: 3px; }
+.wb-chart-axes { display: flex; justify-content: space-between; font-size: 9px; color: var(--ink-3); }
+
+/* ---- status bar ---- */
+.xl-status {
+  height: 64px;
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  flex: none;
+}
+.xl-status-marks { flex: 1; text-align: center; font-weight: 700; font-size: var(--t-body); }
+.xl-submit { padding: 12px 26px; }
+
+/* ---- result panel ---- */
+.xl-result { padding: 0 20px 24px; max-width: 720px; margin: 0 auto; width: 100%; }
+
+/* ---- chart modal ---- */
+.chart-modal-overlay {
+  position: fixed; inset: 0; background: rgba(15,30,51,.35);
+  display: flex; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+}
+.chart-modal { width: 420px; max-width: 100%; }
+.cb-field { display: block; margin-top: 12px; }
+.cb-field .field-label { display: block; margin-bottom: 6px; }
+.cb-field .input, .cb-field select.input { width: 100%; }
+.cb-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 18px; }
+
+/* ---- 390 stack ---- */
+@media (max-width: 780px) {
+  .xl-body { flex-direction: column; }
+  .paper-pane { width: 100%; min-width: 0; }
+  .xl-header-meta { display: none; }
+}

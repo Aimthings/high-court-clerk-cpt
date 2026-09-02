@@ -3,7 +3,7 @@
 > Practice platform for the Computer Proficiency Test (C.P.T.), the qualifying
 > practical stage of the Punjab & Haryana High Court / S.S.S.C. Clerk recruitment.
 > Two papers: English typing (pass at 30 W.P.M.) and an MS Excel spreadsheet
-> practical (pass at 4 of 10). First mock free; ₹99 gives 45 days of full access
+> practical (pass at 4 of 10). First mock free; ₹119 gives 45 days of full access
 > with no auto-renewal.
 
 ## Key facts
@@ -20,5 +20,5 @@
 - /syllabus: skills each paper tests
 - /scoring: the two scoring formulas (single source)
 - /rank: public leaderboard (no account needed)
-- /pricing: ₹99 for 45 days, refund rule
+- /pricing: ₹119 for 45 days, refund rule
 - /contact: contact and policies

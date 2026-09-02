@@ -8,7 +8,7 @@ export default function Pricing() {
   return (
     <div className="page">
       <div className="ref-header">
-        <h1 className="page-title">₹99 for 45 days</h1>
+        <h1 className="page-title">₹119 for 45 days</h1>
         <p className="page-sub">
           Both papers · no auto-renewal · the first mock is free and needs no sign-up
         </p>
@@ -20,7 +20,7 @@ export default function Pricing() {
             <div className="compare-head">
               <span className="c-what">What you get</span>
               <span className="c-col c-free">Free</span>
-              <span className="c-col c-pass">Pass · ₹99</span>
+              <span className="c-col c-pass">Pass · ₹119</span>
             </div>
             <Compare what="Excel mocks" free="1 of 25" pass="25" />
             <Compare what="Court-English passages" free="2 of 60" pass="60" />
@@ -57,7 +57,7 @@ export default function Pricing() {
         <aside className="ref-rail stack">
           <div className="card">
             <div className="price-head">
-              <div className="price-amount num">₹99</div>
+              <div className="price-amount num">₹119</div>
               <div className="price-term">45 days · no auto-renewal</div>
             </div>
             <PriceFeature>Both papers, all 85 sets</PriceFeature>

@@ -17,7 +17,7 @@ export default function Landing() {
           </p>
           <div className="hero-cta">
             <Link to="/mocks" className="btn btn-primary">Take a free mock</Link>
-            <span className="hero-cta-note">No sign-up for the first mock · full access ₹99 for 45 days</span>
+            <span className="hero-cta-note">No sign-up for the first mock · full access ₹119 for 45 days</span>
           </div>
           <div className="stats hero-stats">
             <Stat n="12,480" k="Candidates ranked" />
@@ -175,7 +175,7 @@ export function PriceCard() {
   return (
     <div className="card price-card">
       <div className="price-head">
-        <div className="price-amount num">₹99</div>
+        <div className="price-amount num">₹119</div>
         <div className="price-term">45 days · no auto-renewal</div>
       </div>
       <ul className="price-features">

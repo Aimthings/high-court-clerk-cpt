@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicLayout from './components/PublicLayout.jsx';
 import Landing from './pages/Landing.jsx';
@@ -11,8 +12,12 @@ import Paywall from './pages/Paywall.jsx';
 import PaymentStatus from './pages/PaymentStatus.jsx';
 import RankList from './rank/RankList.jsx';
 import MockList from './pages/MockList.jsx';
-import TypingTest from './typing/TypingTest.jsx';
 import { Account, NotFound } from './pages/Placeholder.jsx';
+
+// Exam runners are lazy-loaded so the heavy formula engine (formulajs) stays out
+// of the initial bundle and public pages keep their LCP budget.
+const TypingTest = lazy(() => import('./typing/TypingTest.jsx'));
+const ExcelMock = lazy(() => import('./excel/ExcelMock.jsx'));
 
 // All routes render under the public layout (nav + footer + SEO) for Phase 1.
 // Signed-in shells and exam runners get their own layouts in later phases.
@@ -34,8 +39,23 @@ export default function App() {
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      {/* Exam runner is a standalone full-screen route — no nav/footer. */}
-      <Route path="/mocks/:slug/run" element={<TypingTest />} />
+      {/* Exam runners are standalone full-screen routes — no nav/footer. */}
+      <Route
+        path="/mocks/:slug/run"
+        element={<Suspense fallback={<RunnerFallback />}><TypingTest /></Suspense>}
+      />
+      <Route
+        path="/mocks/:code/excel"
+        element={<Suspense fallback={<RunnerFallback />}><ExcelMock /></Suspense>}
+      />
     </Routes>
+  );
+}
+
+function RunnerFallback() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: 'var(--surface)' }}>
+      <div className="skeleton-pane" style={{ width: 720, maxWidth: '90vw', height: 360 }} />
+    </div>
   );
 }

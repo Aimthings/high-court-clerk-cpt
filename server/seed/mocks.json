@@ -1,0 +1,2174 @@
+[
+  {
+    "code": "XL01",
+    "title": "Mooncity rainfall",
+    "difficulty": 1,
+    "is_free": true,
+    "spec": {
+      "code": "XL01",
+      "title": "Mooncity rainfall",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Mooncity",
+      "scenario": "The meteorological office at Mooncity records the rainfall, in millimetres, for each day of the week and for each month of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Weekly rainfall (mm)",
+          "headers": [
+            "MON",
+            "TUE",
+            "WED",
+            "THU",
+            "FRI",
+            "SAT",
+            "SUN"
+          ],
+          "values": [
+            12,
+            0,
+            8,
+            15,
+            4,
+            22,
+            9
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Monthly rainfall (mm)",
+          "headers": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "values": [
+            30,
+            24,
+            41,
+            18,
+            66,
+            120,
+            210,
+            180,
+            95,
+            40,
+            12,
+            8
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "3-D Column",
+        "title": "AVERAGE DAILY RAINFALL",
+        "categoryAxis": "DAY",
+        "valueAxis": "RAINFALL (mm)",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Mooncity",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Mooncity"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 70,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 844,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 0,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 22,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 8,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 210,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 10,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 70.33,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A 3-D Column chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "3-D Column",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "AVERAGE DAILY RAINFALL"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "DAY",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "RAINFALL (mm)",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 70,
+          "lowest": 0,
+          "highest": 22,
+          "mean": 10
+        },
+        "t2": {
+          "total": 844,
+          "lowest": 8,
+          "highest": 210,
+          "mean": 70.33
+        }
+      }
+    }
+  },
+  {
+    "code": "XL02",
+    "title": "District court filings",
+    "difficulty": 1,
+    "is_free": false,
+    "spec": {
+      "code": "XL02",
+      "title": "District court filings",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Filings",
+      "scenario": "The filing counter of the district court at Rohtak counts the cases filed at each counter on a working day and across the districts of the division. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Cases by counter",
+          "headers": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "values": [
+            14,
+            9,
+            21,
+            6,
+            11,
+            17
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Cases by district",
+          "headers": [
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+            "D5",
+            "D6",
+            "D7",
+            "D8",
+            "D9",
+            "D10",
+            "D11"
+          ],
+          "values": [
+            120,
+            85,
+            60,
+            200,
+            45,
+            90,
+            33,
+            150,
+            72,
+            110,
+            64
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Clustered Column",
+        "title": "CASES FILED BY COUNTER",
+        "categoryAxis": "COUNTER",
+        "valueAxis": "CASES",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Filings",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Filings"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 78,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 1029,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 6,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 21,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 33,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 200,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 13,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 93.55,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Clustered Column chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Clustered Column",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "CASES FILED BY COUNTER"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "COUNTER",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "CASES",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 78,
+          "lowest": 6,
+          "highest": 21,
+          "mean": 13
+        },
+        "t2": {
+          "total": 1029,
+          "lowest": 33,
+          "highest": 200,
+          "mean": 93.55
+        }
+      }
+    }
+  },
+  {
+    "code": "XL03",
+    "title": "Library books issued",
+    "difficulty": 1,
+    "is_free": false,
+    "spec": {
+      "code": "XL03",
+      "title": "Library books issued",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Library",
+      "scenario": "The city library at Patiala notes the number of books issued from each section on the working days of a week, and the books issued in each week of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Books by section",
+          "headers": [
+            "SEC1",
+            "SEC2",
+            "SEC3",
+            "SEC4",
+            "SEC5"
+          ],
+          "values": [
+            40,
+            55,
+            33,
+            48,
+            61
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Books by week",
+          "headers": [
+            "W1",
+            "W2",
+            "W3",
+            "W4",
+            "W5",
+            "W6",
+            "W7",
+            "W8",
+            "W9",
+            "W10"
+          ],
+          "values": [
+            300,
+            280,
+            315,
+            290,
+            260,
+            330,
+            305,
+            275,
+            340,
+            295
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Line",
+        "title": "BOOKS ISSUED BY SECTION",
+        "categoryAxis": "SECTION",
+        "valueAxis": "BOOKS",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Library",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Library"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 237,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 2990,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 33,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 61,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 260,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 340,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 47.4,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 299,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Line chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Line",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "BOOKS ISSUED BY SECTION"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "SECTION",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "BOOKS",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 237,
+          "lowest": 33,
+          "highest": 61,
+          "mean": 47.4
+        },
+        "t2": {
+          "total": 2990,
+          "lowest": 260,
+          "highest": 340,
+          "mean": 299
+        }
+      }
+    }
+  },
+  {
+    "code": "XL04",
+    "title": "Hospital admissions",
+    "difficulty": 2,
+    "is_free": false,
+    "spec": {
+      "code": "XL04",
+      "title": "Hospital admissions",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Hospital",
+      "scenario": "The civil hospital at Ambala records the patients admitted in each ward on a given day, and the patients admitted in each month of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Admissions by ward",
+          "headers": [
+            "W1",
+            "W2",
+            "W3",
+            "W4",
+            "W5",
+            "W6",
+            "W7"
+          ],
+          "values": [
+            7,
+            13,
+            0,
+            9,
+            22,
+            5,
+            18
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Admissions by month",
+          "headers": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "values": [
+            210,
+            198,
+            205,
+            220,
+            260,
+            305,
+            340,
+            330,
+            290,
+            240,
+            215,
+            200
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Bar",
+        "title": "ADMISSIONS BY WARD",
+        "categoryAxis": "WARD",
+        "valueAxis": "PATIENTS",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Hospital",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Hospital"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 74,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 3013,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 0,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 22,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 198,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 340,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 10.57,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 251.08,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Bar chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Bar",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "ADMISSIONS BY WARD"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "WARD",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "PATIENTS",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 74,
+          "lowest": 0,
+          "highest": 22,
+          "mean": 10.57
+        },
+        "t2": {
+          "total": 3013,
+          "lowest": 198,
+          "highest": 340,
+          "mean": 251.08
+        }
+      }
+    }
+  },
+  {
+    "code": "XL05",
+    "title": "Toll plaza vehicles",
+    "difficulty": 2,
+    "is_free": false,
+    "spec": {
+      "code": "XL05",
+      "title": "Toll plaza vehicles",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Tollplaza",
+      "scenario": "The toll plaza on the national highway near Karnal counts the vehicles passing through each lane in an hour, and the vehicles passing in each month of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Vehicles by lane",
+          "headers": [
+            "L1",
+            "L2",
+            "L3",
+            "L4",
+            "L5",
+            "L6",
+            "L7",
+            "L8"
+          ],
+          "values": [
+            340,
+            512,
+            289,
+            601,
+            455,
+            378,
+            523,
+            410
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Vehicles by month (000)",
+          "headers": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "values": [
+            820,
+            790,
+            860,
+            910,
+            880,
+            940,
+            1010,
+            990,
+            870,
+            900,
+            850,
+            830
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Column",
+        "title": "VEHICLES BY LANE",
+        "categoryAxis": "LANE",
+        "valueAxis": "VEHICLES",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Tollplaza",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Tollplaza"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 3508,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 10650,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 289,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 601,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 790,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 1010,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 438.5,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 887.5,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Column chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Column",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "VEHICLES BY LANE"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "LANE",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "VEHICLES",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 3508,
+          "lowest": 289,
+          "highest": 601,
+          "mean": 438.5
+        },
+        "t2": {
+          "total": 10650,
+          "lowest": 790,
+          "highest": 1010,
+          "mean": 887.5
+        }
+      }
+    }
+  },
+  {
+    "code": "XL06",
+    "title": "Electricity units",
+    "difficulty": 2,
+    "is_free": false,
+    "spec": {
+      "code": "XL06",
+      "title": "Electricity units",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Powerboard",
+      "scenario": "The sub-division of the power board at Hisar records the electricity consumed, in units, by each feeder on a day, and the units consumed in each month of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Units by feeder",
+          "headers": [
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6"
+          ],
+          "values": [
+            1200,
+            0,
+            980,
+            1450,
+            760,
+            1330
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Units by month (000)",
+          "headers": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "values": [
+            340,
+            320,
+            360,
+            410,
+            520,
+            660,
+            720,
+            700,
+            560,
+            430,
+            360,
+            330
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Line with Markers",
+        "title": "UNITS BY FEEDER",
+        "categoryAxis": "FEEDER",
+        "valueAxis": "UNITS",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Powerboard",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Powerboard"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 5720,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 5710,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 0,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 1450,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 320,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 720,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 953.33,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 475.83,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Line with Markers chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Line with Markers",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "UNITS BY FEEDER"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "FEEDER",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "UNITS",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 5720,
+          "lowest": 0,
+          "highest": 1450,
+          "mean": 953.33
+        },
+        "t2": {
+          "total": 5710,
+          "lowest": 320,
+          "highest": 720,
+          "mean": 475.83
+        }
+      }
+    }
+  },
+  {
+    "code": "XL07",
+    "title": "Grain procurement",
+    "difficulty": 3,
+    "is_free": false,
+    "spec": {
+      "code": "XL07",
+      "title": "Grain procurement",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Procurement",
+      "scenario": "The procurement centre of the mandi at Sirsa weighs the grain, in quintals, brought to each shed on a day, and the grain procured in each week of the season. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Quintals by shed",
+          "headers": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6",
+            "S7"
+          ],
+          "values": [
+            820,
+            615,
+            903,
+            447,
+            0,
+            1120,
+            738
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Quintals by week",
+          "headers": [
+            "W1",
+            "W2",
+            "W3",
+            "W4",
+            "W5",
+            "W6",
+            "W7",
+            "W8",
+            "W9",
+            "W10",
+            "W11"
+          ],
+          "values": [
+            4200,
+            3850,
+            5100,
+            4670,
+            3990,
+            6120,
+            5430,
+            4880,
+            5220,
+            4010,
+            3760
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "3-D Bar",
+        "title": "GRAIN PROCURED BY SHED",
+        "categoryAxis": "SHED",
+        "valueAxis": "QUINTALS",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Procurement",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Procurement"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 4643,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 51230,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 0,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 1120,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 3760,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 6120,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 663.29,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 4657.27,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A 3-D Bar chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "3-D Bar",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "GRAIN PROCURED BY SHED"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "SHED",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "QUINTALS",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 4643,
+          "lowest": 0,
+          "highest": 1120,
+          "mean": 663.29
+        },
+        "t2": {
+          "total": 51230,
+          "lowest": 3760,
+          "highest": 6120,
+          "mean": 4657.27
+        }
+      }
+    }
+  },
+  {
+    "code": "XL08",
+    "title": "Bus depot kilometres",
+    "difficulty": 3,
+    "is_free": false,
+    "spec": {
+      "code": "XL08",
+      "title": "Bus depot kilometres",
+      "durationSec": 600,
+      "totalMarks": 10,
+      "passMarks": 4,
+      "saveAs": "Roadways",
+      "scenario": "The roadways depot at Bathinda records the distance, in kilometres, run by each bus on a day, and the distance run by the fleet in each month of the year. Enter both tables and answer the parts below.",
+      "tables": [
+        {
+          "index": 1,
+          "name": "Kilometres by bus",
+          "headers": [
+            "B1",
+            "B2",
+            "B3",
+            "B4",
+            "B5",
+            "B6",
+            "B7",
+            "B8"
+          ],
+          "values": [
+            312,
+            289,
+            401,
+            355,
+            298,
+            367,
+            333,
+            290
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        },
+        {
+          "index": 2,
+          "name": "Kilometres by month (000)",
+          "headers": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "values": [
+            92,
+            88,
+            95,
+            101,
+            99,
+            104,
+            110,
+            108,
+            97,
+            100,
+            94,
+            91
+          ],
+          "resultHeaders": [
+            "TOTAL",
+            "LOWEST",
+            "HIGHEST",
+            "MEAN"
+          ]
+        }
+      ],
+      "chart": {
+        "chartType": "Clustered Bar",
+        "title": "DISTANCE BY BUS",
+        "categoryAxis": "BUS",
+        "valueAxis": "KILOMETRES",
+        "sourceTable": 1
+      },
+      "parts": [
+        {
+          "ref": "a",
+          "label": "(a) Enter both tables and save the workbook as Roadways",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "dataEntered",
+              "table": 1
+            },
+            {
+              "type": "dataEntered",
+              "table": 2
+            },
+            {
+              "type": "filename",
+              "equals": "Roadways"
+            },
+            {
+              "type": "saved",
+              "after": "a"
+            }
+          ]
+        },
+        {
+          "ref": "bi",
+          "label": "(b)(i) Total for the week and the year respectively",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "TOTAL"
+              },
+              "value": 2645,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "TOTAL"
+              },
+              "value": 1179,
+              "tolerance": 0.01,
+              "formulaContains": "SUM"
+            }
+          ]
+        },
+        {
+          "ref": "bii",
+          "label": "(b)(ii) Lowest and highest for both tables",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "LOWEST"
+              },
+              "value": 289,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "HIGHEST"
+              },
+              "value": 401,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "LOWEST"
+              },
+              "value": 88,
+              "tolerance": 0.01,
+              "formulaContains": "MIN"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "HIGHEST"
+              },
+              "value": 110,
+              "tolerance": 0.01,
+              "formulaContains": "MAX"
+            }
+          ]
+        },
+        {
+          "ref": "biii",
+          "label": "(b)(iii) Mean for both tables, then save changes",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "cell",
+              "role": {
+                "table": 1,
+                "header": "MEAN"
+              },
+              "value": 330.63,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "cell",
+              "role": {
+                "table": 2,
+                "header": "MEAN"
+              },
+              "value": 98.25,
+              "tolerance": 0.01,
+              "formulaContains": "AVERAGE"
+            },
+            {
+              "type": "saved",
+              "after": "biii"
+            }
+          ]
+        },
+        {
+          "ref": "c",
+          "label": "(c) A Clustered Bar chart of Table 1, embedded in the worksheet",
+          "marks": 2,
+          "assert": [
+            {
+              "type": "chart",
+              "chartType": "Clustered Bar",
+              "sourceTable": 1,
+              "excludesResultColumns": true
+            },
+            {
+              "type": "chartTitle",
+              "equals": "DISTANCE BY BUS"
+            },
+            {
+              "type": "axisTitle",
+              "axis": "category",
+              "equals": "BUS",
+              "acceptAlso": []
+            },
+            {
+              "type": "axisTitle",
+              "axis": "value",
+              "equals": "KILOMETRES",
+              "acceptAlso": []
+            },
+            {
+              "type": "chartPlacement",
+              "equals": "embedded"
+            }
+          ]
+        }
+      ],
+      "partialCredit": true,
+      "commonErrors": [
+        "Typing the totals as constants instead of formulas — a typed number scores zero.",
+        "Charting the result columns (TOTAL/MEAN) along with the data.",
+        "Forgetting to save under the given one-word filename."
+      ],
+      "modelAnswers": {
+        "t1": {
+          "total": 2645,
+          "lowest": 289,
+          "highest": 401,
+          "mean": 330.63
+        },
+        "t2": {
+          "total": 1179,
+          "lowest": 88,
+          "highest": 110,
+          "mean": 98.25
+        }
+      }
+    }
+  }
+]

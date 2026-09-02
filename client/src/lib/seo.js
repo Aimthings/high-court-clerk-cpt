@@ -42,10 +42,10 @@ export const ROUTES = {
     keywords: ['CPT rank list', 'high court clerk typing leaderboard', 'CPT wpm ranking'],
   },
   '/pricing': {
-    title: 'Pricing — ₹99 for 45 days · High Court Clerk CPT',
+    title: 'Pricing — ₹119 for 45 days · High Court Clerk CPT',
     description:
-      'One price: ₹99 for 45 days of full access, no auto-renewal. The first mock is free. UPI, card or netbanking. Refund rule and payment methods stated on the page.',
-    keywords: ['CPT practice price', 'high court clerk mock test fee', 'CPT ₹99 pass'],
+      'One price: ₹119 for 45 days of full access, no auto-renewal. The first mock is free. UPI, card or netbanking. Refund rule and payment methods stated on the page.',
+    keywords: ['CPT practice price', 'high court clerk mock test fee', 'CPT ₹119 pass'],
   },
   '/scoring': {
     title: 'How scoring works · High Court Clerk CPT',
@@ -66,10 +66,10 @@ export const ROUTES = {
     keywords: ['sign in', 'high court clerk cpt login'],
   },
   '/pass': {
-    title: 'Get the ₹99 pass · High Court Clerk CPT',
+    title: 'Get the ₹119 pass · High Court Clerk CPT',
     description:
-      'Unlock every Excel mock and typing passage for 45 days for ₹99, with no auto-renewal. One price, one button.',
-    keywords: ['CPT pass ₹99', 'unlock all mocks'],
+      'Unlock every Excel mock and typing passage for 45 days for ₹119, with no auto-renewal. One price, one button.',
+    keywords: ['CPT pass ₹119', 'unlock all mocks'],
   },
   '/pass/status': {
     title: 'Payment status · High Court Clerk CPT',

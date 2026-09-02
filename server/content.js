@@ -18,6 +18,42 @@ export const passages = JSON.parse(
 const bySlug = new Map(passages.map((p) => [p.slug, p]));
 export const getPassage = (slug) => bySlug.get(slug);
 
+// ---- Excel mocks ----
+export const mocks = JSON.parse(
+  readFileSync(join(here, 'seed', 'mocks.json'), 'utf-8'),
+).map((m, idx) => ({ id: idx + 1, ...m }));
+
+const byCode = new Map(mocks.map((m) => [m.code, m]));
+export const getMock = (code) => byCode.get(code);
+
+export const mockSummary = (m) => ({
+  id: m.id,
+  code: m.code,
+  title: m.title,
+  difficulty: m.difficulty,
+  is_free: m.is_free,
+  durationSec: m.spec.durationSec,
+  totalMarks: m.spec.totalMarks,
+  passMarks: m.spec.passMarks,
+});
+
+// Spec sent to the browser at /start — assertions, answers and hints removed
+// (brief §5.3). The candidate still needs the tables, parts and chart brief.
+export function sanitizeSpec(spec) {
+  return {
+    code: spec.code,
+    title: spec.title,
+    durationSec: spec.durationSec,
+    totalMarks: spec.totalMarks,
+    passMarks: spec.passMarks,
+    saveAs: spec.saveAs,
+    scenario: spec.scenario,
+    tables: spec.tables.map((t) => ({ index: t.index, name: t.name, headers: t.headers, values: t.values, resultHeaders: t.resultHeaders })),
+    chart: spec.chart,
+    parts: spec.parts.map((p) => ({ ref: p.ref, label: p.label, marks: p.marks })),
+  };
+}
+
 // List view never includes the passage body.
 export const passageSummary = (p) => ({
   id: p.id,

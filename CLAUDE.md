@@ -23,7 +23,7 @@ React (client) + Node/Express (server) + MySQL 8, deployed on a Hostinger KVM VP
 4. Elapsed time is always derived server-side from `started_at`.
 5. Entitlements are checked in ONE middleware (`requirePass`), at `/excel/start` only.
 6. All SQL parameterised. No string interpolation into queries.
-7. Amounts are server-side constants in paise (`9900`). Never read a price from a request.
+7. Amounts are server-side constants in paise (`11900`). Never read a price from a request.
 8. Razorpay webhook: `express.raw()` before `express.json()`, HMAC via `timingSafeEqual`,
    idempotent on unique `razorpay_payment_id`, always 200. Reconcile stale orders after 15 min.
 9. Never commit `.env`, real keys, or a DB dump.

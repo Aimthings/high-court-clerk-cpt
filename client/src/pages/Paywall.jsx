@@ -9,7 +9,7 @@ export default function Paywall() {
       <div className="card-420">
         <div className="card">
           <div className="price-head">
-            <div className="price-amount num">₹99</div>
+            <div className="price-amount num">₹119</div>
             <div className="price-term">45 days · no auto-renewal</div>
           </div>
           <Feature>25 Excel mocks · 125 graded questions</Feature>
@@ -19,7 +19,7 @@ export default function Paywall() {
           <div className="price-cta">
             {/* Phase 4 wires this to POST /api/orders/create + Razorpay checkout. */}
             <Link to="/pass/status?state=pending" className="btn btn-primary btn-block">
-              Unlock everything · ₹99
+              Unlock everything · ₹119
             </Link>
           </div>
         </div>
