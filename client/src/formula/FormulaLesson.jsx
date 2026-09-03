@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { Upsell } from '../components/Upsell.jsx';
-import { PaneSkeleton } from '../components/Skeletons.jsx';
+import { FormulaLessonSkeleton } from '../components/Skeletons.jsx';
 import MiniSheet from './MiniSheet.jsx';
 import '../pages/reference.css';
 import './formula.css';
@@ -31,7 +31,7 @@ export default function FormulaLesson() {
   }
 
   if (error) return <div className="page centre-wrap"><div className="card-420" style={{ textAlign: 'center' }}><p className="secondary">{error}</p><Link to="/practice/formulas" className="btn btn-primary" style={{ marginTop: 16 }}>Back to the library</Link></div></div>;
-  if (!lesson) return <div className="page"><PaneSkeleton height={360} /></div>;
+  if (!lesson) return <FormulaLessonSkeleton />;
 
   // Locked formula (non-buyer, launch ended): show the upsell in place of the
   // lesson (deck 29·L → 32). No tutorial or answer key is sent for these.

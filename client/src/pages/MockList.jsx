@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
-import { PaneSkeleton } from '../components/Skeletons.jsx';
+import { MockGridSkeleton } from '../components/Skeletons.jsx';
 import './reference.css';
 import './mocklist.css';
 
@@ -89,9 +89,5 @@ export default function MockList() {
 }
 
 function SkeletonGrid() {
-  return (
-    <div className="mock-grid" style={{ marginBottom: 34 }}>
-      {Array.from({ length: 4 }).map((_, i) => <PaneSkeleton key={i} height={92} radius={16} />)}
-    </div>
-  );
+  return <MockGridSkeleton count={4} />;
 }
