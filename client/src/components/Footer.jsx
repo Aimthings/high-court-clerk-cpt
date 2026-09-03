@@ -15,8 +15,8 @@ export default function Footer() {
           </div>
           <FooterCol title="Practice" links={[
             ['Excel mocks', '/mocks'],
+            ['Formula practice', '/practice/formulas'],
             ['Typing passages', '/mocks'],
-            ['Exam mode', '/the-exam'],
           ]} />
           <FooterCol title="The exam" links={[
             ['Syllabus', '/syllabus'],

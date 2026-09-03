@@ -19,6 +19,8 @@ import { Account, NotFound } from './pages/Placeholder.jsx';
 // of the initial bundle and public pages keep their LCP budget.
 const TypingTest = lazy(() => import('./typing/TypingTest.jsx'));
 const ExcelMock = lazy(() => import('./excel/ExcelMock.jsx'));
+const FormulaLibrary = lazy(() => import('./formula/FormulaLibrary.jsx'));
+const FormulaLesson = lazy(() => import('./formula/FormulaLesson.jsx'));
 
 // All routes render under the public layout (nav + footer + SEO) for Phase 1.
 // Signed-in shells and exam runners get their own layouts in later phases.
@@ -37,6 +39,8 @@ export default function App() {
         <Route path="/pass" element={<Paywall />} />
         <Route path="/pass/status" element={<PaymentStatus />} />
         <Route path="/mocks" element={<MockList />} />
+        <Route path="/practice/formulas" element={<Suspense fallback={<PageFallback />}><FormulaLibrary /></Suspense>} />
+        <Route path="/practice/formulas/:slug" element={<Suspense fallback={<PageFallback />}><FormulaLesson /></Suspense>} />
         <Route path="/home" element={<Home />} />
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
@@ -51,6 +55,14 @@ export default function App() {
         element={<Suspense fallback={<RunnerFallback />}><ExcelMock /></Suspense>}
       />
     </Routes>
+  );
+}
+
+function PageFallback() {
+  return (
+    <div className="page">
+      <div className="skeleton-pane" style={{ height: 360, borderRadius: 16 }} />
+    </div>
   );
 }
 

@@ -16,6 +16,7 @@ import { excelRouter } from './routes/excel.js';
 import { authRouter } from './routes/auth.js';
 import { ordersRouter, webhookHandler } from './routes/orders.js';
 import { leaderboardRouter, profileRouter } from './routes/leaderboard.js';
+import { formulasRouter } from './routes/formulas.js';
 import { startReconcileCron } from './jobs/reconcileOrders.js';
 import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
@@ -47,6 +48,7 @@ app.use('/api/excel', excelRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/leaderboard', leaderboardRouter);
 app.use('/api/profile', profileRouter);
+app.use('/api/formulas', formulasRouter);
 
 // Unknown API routes return JSON, not HTML.
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));

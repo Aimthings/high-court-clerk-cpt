@@ -31,4 +31,7 @@ export const api = {
   myRank: (board) => request(`/leaderboard/me?board=${board}`),
   setHandle: (handle) => request('/profile/handle', { method: 'PATCH', body: { handle } }),
   setListed: (listed) => request('/profile/listed', { method: 'PATCH', body: { listed } }),
+  listFormulas: () => request('/formulas'),
+  getFormula: (slug) => request(`/formulas/${slug}`),
+  submitFormula: (slug, formula) => request(`/formulas/${slug}/practice`, { method: 'POST', body: { formula } }),
 };

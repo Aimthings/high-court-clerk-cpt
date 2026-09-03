@@ -41,6 +41,12 @@ export const ROUTES = {
       'The public leaderboard for typing W.P.M. and Excel marks. No account needed to read it. Only exam-mode attempts are ranked; one number per candidate.',
     keywords: ['CPT rank list', 'high court clerk typing leaderboard', 'CPT wpm ranking'],
   },
+  '/practice/formulas': {
+    title: 'Excel formula practice — 35 formulas · High Court Clerk CPT',
+    description:
+      'Learn and practise every Excel formula the C.P.T. can use — SUM, IF, VLOOKUP, INDEX/MATCH, SUMIF, text, date and more. A short lesson and a graded hands-on practice for each. Excel 2007 compatible.',
+    keywords: ['excel formulas practice', 'CPT excel formulas', 'VLOOKUP INDEX MATCH practice', 'SUMIF IF formula tutorial'],
+  },
   '/pricing': {
     title: 'Pricing — ₹119 for 45 days · High Court Clerk CPT',
     description:
@@ -81,7 +87,7 @@ export const ROUTES = {
 
 // Ordered list of public routes for the sitemap / prerender.
 export const PUBLIC_ROUTES = [
-  '/', '/the-exam', '/syllabus', '/rank', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
+  '/', '/the-exam', '/syllabus', '/practice/formulas', '/rank', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
 ];
 
 export function metaFor(pathname) {

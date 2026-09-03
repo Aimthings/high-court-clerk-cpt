@@ -1,0 +1,63 @@
+/* Formula Library — Daylight system. */
+
+/* library index */
+.fl-track { margin-bottom: 28px; }
+.fl-track-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.fl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.fl-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+}
+.fl-card:hover { background: var(--sunken); }
+.fl-card-name { font-weight: 700; font-size: 14px; color: var(--navy); }
+
+/* lesson tutorial */
+.fl-syntax { margin-top: 12px; }
+.fl-syntax .eyebrow { display: block; margin-bottom: 5px; }
+.fl-syntax code, .fl-solution code {
+  display: block;
+  background: var(--sunken);
+  border-radius: var(--r-chip);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--navy);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* mini sheet */
+.ms-scroll { overflow-x: auto; border: 1px solid var(--hairline); border-radius: var(--r-btn); }
+.ms-grid { border-collapse: collapse; table-layout: fixed; width: 100%; }
+.ms-grid th, .ms-grid td { border: 1px solid var(--grid-line); height: 28px; padding: 0 8px; font-size: 13px; }
+.ms-corner { width: 30px; background: var(--sunken); }
+.ms-colhead { background: var(--sunken); font: 700 11px/1 var(--font-mono); color: var(--ink-2); text-align: center; min-width: 74px; }
+.ms-rowhead { width: 30px; background: var(--sunken); font-size: 11px; color: var(--ink-2); text-align: center; }
+.ms-cell { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-num { text-align: right; font-variant-numeric: tabular-nums; }
+.ms-data { background: #fbfcfe; }
+.ms-task { box-shadow: inset 0 0 0 2px var(--blue); font-weight: 700; }
+
+/* formula bar */
+.fl-bar { margin-top: 14px; display: flex; align-items: center; gap: 10px; }
+.wb-namebox { font-weight: 700; font-size: 12px; color: var(--navy); border: 1px solid var(--hairline); border-radius: 6px; padding: 6px 8px; text-align: center; }
+.wb-fx { font-style: italic; color: var(--ink-3); font-family: var(--font-serif); }
+.fl-input {
+  flex: 1; border: 1px solid var(--border-strong); border-radius: var(--r-btn);
+  padding: 9px 12px; font-size: 14px; color: var(--ink); background: var(--surface);
+}
+.fl-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+
+/* result */
+.fl-result { margin-top: 14px; border-radius: var(--r-btn); padding: 12px 14px; }
+.fl-ok { background: var(--mint-tint); }
+.fl-no { background: var(--rose-tint); }
+.fl-result-head { font-weight: 700; font-size: var(--t-body); color: var(--ink); }
+.fl-ok .fl-result-head { color: var(--mint); }
+.fl-no .fl-result-head { color: var(--rose); }
+.fl-result-msg { font-weight: 500; color: var(--ink-2); margin-left: 6px; }
+.fl-solution { margin-top: 10px; }
+.fl-solution .eyebrow { display: block; margin-bottom: 5px; }
+
+@media (max-width: 780px) {
+  .fl-grid { grid-template-columns: repeat(2, 1fr); }
+}

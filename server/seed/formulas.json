@@ -1,0 +1,1230 @@
+[
+  {
+    "id": 1,
+    "slug": "sum",
+    "name": "SUM",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Adds up a range of numbers.",
+      "syntax": "=SUM(range)",
+      "example": "=SUM(B2:B6) adds every mark in B2 to B6."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, add up all the marks (B2:B6).",
+    "hint": "Point SUM at the whole marks column.",
+    "_requireFns": [
+      "SUM"
+    ],
+    "_solution": "=SUM(B2:B6)",
+    "_expect": {
+      "type": "number",
+      "value": 268,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 2,
+    "slug": "average",
+    "name": "AVERAGE",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Returns the arithmetic mean of a range.",
+      "syntax": "=AVERAGE(range)",
+      "example": "=AVERAGE(B2:B6) is the mean of the marks."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, find the average of the marks (B2:B6).",
+    "hint": null,
+    "_requireFns": [
+      "AVERAGE"
+    ],
+    "_solution": "=AVERAGE(B2:B6)",
+    "_expect": {
+      "type": "number",
+      "value": 53.6,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 3,
+    "slug": "count",
+    "name": "COUNT",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Counts how many cells in a range contain NUMBERS.",
+      "syntax": "=COUNT(range)",
+      "example": "=COUNT(A1:A5) ignores text and blanks."
+    },
+    "data": {
+      "A1": 12,
+      "A2": "",
+      "A3": 25,
+      "A4": "",
+      "A5": 18
+    },
+    "taskCell": "A6",
+    "prompt": "In A6, count how many cells in A1:A5 hold a number.",
+    "hint": null,
+    "_requireFns": [
+      "COUNT"
+    ],
+    "_solution": "=COUNT(A1:A5)",
+    "_expect": {
+      "type": "number",
+      "value": 3,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 4,
+    "slug": "counta",
+    "name": "COUNTA",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Counts cells that are NOT empty (numbers or text).",
+      "syntax": "=COUNTA(range)",
+      "example": "=COUNTA(A2:A6) counts every filled name."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "A7",
+    "prompt": "In A7, count how many candidate names are filled in A2:A6.",
+    "hint": null,
+    "_requireFns": [
+      "COUNTA"
+    ],
+    "_solution": "=COUNTA(A2:A6)",
+    "_expect": {
+      "type": "number",
+      "value": 5,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 5,
+    "slug": "countblank",
+    "name": "COUNTBLANK",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Counts the EMPTY cells in a range.",
+      "syntax": "=COUNTBLANK(range)",
+      "example": "=COUNTBLANK(A1:A5) counts the gaps."
+    },
+    "data": {
+      "A1": 12,
+      "A2": "",
+      "A3": 25,
+      "A4": "",
+      "A5": 18
+    },
+    "taskCell": "A6",
+    "prompt": "In A6, count the blank cells in A1:A5.",
+    "hint": null,
+    "_requireFns": [
+      "COUNTBLANK"
+    ],
+    "_solution": "=COUNTBLANK(A1:A5)",
+    "_expect": {
+      "type": "number",
+      "value": 2,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 6,
+    "slug": "max",
+    "name": "MAX",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Returns the largest number in a range.",
+      "syntax": "=MAX(range)",
+      "example": "=MAX(B2:B6) is the top mark."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, find the highest mark (B2:B6).",
+    "hint": null,
+    "_requireFns": [
+      "MAX"
+    ],
+    "_solution": "=MAX(B2:B6)",
+    "_expect": {
+      "type": "number",
+      "value": 88,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 7,
+    "slug": "min",
+    "name": "MIN",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Returns the smallest number in a range — a zero counts.",
+      "syntax": "=MIN(range)",
+      "example": "=MIN(B2:B6) can return 0."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, find the lowest mark (B2:B6).",
+    "hint": null,
+    "_requireFns": [
+      "MIN"
+    ],
+    "_solution": "=MIN(B2:B6)",
+    "_expect": {
+      "type": "number",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 8,
+    "slug": "round",
+    "name": "ROUND",
+    "track": "Math & stats",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Rounds a number to a set number of decimal places.",
+      "syntax": "=ROUND(number, digits)",
+      "example": "=ROUND(AVERAGE(B2:B6),1) rounds the mean to 1 decimal."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, the average of B2:B6 rounded to 1 decimal place.",
+    "hint": "Wrap AVERAGE inside ROUND.",
+    "_requireFns": [
+      "ROUND",
+      "AVERAGE"
+    ],
+    "_solution": "=ROUND(AVERAGE(B2:B6),1)",
+    "_expect": {
+      "type": "number",
+      "value": 53.6,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 9,
+    "slug": "product",
+    "name": "PRODUCT",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Multiplies all the numbers given to it.",
+      "syntax": "=PRODUCT(range)",
+      "example": "=PRODUCT(A1,A2) multiplies two cells."
+    },
+    "data": {
+      "A1": 6,
+      "A2": 7,
+      "A3": 2
+    },
+    "taskCell": "A4",
+    "prompt": "In A4, multiply A1, A2 and A3 together.",
+    "hint": null,
+    "_requireFns": [
+      "PRODUCT"
+    ],
+    "_solution": "=PRODUCT(A1:A3)",
+    "_expect": {
+      "type": "number",
+      "value": 84,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 10,
+    "slug": "sqrt",
+    "name": "SQRT",
+    "track": "Math & stats",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Returns the square root of a number.",
+      "syntax": "=SQRT(number)",
+      "example": "=SQRT(A1)"
+    },
+    "data": {
+      "A1": 144
+    },
+    "taskCell": "A2",
+    "prompt": "In A2, the square root of A1.",
+    "hint": null,
+    "_requireFns": [
+      "SQRT"
+    ],
+    "_solution": "=SQRT(A1)",
+    "_expect": {
+      "type": "number",
+      "value": 12,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 11,
+    "slug": "if",
+    "name": "IF",
+    "track": "Logical",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Returns one value if a test is TRUE and another if FALSE.",
+      "syntax": "=IF(test, value_if_true, value_if_false)",
+      "example": "=IF(B2>=40,\"Pass\",\"Fail\")"
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "C2",
+    "prompt": "In C2, show \"Pass\" if the mark in B2 is 40 or more, else \"Fail\".",
+    "hint": "Text results must be in \"quotes\".",
+    "_requireFns": [
+      "IF"
+    ],
+    "_solution": "=IF(B2>=40,\"Pass\",\"Fail\")",
+    "_expect": {
+      "type": "text",
+      "value": "Pass"
+    }
+  },
+  {
+    "id": 12,
+    "slug": "nested-if",
+    "name": "Nested IF",
+    "track": "Logical",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "An IF inside another IF, to pick between three or more outcomes.",
+      "syntax": "=IF(test1, a, IF(test2, b, c))",
+      "example": "=IF(B2>=75,\"A\",IF(B2>=40,\"B\",\"Fail\"))"
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "C2",
+    "prompt": "In C2: \"A\" if B2>=75, else \"B\" if B2>=40, else \"Fail\".",
+    "hint": "Put the second IF in the false slot of the first.",
+    "_requireFns": [
+      "IF"
+    ],
+    "_solution": "=IF(B2>=75,\"A\",IF(B2>=40,\"B\",\"Fail\"))",
+    "_expect": {
+      "type": "text",
+      "value": "B"
+    }
+  },
+  {
+    "id": 13,
+    "slug": "iferror",
+    "name": "IFERROR",
+    "track": "Logical",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Catches an error and shows your own value instead.",
+      "syntax": "=IFERROR(formula, value_if_error)",
+      "example": "=IFERROR(A1/A2,\"n/a\") avoids a divide-by-zero error."
+    },
+    "data": {
+      "A1": 50,
+      "A2": 0
+    },
+    "taskCell": "A3",
+    "prompt": "In A3, divide A1 by A2 but show \"n/a\" if it errors.",
+    "hint": null,
+    "_requireFns": [
+      "IFERROR"
+    ],
+    "_solution": "=IFERROR(A1/A2,\"n/a\")",
+    "_expect": {
+      "type": "text",
+      "value": "n/a"
+    }
+  },
+  {
+    "id": 14,
+    "slug": "sumif",
+    "name": "SUMIF",
+    "track": "Conditional totals",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Adds only the values that meet one condition.",
+      "syntax": "=SUMIF(criteria_range, criteria, sum_range)",
+      "example": "=SUMIF(B2:B5,\"Punjab\",C2:C5) sums Punjab marks."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "District",
+      "C1": "Marks",
+      "A2": "Gurpreet",
+      "B2": "Punjab",
+      "C2": 72,
+      "A3": "Neha",
+      "B3": "Haryana",
+      "C3": 45,
+      "A4": "Arun",
+      "B4": "Punjab",
+      "C4": 88,
+      "A5": "Simran",
+      "B5": "Haryana",
+      "C5": 63
+    },
+    "taskCell": "C6",
+    "prompt": "In C6, total the marks (C2:C5) only for the district \"Punjab\" (B2:B5).",
+    "hint": null,
+    "_requireFns": [
+      "SUMIF"
+    ],
+    "_solution": "=SUMIF(B2:B5,\"Punjab\",C2:C5)",
+    "_expect": {
+      "type": "number",
+      "value": 160,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 15,
+    "slug": "sumifs",
+    "name": "SUMIFS",
+    "track": "Conditional totals",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Adds values that meet SEVERAL conditions. Note the order: sum range first.",
+      "syntax": "=SUMIFS(sum_range, range1, cond1, range2, cond2)",
+      "example": "=SUMIFS(C2:C5,B2:B5,\"Punjab\",C2:C5,\">=50\")"
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "District",
+      "C1": "Marks",
+      "A2": "Gurpreet",
+      "B2": "Punjab",
+      "C2": 72,
+      "A3": "Neha",
+      "B3": "Haryana",
+      "C3": 45,
+      "A4": "Arun",
+      "B4": "Punjab",
+      "C4": 88,
+      "A5": "Simran",
+      "B5": "Haryana",
+      "C5": 63
+    },
+    "taskCell": "C6",
+    "prompt": "In C6, total marks (C2:C5) where district is \"Punjab\" AND marks are >= 50.",
+    "hint": "SUMIFS puts the sum range FIRST.",
+    "_requireFns": [
+      "SUMIFS"
+    ],
+    "_solution": "=SUMIFS(C2:C5,B2:B5,\"Punjab\",C2:C5,\">=50\")",
+    "_expect": {
+      "type": "number",
+      "value": 160,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 16,
+    "slug": "averageif",
+    "name": "AVERAGEIF",
+    "track": "Conditional totals",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Averages only the values that meet one condition.",
+      "syntax": "=AVERAGEIF(criteria_range, criteria, average_range)",
+      "example": "=AVERAGEIF(B2:B5,\"Haryana\",C2:C5)"
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "District",
+      "C1": "Marks",
+      "A2": "Gurpreet",
+      "B2": "Punjab",
+      "C2": 72,
+      "A3": "Neha",
+      "B3": "Haryana",
+      "C3": 45,
+      "A4": "Arun",
+      "B4": "Punjab",
+      "C4": 88,
+      "A5": "Simran",
+      "B5": "Haryana",
+      "C5": 63
+    },
+    "taskCell": "C6",
+    "prompt": "In C6, average the marks (C2:C5) for district \"Haryana\" (B2:B5).",
+    "hint": null,
+    "_requireFns": [
+      "AVERAGEIF"
+    ],
+    "_solution": "=AVERAGEIF(B2:B5,\"Haryana\",C2:C5)",
+    "_expect": {
+      "type": "number",
+      "value": 54,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 17,
+    "slug": "len",
+    "name": "LEN",
+    "track": "Text",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Counts the characters in a piece of text (spaces included).",
+      "syntax": "=LEN(text)",
+      "example": "=LEN(A1)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, count the characters in the name in A1.",
+    "hint": null,
+    "_requireFns": [
+      "LEN"
+    ],
+    "_solution": "=LEN(A1)",
+    "_expect": {
+      "type": "number",
+      "value": 14,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 18,
+    "slug": "upper",
+    "name": "UPPER",
+    "track": "Text",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Converts text to UPPERCASE.",
+      "syntax": "=UPPER(text)",
+      "example": "=UPPER(A1)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, put the name in A1 into uppercase.",
+    "hint": null,
+    "_requireFns": [
+      "UPPER"
+    ],
+    "_solution": "=UPPER(A1)",
+    "_expect": {
+      "type": "text",
+      "value": "GURPREET SINGH"
+    }
+  },
+  {
+    "id": 19,
+    "slug": "lower",
+    "name": "LOWER",
+    "track": "Text",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Converts text to lowercase.",
+      "syntax": "=LOWER(text)",
+      "example": "=LOWER(A2)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B2",
+    "prompt": "In B2, put the name in A2 into lowercase.",
+    "hint": null,
+    "_requireFns": [
+      "LOWER"
+    ],
+    "_solution": "=LOWER(A2)",
+    "_expect": {
+      "type": "text",
+      "value": "neha kaushik"
+    }
+  },
+  {
+    "id": 20,
+    "slug": "proper",
+    "name": "PROPER",
+    "track": "Text",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Capitalises The First Letter Of Each Word.",
+      "syntax": "=PROPER(text)",
+      "example": "=PROPER(A1)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, convert the name in A1 to Proper Case.",
+    "hint": null,
+    "_requireFns": [
+      "PROPER"
+    ],
+    "_solution": "=PROPER(A1)",
+    "_expect": {
+      "type": "text",
+      "value": "Gurpreet Singh"
+    }
+  },
+  {
+    "id": 21,
+    "slug": "left",
+    "name": "LEFT",
+    "track": "Text",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Takes a number of characters from the START of text.",
+      "syntax": "=LEFT(text, n)",
+      "example": "=LEFT(A1,3) takes the first 3 letters."
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, take the first 3 characters of A1.",
+    "hint": null,
+    "_requireFns": [
+      "LEFT"
+    ],
+    "_solution": "=LEFT(A1,3)",
+    "_expect": {
+      "type": "text",
+      "value": "gur"
+    }
+  },
+  {
+    "id": 22,
+    "slug": "right",
+    "name": "RIGHT",
+    "track": "Text",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Takes a number of characters from the END of text.",
+      "syntax": "=RIGHT(text, n)",
+      "example": "=RIGHT(A1,5)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, take the last 5 characters of A1.",
+    "hint": null,
+    "_requireFns": [
+      "RIGHT"
+    ],
+    "_solution": "=RIGHT(A1,5)",
+    "_expect": {
+      "type": "text",
+      "value": "singh"
+    }
+  },
+  {
+    "id": 23,
+    "slug": "mid",
+    "name": "MID",
+    "track": "Text",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Takes characters from the MIDDLE, given a start position and length.",
+      "syntax": "=MID(text, start, length)",
+      "example": "=MID(A1,1,4)"
+    },
+    "data": {
+      "A1": "gurpreet singh",
+      "A2": "NEHA KAUSHIK",
+      "A3": "arun verma"
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, take 4 characters of A1 starting at position 1.",
+    "hint": null,
+    "_requireFns": [
+      "MID"
+    ],
+    "_solution": "=MID(A1,1,4)",
+    "_expect": {
+      "type": "text",
+      "value": "gurp"
+    }
+  },
+  {
+    "id": 24,
+    "slug": "trim",
+    "name": "TRIM",
+    "track": "Text",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Removes extra spaces, keeping single spaces between words.",
+      "syntax": "=TRIM(text)",
+      "example": "=TRIM(A1)"
+    },
+    "data": {
+      "A1": "  gurpreet   singh  "
+    },
+    "taskCell": "B1",
+    "prompt": "In B1, clean the extra spaces from A1.",
+    "hint": null,
+    "_requireFns": [
+      "TRIM"
+    ],
+    "_solution": "=TRIM(A1)",
+    "_expect": {
+      "type": "text",
+      "value": "gurpreet singh"
+    }
+  },
+  {
+    "id": 25,
+    "slug": "concatenate",
+    "name": "CONCATENATE",
+    "track": "Text",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Joins several pieces of text into one.",
+      "syntax": "=CONCATENATE(a, b, c)",
+      "example": "=CONCATENATE(A1,\" \",B1)"
+    },
+    "data": {
+      "A1": "Gurpreet",
+      "B1": "Singh"
+    },
+    "taskCell": "C1",
+    "prompt": "In C1, join A1 and B1 with a space between them.",
+    "hint": null,
+    "_requireFns": [
+      "CONCATENATE"
+    ],
+    "_solution": "=CONCATENATE(A1,\" \",B1)",
+    "_expect": {
+      "type": "text",
+      "value": "Gurpreet Singh"
+    }
+  },
+  {
+    "id": 26,
+    "slug": "vlookup",
+    "name": "VLOOKUP",
+    "track": "Lookup & reference",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Looks a value up in the FIRST column of a table and returns a value from another column.",
+      "syntax": "=VLOOKUP(value, table, col_index, FALSE)",
+      "example": "=VLOOKUP(103,A2:B5,2,FALSE) finds the name for roll 103."
+    },
+    "data": {
+      "A1": "Roll",
+      "B1": "Name",
+      "A2": 101,
+      "B2": "Gurpreet",
+      "A3": 102,
+      "B3": "Neha",
+      "A4": 103,
+      "B4": "Arun",
+      "A5": 104,
+      "B5": "Simran"
+    },
+    "taskCell": "D1",
+    "prompt": "In D1, find the name for roll number 103 using the table A2:B5.",
+    "hint": "Use FALSE for an exact match.",
+    "_requireFns": [
+      "VLOOKUP"
+    ],
+    "_solution": "=VLOOKUP(103,A2:B5,2,FALSE)",
+    "_expect": {
+      "type": "text",
+      "value": "Arun"
+    }
+  },
+  {
+    "id": 27,
+    "slug": "hlookup",
+    "name": "HLOOKUP",
+    "track": "Lookup & reference",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Like VLOOKUP but searches the FIRST ROW of a horizontal table.",
+      "syntax": "=HLOOKUP(value, table, row_index, FALSE)",
+      "example": "=HLOOKUP(\"Wed\",A1:D2,2,FALSE)"
+    },
+    "data": {
+      "A1": "Mon",
+      "B1": "Tue",
+      "C1": "Wed",
+      "D1": "Thu",
+      "A2": 12,
+      "B2": 8,
+      "C2": 15,
+      "D2": 4
+    },
+    "taskCell": "A4",
+    "prompt": "In A4, find the value under \"Wed\" using the table A1:D2.",
+    "hint": null,
+    "_requireFns": [
+      "HLOOKUP"
+    ],
+    "_solution": "=HLOOKUP(\"Wed\",A1:D2,2,FALSE)",
+    "_expect": {
+      "type": "number",
+      "value": 15,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 28,
+    "slug": "index",
+    "name": "INDEX",
+    "track": "Lookup & reference",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Returns the value at a given position in a range.",
+      "syntax": "=INDEX(range, row_number)",
+      "example": "=INDEX(B2:B5,3) returns the 3rd name."
+    },
+    "data": {
+      "A1": "Roll",
+      "B1": "Name",
+      "A2": 101,
+      "B2": "Gurpreet",
+      "A3": 102,
+      "B3": "Neha",
+      "A4": 103,
+      "B4": "Arun",
+      "A5": 104,
+      "B5": "Simran"
+    },
+    "taskCell": "D1",
+    "prompt": "In D1, return the 3rd name from B2:B5 using INDEX.",
+    "hint": null,
+    "_requireFns": [
+      "INDEX"
+    ],
+    "_solution": "=INDEX(B2:B5,3)",
+    "_expect": {
+      "type": "text",
+      "value": "Arun"
+    }
+  },
+  {
+    "id": 29,
+    "slug": "match",
+    "name": "MATCH",
+    "track": "Lookup & reference",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Returns the POSITION of a value within a range.",
+      "syntax": "=MATCH(value, range, 0)",
+      "example": "=MATCH(103,A2:A5,0) returns 3."
+    },
+    "data": {
+      "A1": "Roll",
+      "B1": "Name",
+      "A2": 101,
+      "B2": "Gurpreet",
+      "A3": 102,
+      "B3": "Neha",
+      "A4": 103,
+      "B4": "Arun",
+      "A5": 104,
+      "B5": "Simran"
+    },
+    "taskCell": "D1",
+    "prompt": "In D1, find the position of roll 104 within A2:A5.",
+    "hint": "Use 0 for an exact match.",
+    "_requireFns": [
+      "MATCH"
+    ],
+    "_solution": "=MATCH(104,A2:A5,0)",
+    "_expect": {
+      "type": "number",
+      "value": 4,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 30,
+    "slug": "index-match",
+    "name": "INDEX + MATCH",
+    "track": "Lookup & reference",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "MATCH finds the row, INDEX returns the value there — a flexible lookup.",
+      "syntax": "=INDEX(return_range, MATCH(value, lookup_range, 0))",
+      "example": "=INDEX(B2:B5,MATCH(102,A2:A5,0))"
+    },
+    "data": {
+      "A1": "Roll",
+      "B1": "Name",
+      "A2": 101,
+      "B2": "Gurpreet",
+      "A3": 102,
+      "B3": "Neha",
+      "A4": 103,
+      "B4": "Arun",
+      "A5": 104,
+      "B5": "Simran"
+    },
+    "taskCell": "D1",
+    "prompt": "In D1, use INDEX+MATCH to return the name for roll 102.",
+    "hint": null,
+    "_requireFns": [
+      "INDEX",
+      "MATCH"
+    ],
+    "_solution": "=INDEX(B2:B5,MATCH(102,A2:A5,0))",
+    "_expect": {
+      "type": "text",
+      "value": "Neha"
+    }
+  },
+  {
+    "id": 31,
+    "slug": "today",
+    "name": "TODAY",
+    "track": "Date",
+    "difficulty": 1,
+    "tutorial": {
+      "what": "Returns today's date. It updates every day.",
+      "syntax": "=TODAY()",
+      "example": "=TODAY()"
+    },
+    "data": {},
+    "taskCell": "A1",
+    "prompt": "In A1, show today's date.",
+    "hint": null,
+    "_requireFns": [
+      "TODAY"
+    ],
+    "_solution": "=TODAY()",
+    "_expect": {
+      "type": "formula"
+    }
+  },
+  {
+    "id": 32,
+    "slug": "day-month-year",
+    "name": "DAY / MONTH / YEAR",
+    "track": "Date",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Pull the day, month or year number out of a date.",
+      "syntax": "=DAY(date)  =MONTH(date)  =YEAR(date)",
+      "example": "=YEAR(B1) returns 2019."
+    },
+    "data": {
+      "A1": "Joined",
+      "B1": "2019-06-11",
+      "A2": "Today ref",
+      "B2": "2026-09-03"
+    },
+    "taskCell": "C1",
+    "prompt": "In C1, return the YEAR of the joining date in B1.",
+    "hint": null,
+    "_requireFns": [
+      "YEAR"
+    ],
+    "_solution": "=YEAR(B1)",
+    "_expect": {
+      "type": "number",
+      "value": 2019,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 33,
+    "slug": "datedif",
+    "name": "DATEDIF",
+    "track": "Date",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Counts whole years, months or days between two dates.",
+      "syntax": "=DATEDIF(start, end, \"Y\")",
+      "example": "=DATEDIF(B1,B2,\"Y\") counts completed years."
+    },
+    "data": {
+      "A1": "Joined",
+      "B1": "2019-06-11",
+      "A2": "Today ref",
+      "B2": "2026-09-03"
+    },
+    "taskCell": "C1",
+    "prompt": "In C1, the number of completed YEARS between B1 (joined) and B2.",
+    "hint": "The last argument \"Y\" means whole years.",
+    "_requireFns": [
+      "DATEDIF"
+    ],
+    "_solution": "=DATEDIF(B1,B2,\"Y\")",
+    "_expect": {
+      "type": "number",
+      "value": 7,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 34,
+    "slug": "sumproduct",
+    "name": "SUMPRODUCT",
+    "track": "Advanced",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Multiplies matching cells of two ranges, then adds the results — great for weighted totals.",
+      "syntax": "=SUMPRODUCT(range1, range2)",
+      "example": "=SUMPRODUCT(A2:A4,B2:B4) sums qty x price."
+    },
+    "data": {
+      "A1": "Qty",
+      "B1": "Price",
+      "A2": 3,
+      "B2": 20,
+      "A3": 5,
+      "B3": 12,
+      "A4": 2,
+      "B4": 50
+    },
+    "taskCell": "C1",
+    "prompt": "In C1, the total value = quantity x price summed over rows 2 to 4.",
+    "hint": null,
+    "_requireFns": [
+      "SUMPRODUCT"
+    ],
+    "_solution": "=SUMPRODUCT(A2:A4,B2:B4)",
+    "_expect": {
+      "type": "number",
+      "value": 220,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 35,
+    "slug": "rank",
+    "name": "RANK",
+    "track": "Advanced",
+    "difficulty": 3,
+    "tutorial": {
+      "what": "Returns the rank (position) of a number within a list.",
+      "syntax": "=RANK(number, range, 0)",
+      "example": "=RANK(B2,B2:B6,0) — 0 means highest ranks first."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "C2",
+    "prompt": "In C2, the rank of the mark in B2 within B2:B6 (highest = 1).",
+    "hint": null,
+    "_requireFns": [
+      "RANK"
+    ],
+    "_solution": "=RANK(B2,B2:B6,0)",
+    "_expect": {
+      "type": "number",
+      "value": 2,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 36,
+    "slug": "large",
+    "name": "LARGE",
+    "track": "Advanced",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Returns the k-th LARGEST value in a range.",
+      "syntax": "=LARGE(range, k)",
+      "example": "=LARGE(B2:B6,2) is the 2nd highest mark."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, the 2nd highest mark in B2:B6.",
+    "hint": null,
+    "_requireFns": [
+      "LARGE"
+    ],
+    "_solution": "=LARGE(B2:B6,2)",
+    "_expect": {
+      "type": "number",
+      "value": 72,
+      "tolerance": 0.01
+    }
+  },
+  {
+    "id": 37,
+    "slug": "small",
+    "name": "SMALL",
+    "track": "Advanced",
+    "difficulty": 2,
+    "tutorial": {
+      "what": "Returns the k-th SMALLEST value in a range.",
+      "syntax": "=SMALL(range, k)",
+      "example": "=SMALL(B2:B6,2) is the 2nd lowest mark."
+    },
+    "data": {
+      "A1": "Candidate",
+      "B1": "Marks",
+      "A2": "Gurpreet",
+      "B2": 72,
+      "A3": "Neha",
+      "B3": 0,
+      "A4": "Arun",
+      "B4": 45,
+      "A5": "Simran",
+      "B5": 88,
+      "A6": "Deepak",
+      "B6": 63
+    },
+    "taskCell": "B7",
+    "prompt": "In B7, the 2nd lowest mark in B2:B6.",
+    "hint": null,
+    "_requireFns": [
+      "SMALL"
+    ],
+    "_solution": "=SMALL(B2:B6,2)",
+    "_expect": {
+      "type": "number",
+      "value": 45,
+      "tolerance": 0.01
+    }
+  }
+]

@@ -37,6 +37,25 @@ export const mockSummary = (m) => ({
   passMarks: m.spec.passMarks,
 });
 
+// ---- Formula Library lessons ----
+export const formulas = JSON.parse(
+  readFileSync(join(here, 'seed', 'formulas.json'), 'utf-8'),
+);
+const byFormulaSlug = new Map(formulas.map((f) => [f.slug, f]));
+export const getFormula = (slug) => byFormulaSlug.get(slug);
+
+export const formulaSummary = (f) => ({
+  id: f.id, slug: f.slug, name: f.name, track: f.track, difficulty: f.difficulty,
+});
+
+// Lesson sent to the browser — answer key (_requireFns/_solution/_expect) removed.
+export function sanitizeFormula(f) {
+  return {
+    id: f.id, slug: f.slug, name: f.name, track: f.track, difficulty: f.difficulty,
+    tutorial: f.tutorial, data: f.data, taskCell: f.taskCell, prompt: f.prompt, hint: f.hint,
+  };
+}
+
 // Spec sent to the browser at /start — assertions, answers and hints removed
 // (brief §5.3). The candidate still needs the tables, parts and chart brief.
 export function sanitizeSpec(spec) {

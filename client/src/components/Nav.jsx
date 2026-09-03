@@ -15,6 +15,7 @@ export default function Nav() {
         <nav className="nav-links" aria-label="Primary">
           <NavLink to="/the-exam" className="nav-link">The exam</NavLink>
           <NavLink to="/syllabus" className="nav-link">Syllabus</NavLink>
+          <NavLink to="/practice/formulas" className="nav-link">Formulas</NavLink>
           <NavLink to="/rank" className="nav-link">Rank list</NavLink>
           <NavLink to="/pricing" className="nav-link">Pricing</NavLink>
         </nav>
