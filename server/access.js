@@ -6,7 +6,6 @@
 // (absent from the list entirely). Buyers — and everyone during the free
 // launch — see every formula unlocked.
 
-import { LAUNCH_FREE } from './config.js';
 import { getUserId } from './auth.js';
 import { activePass } from './services/entitlements.js';
 
@@ -28,10 +27,11 @@ export const HIDDEN_FORMULAS = new Set(['index', 'match', 'index-match']);
 export const isFreeFormula = (slug) => FREE_FORMULAS.has(slug);
 export const isHiddenFormula = (slug) => HIDDEN_FORMULAS.has(slug);
 
-// Does this request come from someone who may open every formula?
-// True during the free launch, or when the user holds an active pass.
+// Does this request come from someone who may open EVERY formula?
+// The formula lock is independent of the free launch — the locked map always
+// applies to a visitor without a pass, free launch or not. Only an active pass
+// unlocks the full set. (LAUNCH_FREE still governs typing/Excel mock access.)
 export async function hasExcelAccess(req) {
-  if (LAUNCH_FREE) return true;
   const userId = getUserId(req);
   if (!userId) return false;
   try {
