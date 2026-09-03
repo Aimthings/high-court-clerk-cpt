@@ -5,6 +5,9 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { pinoHttp } from 'pino-http';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { existsSync } from 'node:fs';
 import { PORT, NODE_ENV, COOKIE_SECRET } from './config.js';
 import { ping } from './db.js';
 import { passagesRouter } from './routes/passages.js';
@@ -48,6 +51,17 @@ app.use('/api/profile', profileRouter);
 // Unknown API routes return JSON, not HTML.
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));
 
+// Serve the built React app as a SINGLE deployable web app (Hostinger Web App
+// target). On a VPS, nginx serves the static files and only proxies /api here,
+// so this is harmless there; set SERVE_CLIENT=false to disable it. The
+// `extensions:['html']` option serves the prerendered per-route HTML (SEO), and
+// the wildcard falls back to index.html for client-side routes.
+const clientDist = join(dirname(fileURLToPath(import.meta.url)), '..', 'client', 'dist');
+if (process.env.SERVE_CLIENT !== 'false' && existsSync(clientDist)) {
+  app.use(express.static(clientDist, { extensions: ['html'], index: 'index.html' }));
+  app.get('*', (_req, res) => res.sendFile(join(clientDist, 'index.html')));
+}
+
 // Global error handler — leaks no stack traces (brief §7).
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
@@ -71,9 +85,13 @@ async function boot() {
     }
   }
   if (NODE_ENV === 'production') { startReconcileCron(); startLeaderboardCron(); }
-  app.listen(PORT, '127.0.0.1', () => {
+  // Bind all interfaces so a managed host's proxy (Hostinger Web App) can reach
+  // it; on a VPS, nginx proxies to 127.0.0.1:PORT and the firewall blocks PORT
+  // externally. Override with HOST if needed.
+  const HOST = process.env.HOST || '0.0.0.0';
+  app.listen(PORT, HOST, () => {
     // eslint-disable-next-line no-console
-    console.log(`API listening on http://127.0.0.1:${PORT} (${NODE_ENV})`);
+    console.log(`Server listening on ${HOST}:${PORT} (${NODE_ENV})`);
   });
 }
 boot();
