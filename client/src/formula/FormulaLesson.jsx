@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api.js';
+import { formulaLocked, recordFormulaPractice } from '../lib/access.js';
+import { SoftBlock } from '../components/Upsell.jsx';
 import MiniSheet from './MiniSheet.jsx';
 import '../pages/reference.css';
 import './formula.css';
@@ -14,9 +16,13 @@ export default function FormulaLesson() {
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  // Locked only once, at open, so passing the cap mid-session doesn't yank the
+  // card out from under the guest. No-op while the free launch is on.
+  const [locked, setLocked] = useState(false);
 
   useEffect(() => {
     setLesson(null); setFormula(''); setResult(null); setShowHint(false); setError('');
+    setLocked(formulaLocked(slug));
     api.getFormula(slug).then(setLesson).catch((e) => setError(e.message));
   }, [slug]);
 
@@ -24,7 +30,10 @@ export default function FormulaLesson() {
     e.preventDefault();
     if (!formula.trim()) return;
     setBusy(true); setResult(null);
-    try { setResult(await api.submitFormula(slug, formula)); }
+    try {
+      setResult(await api.submitFormula(slug, formula));
+      recordFormulaPractice(slug);
+    }
     catch (err) { setError(err.message); } finally { setBusy(false); }
   }
 
@@ -57,7 +66,20 @@ export default function FormulaLesson() {
             </div>
           </div>
 
-          {/* practice */}
+          {/* practice — softly blocked once the free formula allowance is spent */}
+          {locked ? (
+            <SoftBlock product="excel">
+              <div className="card">
+                <div className="card-block-head">
+                  <div className="card-h">Practice · {lesson.name}</div>
+                  <div className="card-meta">{lesson.prompt}</div>
+                </div>
+                <div className="card-pad" style={{ paddingTop: 0 }}>
+                  <MiniSheet data={lesson.data} taskCell={lesson.taskCell} formula="" />
+                </div>
+              </div>
+            </SoftBlock>
+          ) : (
           <div className="card">
             <div className="card-block-head">
               <div className="card-h">Practice</div>
@@ -94,6 +116,7 @@ export default function FormulaLesson() {
               )}
             </div>
           </div>
+          )}
         </div>
 
         <aside className="ref-rail stack">

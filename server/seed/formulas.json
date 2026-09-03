@@ -149,7 +149,7 @@
     "slug": "countblank",
     "name": "COUNTBLANK",
     "track": "Math & stats",
-    "difficulty": 1,
+    "difficulty": 2,
     "tutorial": {
       "what": "Counts the EMPTY cells in a range.",
       "syntax": "=COUNTBLANK(range)",
@@ -295,7 +295,7 @@
     "slug": "product",
     "name": "PRODUCT",
     "track": "Math & stats",
-    "difficulty": 1,
+    "difficulty": 2,
     "tutorial": {
       "what": "Multiplies all the numbers given to it.",
       "syntax": "=PRODUCT(range)",
@@ -324,7 +324,7 @@
     "slug": "sqrt",
     "name": "SQRT",
     "track": "Math & stats",
-    "difficulty": 1,
+    "difficulty": 2,
     "tutorial": {
       "what": "Returns the square root of a number.",
       "syntax": "=SQRT(number)",
@@ -825,7 +825,7 @@
     "slug": "vlookup",
     "name": "VLOOKUP",
     "track": "Lookup & reference",
-    "difficulty": 3,
+    "difficulty": 2,
     "tutorial": {
       "what": "Looks a value up in the FIRST column of a table and returns a value from another column.",
       "syntax": "=VLOOKUP(value, table, col_index, FALSE)",
@@ -860,7 +860,7 @@
     "slug": "hlookup",
     "name": "HLOOKUP",
     "track": "Lookup & reference",
-    "difficulty": 3,
+    "difficulty": 2,
     "tutorial": {
       "what": "Like VLOOKUP but searches the FIRST ROW of a horizontal table.",
       "syntax": "=HLOOKUP(value, table, row_index, FALSE)",
@@ -1118,7 +1118,7 @@
     "slug": "rank",
     "name": "RANK",
     "track": "Advanced",
-    "difficulty": 3,
+    "difficulty": 2,
     "tutorial": {
       "what": "Returns the rank (position) of a number within a list.",
       "syntax": "=RANK(number, range, 0)",

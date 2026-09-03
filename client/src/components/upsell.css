@@ -1,0 +1,31 @@
+/* Upsell — soft block (deck artboard 32). A quiet inline card shown when a free
+   launch allowance is reached. One navy button carrying the exact price and one
+   text link. No countdown, no struck-through price, no scarcity. */
+
+.upsell {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: 22px 24px;
+}
+.upsell-head { display: flex; align-items: center; gap: 9px; }
+.upsell-glyph {
+  width: 26px; height: 26px; flex: none; border-radius: 50%;
+  background: var(--sunken); display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px; color: var(--ink-3);
+}
+.upsell-title { font-weight: 700; font-size: 15px; line-height: 1.2; color: var(--ink); }
+.upsell-body { margin-top: 8px; font-weight: 500; font-size: 13px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.upsell-actions { margin-top: 18px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+/* in-context soft block: the locked practice stays visible, faded, behind the card */
+.softblock { position: relative; overflow: hidden; border-radius: var(--r-card); }
+.softblock-faded { opacity: .4; filter: saturate(.6); pointer-events: none; }
+.softblock-veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,.92) 46%);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 20px;
+}
+.softblock-veil .upsell { width: 100%; max-width: 520px; }

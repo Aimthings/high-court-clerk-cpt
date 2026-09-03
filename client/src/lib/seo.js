@@ -48,10 +48,10 @@ export const ROUTES = {
     keywords: ['excel formulas practice', 'CPT excel formulas', 'VLOOKUP INDEX MATCH practice', 'SUMIF IF formula tutorial'],
   },
   '/pricing': {
-    title: 'Pricing — ₹119 for 45 days · High Court Clerk CPT',
+    title: 'Pricing — typing ₹79, Excel ₹119 · High Court Clerk CPT',
     description:
-      'One price: ₹119 for 45 days of full access, no auto-renewal. The first mock is free. UPI, card or netbanking. Refund rule and payment methods stated on the page.',
-    keywords: ['CPT practice price', 'high court clerk mock test fee', 'CPT ₹119 pass'],
+      'Two one-time products, bought separately: typing practice for ₹79 and Excel formula practice for ₹119. Not a subscription. Free during launch — 5 typing mocks, 1 Excel mock and 7 formula practices at no cost.',
+    keywords: ['CPT practice price', 'high court clerk mock test fee', 'CPT typing ₹79', 'CPT excel ₹119'],
   },
   '/scoring': {
     title: 'How scoring works · High Court Clerk CPT',
@@ -72,10 +72,10 @@ export const ROUTES = {
     keywords: ['sign in', 'high court clerk cpt login'],
   },
   '/pass': {
-    title: 'Get the ₹119 pass · High Court Clerk CPT',
+    title: 'Unlock full practice · High Court Clerk CPT',
     description:
-      'Unlock every Excel mock and typing passage for 45 days for ₹119, with no auto-renewal. One price, one button.',
-    keywords: ['CPT pass ₹119', 'unlock all mocks'],
+      'Unlock the full practice: Excel formulas and mocks for ₹119, or all typing mocks and reports for ₹79. Each a one-time purchase, no auto-renewal.',
+    keywords: ['CPT pass', 'unlock all mocks', 'CPT typing ₹79', 'CPT excel ₹119'],
   },
   '/pass/status': {
     title: 'Payment status · High Court Clerk CPT',
