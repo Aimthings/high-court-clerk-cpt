@@ -36,7 +36,7 @@
 }
 .badge-xl { background: var(--blue-tint); color: var(--navy); }
 .badge-key { background: var(--mint-tint); color: var(--mint); font-size: 13px; }
-.card-head-text { flex: 1; }
+.card-head-text { flex: 1; display: flex; flex-direction: column; }
 .card-head-text .card-h { font-size: var(--t-card-h); }
 .card-head-text .card-meta { margin-top: 4px; }
 .card-head-chip {
