@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { LockGlyph } from './LockGlyph.jsx';
+import { CardGridSkeleton } from '../components/Skeletons.jsx';
 import '../pages/reference.css';
 import './formula.css';
 
@@ -50,7 +51,7 @@ export default function FormulaLibrary() {
       </div>
 
       {error && <div className="card card-pad" style={{ textAlign: 'center' }}><p className="secondary">{error}</p></div>}
-      {!items && !error && <div className="mock-grid">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="card mock-skeleton" style={{ height: 92 }} />)}</div>}
+      {!items && !error && <CardGridSkeleton count={12} />}
 
       {items && tracks.map((track) => (
         <section key={track} className="fl-track">

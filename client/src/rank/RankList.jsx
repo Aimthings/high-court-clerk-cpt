@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { ListSkeleton } from '../components/Skeletons.jsx';
 import './rank.css';
 
 // Public rank list — deck artboards 12/13. Reachable with no account. Percentile
@@ -65,7 +66,7 @@ export default function RankList() {
 
         {error && <div className="card card-pad" style={{ marginTop: 14, textAlign: 'center' }}><p className="secondary">{error}</p></div>}
 
-        {loading && <div className="card rank-rows" style={{ marginTop: 14 }}>{Array.from({ length: 8 }).map((_, i) => <div key={i} className="rl-row"><span className="rl-skel" /></div>)}</div>}
+        {loading && <div style={{ marginTop: 14 }}><ListSkeleton rows={8} /></div>}
 
         {!loading && !error && (
           <>

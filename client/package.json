@@ -12,12 +12,13 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "@formulajs/formulajs": "^4.4.6",
+    "@vitejs/plugin-react": "^4.3.1",
     "react": "^18.3.1",
+    "react-content-loader": "^7.1.2",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "@formulajs/formulajs": "^4.4.6",
-    "vite": "^5.4.8",
-    "@vitejs/plugin-react": "^4.3.1"
+    "vite": "^5.4.8"
   },
   "devDependencies": {
     "vitest": "^2.1.2"

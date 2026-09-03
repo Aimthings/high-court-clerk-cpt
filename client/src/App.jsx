@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicLayout from './components/PublicLayout.jsx';
+import { PaneSkeleton } from './components/Skeletons.jsx';
 import Landing from './pages/Landing.jsx';
 import TheExam from './pages/TheExam.jsx';
 import Syllabus from './pages/Syllabus.jsx';
@@ -61,7 +62,7 @@ export default function App() {
 function PageFallback() {
   return (
     <div className="page">
-      <div className="skeleton-pane" style={{ height: 360, borderRadius: 16 }} />
+      <PaneSkeleton height={360} />
     </div>
   );
 }
@@ -69,7 +70,7 @@ function PageFallback() {
 function RunnerFallback() {
   return (
     <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: 'var(--surface)' }}>
-      <div className="skeleton-pane" style={{ width: 720, maxWidth: '90vw', height: 360 }} />
+      <div style={{ width: 720, maxWidth: '90vw' }}><PaneSkeleton height={360} /></div>
     </div>
   );
 }

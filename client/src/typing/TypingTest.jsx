@@ -4,6 +4,7 @@ import { api } from '../lib/api.js';
 import { tokenize } from './tokenize.js';
 import Timer from '../components/Timer.jsx';
 import ResultCard from '../components/ResultCard.jsx';
+import { PaneSkeleton } from '../components/Skeletons.jsx';
 import './typing.css';
 
 const MAX_CHARS = 20000;
@@ -142,7 +143,7 @@ export default function TypingTest() {
   if (phase === 'loading' || !attempt) {
     return (
       <div className="run-screen run-center">
-        <div className="run-pane skeleton-pane" aria-hidden="true" />
+        <div className="run-pane" aria-hidden="true"><PaneSkeleton height={380} /></div>
       </div>
     );
   }

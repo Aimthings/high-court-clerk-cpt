@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { computeValues } from './evaluate.js';
 import Timer from '../components/Timer.jsx';
+import { PaneSkeleton } from '../components/Skeletons.jsx';
 import PaperPane from './PaperPane.jsx';
 import WorkbookPane from './WorkbookPane.jsx';
 import ChartBuilder from './ChartBuilder.jsx';
@@ -91,7 +92,7 @@ export default function ExcelMock() {
     );
   }
   if (phase === 'loading' || !attempt) {
-    return <div className="xl-screen xl-center"><div className="skeleton-pane" style={{ width: 720, height: 420 }} /></div>;
+    return <div className="xl-screen xl-center"><div style={{ width: 720, maxWidth: '92vw' }}><PaneSkeleton height={420} /></div></div>;
   }
 
   const spec = attempt.spec;

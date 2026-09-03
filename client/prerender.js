@@ -20,6 +20,9 @@ const vite = await createServer({
   server: { middlewareMode: true },
   appType: 'custom',
   logLevel: 'warn',
+  // react-content-loader ships ESM only; bundle it for SSR so prerender (which
+  // renders the loading skeletons) can import it instead of require()-ing it.
+  ssr: { noExternal: ['react-content-loader'] },
 });
 
 function esc(s) {

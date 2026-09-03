@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import ProgressChart from '../components/ProgressChart.jsx';
+import { PaneSkeleton } from '../components/Skeletons.jsx';
 import '../components/progresschart.css';
 import './reference.css';
 
@@ -18,7 +19,7 @@ export default function Home() {
     api.typingHistory().then((d) => setHistory(d.attempts)).catch((e) => setError(e.message));
   }, [user]);
 
-  if (loading) return <div className="page centre-wrap"><div className="skeleton-pane" style={{ width: 680, height: 240 }} /></div>;
+  if (loading) return <div className="page centre-wrap"><div style={{ width: 680, maxWidth: '100%' }}><PaneSkeleton height={240} /></div></div>;
 
   if (!user) {
     return (
