@@ -4,6 +4,11 @@
 export const PORT = Number(process.env.PORT || 4000);
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
+// Free-launch master switch. While true, everything is unlocked (typing mocks,
+// Excel mocks and every formula). Flip to false (LAUNCH_FREE=false in the env)
+// to end the launch and apply the per-formula lock map to non-buyers.
+export const LAUNCH_FREE = process.env.LAUNCH_FREE !== 'false';
+
 export const DB = {
   host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT || 3306),

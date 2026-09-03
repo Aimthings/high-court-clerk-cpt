@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
+import { LockGlyph } from './LockGlyph.jsx';
 import '../pages/reference.css';
 import './formula.css';
 
-// Formula Library — deck: a calm document-like index of every Excel formula,
-// grouped into learn-friendly tracks. Part of the Excel practice (₹119).
+// Formula Library — deck artboards 29 (bought) and 29·L (locked preview). A calm
+// document-like index of every Excel formula, grouped into learn-friendly tracks.
+// Non-buyers see free formulas open, the rest locked with a lock chip, and the
+// three lookup formulas hidden outright.
 const TRACK_ORDER = ['Math & stats', 'Logical', 'Conditional totals', 'Text', 'Lookup & reference', 'Date', 'Advanced'];
 
 export default function FormulaLibrary() {
   const [items, setItems] = useState(null);
+  const [unlocked, setUnlocked] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    api.listFormulas().then((d) => setItems(d.formulas)).catch((e) => setError(e.message));
+    api.listFormulas()
+      .then((d) => { setItems(d.formulas); setUnlocked(d.unlocked !== false); })
+      .catch((e) => setError(e.message));
   }, []);
 
   const byTrack = {};
@@ -23,11 +29,24 @@ export default function FormulaLibrary() {
   return (
     <div className="page">
       <div className="ref-header">
-        <h1 className="page-title">Excel formula practice</h1>
-        <p className="page-sub">
-          Every formula the C.P.T. can lean on — a short lesson and a graded, hands-on practice for each.
-          Excel 2007 compatible.
-        </p>
+        <div className="fl-head-row">
+          <div>
+            <h1 className="page-title">Excel formula practice</h1>
+            <p className="page-sub" style={{ marginBottom: 0 }}>
+              Every formula the C.P.T. can lean on — a short lesson and a graded, hands-on practice for each.
+              Excel 2007 compatible.
+            </p>
+            {!unlocked && (
+              <div className="fl-preview-note">
+                You're previewing the free formulas. Unlock all 35 for ₹119.
+                <span className="fl-lock-legend"><LockGlyph /><span>Locked</span></span>
+              </div>
+            )}
+          </div>
+          {!unlocked && (
+            <Link to="/pass?product=excel" className="btn btn-primary fl-unlock-cta">Unlock Excel · ₹119</Link>
+          )}
+        </div>
       </div>
 
       {error && <div className="card card-pad" style={{ textAlign: 'center' }}><p className="secondary">{error}</p></div>}
@@ -37,13 +56,19 @@ export default function FormulaLibrary() {
         <section key={track} className="fl-track">
           <div className="fl-track-head">
             <h2 className="section-label">{track}</h2>
-            <span className="muted num">{byTrack[track].length} formulas</span>
+            <span className="muted num">{byTrack[track].length} formula{byTrack[track].length === 1 ? '' : 's'}</span>
           </div>
           <div className="fl-grid">
             {byTrack[track].map((f) => (
-              <Link key={f.slug} to={`/practice/formulas/${f.slug}`} className="card fl-card">
+              <Link
+                key={f.slug}
+                to={`/practice/formulas/${f.slug}`}
+                className={`card fl-card${f.free ? '' : ' fl-card-locked'}`}
+              >
                 <span className="fl-card-name mono">{f.name}</span>
-                <span className={`pill pill-sans ${diffTone(f.difficulty)}`}>{diffLabel(f.difficulty)}</span>
+                {f.free
+                  ? <span className={`pill pill-sans ${diffTone(f.difficulty)}`}>{diffLabel(f.difficulty)}</span>
+                  : <span className="fl-lock-chip" aria-label="Locked"><LockGlyph /></span>}
               </Link>
             ))}
           </div>

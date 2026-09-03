@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api.js';
-import { formulaLocked, recordFormulaPractice } from '../lib/access.js';
-import { SoftBlock } from '../components/Upsell.jsx';
+import { Upsell } from '../components/Upsell.jsx';
 import MiniSheet from './MiniSheet.jsx';
 import '../pages/reference.css';
 import './formula.css';
@@ -16,13 +15,9 @@ export default function FormulaLesson() {
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  // Locked only once, at open, so passing the cap mid-session doesn't yank the
-  // card out from under the guest. No-op while the free launch is on.
-  const [locked, setLocked] = useState(false);
 
   useEffect(() => {
     setLesson(null); setFormula(''); setResult(null); setShowHint(false); setError('');
-    setLocked(formulaLocked(slug));
     api.getFormula(slug).then(setLesson).catch((e) => setError(e.message));
   }, [slug]);
 
@@ -30,15 +25,29 @@ export default function FormulaLesson() {
     e.preventDefault();
     if (!formula.trim()) return;
     setBusy(true); setResult(null);
-    try {
-      setResult(await api.submitFormula(slug, formula));
-      recordFormulaPractice(slug);
-    }
+    try { setResult(await api.submitFormula(slug, formula)); }
     catch (err) { setError(err.message); } finally { setBusy(false); }
   }
 
   if (error) return <div className="page centre-wrap"><div className="card-420" style={{ textAlign: 'center' }}><p className="secondary">{error}</p><Link to="/practice/formulas" className="btn btn-primary" style={{ marginTop: 16 }}>Back to the library</Link></div></div>;
   if (!lesson) return <div className="page"><div className="skeleton-pane" style={{ height: 360, borderRadius: 16 }} /></div>;
+
+  // Locked formula (non-buyer, launch ended): show the upsell in place of the
+  // lesson (deck 29·L → 32). No tutorial or answer key is sent for these.
+  if (lesson.locked) {
+    return (
+      <div className="page">
+        <div className="ref-header">
+          <Link to="/practice/formulas" className="link-btn" style={{ fontSize: 12.5 }}>← Formula library</Link>
+          <h1 className="page-title" style={{ marginTop: 8 }}><span className="mono">{lesson.name}</span></h1>
+          <p className="page-sub">{lesson.track}</p>
+        </div>
+        <div className="card-420" style={{ margin: '0 auto' }}>
+          <Upsell product="excel" title={`${lesson.name} is part of Excel practice`} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page">
@@ -66,20 +75,7 @@ export default function FormulaLesson() {
             </div>
           </div>
 
-          {/* practice — softly blocked once the free formula allowance is spent */}
-          {locked ? (
-            <SoftBlock product="excel">
-              <div className="card">
-                <div className="card-block-head">
-                  <div className="card-h">Practice · {lesson.name}</div>
-                  <div className="card-meta">{lesson.prompt}</div>
-                </div>
-                <div className="card-pad" style={{ paddingTop: 0 }}>
-                  <MiniSheet data={lesson.data} taskCell={lesson.taskCell} formula="" />
-                </div>
-              </div>
-            </SoftBlock>
-          ) : (
+          {/* practice */}
           <div className="card">
             <div className="card-block-head">
               <div className="card-h">Practice</div>
@@ -116,7 +112,6 @@ export default function FormulaLesson() {
               )}
             </div>
           </div>
-          )}
         </div>
 
         <aside className="ref-rail stack">
