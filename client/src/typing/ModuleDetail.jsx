@@ -37,11 +37,11 @@ function LessonRow({ lesson, state, stars, onStart, last }) {
 export default function ModuleDetail() {
   const { moduleSlug } = useParams();
   const navigate = useNavigate();
-  const { hasPass, launchFree } = useAuth();
+  const { caps, launchFree } = useAuth();
   const module = getModule(moduleSlug);
   if (!module) return <div className="tm page"><p className="tm-sub">That module doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
 
-  if (module.n >= 2 && !(launchFree || hasPass)) {
+  if (module.n >= 2 && !(launchFree || (caps || []).includes('typingCourse'))) {
     return (
       <div className="tm page" style={{ maxWidth: 520, margin: '0 auto' }}>
         <Seo pathname="/learn/typing" />

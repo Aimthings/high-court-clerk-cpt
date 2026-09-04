@@ -1,26 +1,36 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db.js';
 import { getUserId } from '../auth.js';
-import { createPassOrder, verifyWebhookSignature } from '../razorpay.js';
-import { grantPass, PASS_PRODUCT } from '../services/entitlements.js';
-import { PRICES, RAZORPAY } from '../config.js';
+import { createProductOrder, verifyWebhookSignature } from '../razorpay.js';
+import { grantEntitlement } from '../services/entitlements.js';
+import { PRODUCTS, priceOf, RAZORPAY } from '../config.js';
 
 export const ordersRouter = Router();
 
-// POST /api/orders/create — must be signed in (a pass ties to the phone).
+const createSchema = z.object({ product: z.enum(Object.keys(PRODUCTS)) });
+
+// POST /api/orders/create — must be signed in (an entitlement ties to the account).
 ordersRouter.post('/create', async (req, res, next) => {
   try {
     const userId = getUserId(req);
-    if (!userId) return res.status(401).json({ error: 'Sign in before buying the pass.', needsAuth: true });
+    if (!userId) return res.status(401).json({ error: 'Sign in before buying.', needsAuth: true });
+    const parsed = createSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Choose a valid product.' });
+    const { product } = parsed.data;
+    const amount = priceOf(product);
 
-    const receipt = `pass_${userId}_${Date.now()}`;
-    const order = await createPassOrder(receipt);
+    const receipt = `${product}_${userId}_${Date.now()}`.slice(0, 40);
+    const order = await createProductOrder(product, receipt);
     await pool.query(
       `INSERT INTO orders (user_id, product, amount_paise, razorpay_order_id, status)
        VALUES (?, ?, ?, ?, 'created')`,
-      [userId, PASS_PRODUCT, PRICES.pass119, order.id],
+      [userId, product, amount, order.id],
     );
-    return res.json({ razorpayOrderId: order.id, amount: PRICES.pass119, currency: 'INR', keyId: RAZORPAY.keyId });
+    return res.json({
+      razorpayOrderId: order.id, amount, currency: 'INR', keyId: RAZORPAY.keyId,
+      product, label: PRODUCTS[product].label,
+    });
   } catch (e) { return next(e); }
 });
 
@@ -30,7 +40,6 @@ export async function webhookHandler(req, res) {
   const signature = req.get('x-razorpay-signature');
   const raw = req.body; // Buffer (express.raw)
   if (!verifyWebhookSignature(raw, signature)) {
-    // Do not leak why; a bad signature is simply ignored.
     return res.status(400).json({ received: false });
   }
 
@@ -41,7 +50,6 @@ export async function webhookHandler(req, res) {
     if (event.event === 'payment.captured' || event.event === 'order.paid') {
       const payment = event.payload?.payment?.entity;
       if (payment?.order_id && payment?.id) {
-        // Idempotent: the unique razorpay_payment_id index makes a replay a no-op.
         const [result] = await pool.query(
           `UPDATE orders
              SET status = 'paid', razorpay_payment_id = ?, paid_at = NOW(), raw_payload = ?
@@ -50,17 +58,16 @@ export async function webhookHandler(req, res) {
         );
         if (result.affectedRows > 0) {
           const [rows] = await pool.query(
-            'SELECT id, user_id FROM orders WHERE razorpay_order_id = ? LIMIT 1',
+            'SELECT id, user_id, product FROM orders WHERE razorpay_order_id = ? LIMIT 1',
             [payment.order_id],
           );
           const ord = rows[0];
-          if (ord) await grantPass(ord.user_id, ord.id);
+          if (ord) await grantEntitlement(ord.user_id, ord.product, ord.id);
         }
       }
     }
   } catch {
     // Never fail the webhook — Razorpay retries; reconciliation also settles later.
   }
-  // Always 200 so the gateway stops retrying a delivered event.
   return res.status(200).json({ received: true });
 }

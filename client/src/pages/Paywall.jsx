@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import Seo from '../components/Seo.jsx';
+import { CATALOG } from '../lib/catalog.js';
 import './reference.css';
+import './pricing.css';
 
-// Paywall — deck artboard 15. One 420px card, one price, one button.
-// No countdown, no struck-through price, no ratings, no photographs.
+// Unlock — the product catalog. One-time purchases, 45 days, no auto-renewal.
+// While the launch is free, everything is open and the cards link to the content
+// instead of a checkout.
 const CHECKOUT_SRC = 'https://checkout.razorpay.com/v1/checkout.js';
 
 function loadCheckout() {
@@ -21,17 +25,19 @@ function loadCheckout() {
 }
 
 export default function Paywall() {
-  const { user, hasPass, refresh } = useAuth();
+  const { user, caps = [], launchFree, refresh } = useAuth();
   const navigate = useNavigate();
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
 
-  async function buy() {
+  const owns = (p) => p.caps.every((c) => caps.includes(c));
+
+  async function buy(p) {
     setError('');
     if (!user) { navigate('/sign-in'); return; }
-    setBusy(true);
+    setBusy(p.id);
     try {
-      const order = await api.createOrder();
+      const order = await api.createOrder(p.id);
       await loadCheckout();
       const rzp = new window.Razorpay({
         key: order.keyId,
@@ -39,63 +45,74 @@ export default function Paywall() {
         currency: order.currency,
         order_id: order.razorpayOrderId,
         name: 'High Court Clerk CPT',
-        description: '45-day pass',
+        description: `${p.label} · 45 days`,
         handler: async () => { await refresh(); navigate('/pass/status?state=success'); },
-        modal: { ondismiss: () => setBusy(false) },
+        modal: { ondismiss: () => setBusy('') },
         theme: { color: '#0D2846' },
       });
       rzp.on('payment.failed', () => navigate('/pass/status?state=failure'));
       rzp.open();
-    } catch (e) {
-      setError(e.message);
-      setBusy(false);
-    }
+    } catch (e) { setError(e.message); setBusy(''); }
   }
 
   return (
-    <div className="page centre-wrap">
-      <div className="card-420">
-        <div className="card">
-          <div className="price-head">
-            <div className="price-amount num">₹119</div>
-            <div className="price-term">45 days · no auto-renewal</div>
-          </div>
-          <Feature>25 Excel mocks · 125 graded questions</Feature>
-          <Feature>60 court-English passages</Feature>
-          <Feature>Printed-passage exam mode with A4 PDFs</Feature>
-          <Feature>Mistake breakdown and key heat map</Feature>
-          <div className="price-cta">
-            {hasPass ? (
-              <Link to="/mocks" className="btn btn-primary btn-block">Your pass is active — start a mock</Link>
-            ) : (
-              <button className="btn btn-primary btn-block" onClick={buy} disabled={busy}>
-                {busy ? 'Opening payment…' : 'Unlock everything · ₹119'}
-              </button>
-            )}
-          </div>
-          {error && (
-            <div className="strip strip-rose" style={{ borderRadius: 0 }}>
-              <span className="dot" style={{ background: 'var(--rose)' }}>!</span>{error}
-            </div>
-          )}
-        </div>
-        <p className="fineprint">
-          The nearest alternative charges ₹149 for two months and covers only the written English
-          paper — not the C.P.T.
-        </p>
-        <p className="fineprint" style={{ marginTop: 9 }}>
-          UPI, card or netbanking. No card details are stored. {!user && 'You will sign in first.'}
+    <div className="page">
+      <Seo pathname="/pass" />
+      <div className="ref-header">
+        <h1 className="page-title">Unlock full practice</h1>
+        <p className="page-sub">
+          One-time purchases. 45 days of access, no auto-renewal. Pick just the paper you need,
+          or take everything.
         </p>
       </div>
-    </div>
-  );
-}
 
-function Feature({ children }) {
-  return (
-    <div className="price-feature">
-      <span className="price-tick">✓</span>
-      <span>{children}</span>
+      {launchFree && (
+        <div className="strip strip-mint" style={{ maxWidth: 1080, margin: '0 auto 22px', borderRadius: 'var(--r-btn)' }}>
+          <span className="dot" style={{ background: 'var(--mint)' }}>✓</span>
+          Everything below is <strong style={{ margin: '0 4px' }}>free during launch</strong> — no payment needed.
+          {!user && <> <Link to="/sign-in" style={{ marginLeft: 6 }}>Create a free account</Link> to keep your progress.</>}
+        </div>
+      )}
+
+      <div className="tiers">
+        {CATALOG.map((p) => {
+          const owned = owns(p);
+          return (
+            <div key={p.id} className={`tier${p.highlight ? ' tier-hi' : ''}`}>
+              {p.highlight && <div className="tier-badge">Best value</div>}
+              <div className="tier-tag">{p.tag}</div>
+              <div className="tier-name">{p.label}</div>
+              <div className="tier-price num">₹{p.price}</div>
+              <div className="tier-term">45 days · no auto-renewal</div>
+              <div className="tier-feats">
+                {p.features.map((f) => (
+                  <div key={f} className="tier-feat"><span className="price-tick">✓</span><span>{f}</span></div>
+                ))}
+              </div>
+              <div className="tier-cta">
+                {launchFree ? (
+                  <Link to={p.start} className={`btn btn-block ${p.highlight ? 'btn-primary' : 'btn-ghost'}`}>Free now — open</Link>
+                ) : owned ? (
+                  <Link to={p.start} className="btn btn-block btn-ghost">Owned ✓ — open</Link>
+                ) : (
+                  <button type="button" className={`btn btn-block ${p.highlight ? 'btn-primary' : 'btn-ghost'}`} onClick={() => buy(p)} disabled={busy === p.id}>
+                    {busy === p.id ? 'Opening payment…' : `Unlock · ₹${p.price}`}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {error && (
+        <div className="strip strip-rose" style={{ maxWidth: 1080, margin: '18px auto 0', borderRadius: 'var(--r-btn)' }}>
+          <span className="dot" style={{ background: 'var(--rose)' }}>!</span>{error}
+        </div>
+      )}
+      <p className="fineprint" style={{ textAlign: 'center', marginTop: 20 }}>
+        UPI, card or netbanking. No card details are stored. {!user && 'You will sign in first.'}
+      </p>
     </div>
   );
 }

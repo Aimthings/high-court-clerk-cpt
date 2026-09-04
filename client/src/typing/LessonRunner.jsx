@@ -32,10 +32,10 @@ function Mark() {
 export default function LessonRunner() {
   const { moduleSlug, lessonSlug } = useParams();
   const navigate = useNavigate();
-  const { user, hasPass, launchFree } = useAuth();
+  const { user, caps, launchFree } = useAuth();
   const module = getModule(moduleSlug);
   const lesson = module?.lessons.find((l) => l.slug === lessonSlug);
-  const paywalled = module ? (module.n >= 2 && !(launchFree || hasPass)) : false;
+  const paywalled = module ? (module.n >= 2 && !(launchFree || (caps || []).includes('typingCourse'))) : false;
 
   const [strict, setStrict] = useState(true);
   const [seed, setSeed] = useState(0);

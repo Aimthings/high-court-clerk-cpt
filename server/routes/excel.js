@@ -3,7 +3,8 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { mocks, mockSummary, getMock, sanitizeSpec } from '../content.js';
 import { gradeExcel } from '../grading/excel.js';
-import { passOk } from '../requirePass.js';
+import { capabilityOk } from '../requirePass.js';
+import { CAPS } from '../config.js';
 import { getUserId } from '../auth.js';
 import { pool } from '../db.js';
 import { excelRankable } from '../services/rank.js';
@@ -30,8 +31,8 @@ excelRouter.post('/start', async (req, res) => {
 
   // Entitlement is checked HERE ONLY (brief §5.5): a pass expiring mid-attempt
   // cannot eject the candidate, because it is never re-checked at /submit.
-  if (!m.is_free && !(await passOk(req))) {
-    return res.status(402).json({ error: 'This mock needs the ₹119 pass.', paywall: true });
+  if (!m.is_free && !(await capabilityOk(req, CAPS.EXCEL_MOCKS))) {
+    return res.status(402).json({ error: 'This mock needs the Excel Mock pack.', paywall: true, cap: CAPS.EXCEL_MOCKS });
   }
 
   const attemptId = randomUUID();

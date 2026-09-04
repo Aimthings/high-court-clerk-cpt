@@ -6,8 +6,8 @@
 // (absent from the list entirely). Buyers — and everyone during the free
 // launch — see every formula unlocked.
 
-import { getUserId } from './auth.js';
-import { activePass } from './services/entitlements.js';
+import { capabilityOk } from './requirePass.js';
+import { CAPS } from './config.js';
 
 // The free set: the first formula of each track, plus the early Math & stats
 // and Text formulas, exactly as the finalized locked-preview artboard shows.
@@ -28,14 +28,11 @@ export const isFreeFormula = (slug) => FREE_FORMULAS.has(slug);
 export const isHiddenFormula = (slug) => HIDDEN_FORMULAS.has(slug);
 
 // Does this request come from someone who may open EVERY formula?
-// The formula lock is independent of the free launch — the locked map always
-// applies to a visitor without a pass, free launch or not. Only an active pass
-// unlocks the full set. (LAUNCH_FREE still governs typing/Excel mock access.)
+// Unlocked while the launch is free, or for anyone holding the Formula Library
+// capability (Excel Complete / All-Access). Otherwise the locked preview applies.
 export async function hasExcelAccess(req) {
-  const userId = getUserId(req);
-  if (!userId) return false;
   try {
-    return Boolean(await activePass(userId));
+    return await capabilityOk(req, CAPS.FORMULA_LIBRARY);
   } catch {
     return false; // DB hiccup: fail closed to the locked preview, never crash
   }

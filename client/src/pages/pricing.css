@@ -63,3 +63,36 @@
   .pr-table { overflow-x: auto; }
   .pr-row { grid-template-columns: 150px repeat(3, minmax(120px, 1fr)); }
 }
+
+/* Product catalog cards (Unlock / Paywall page). */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: 22px 20px;
+}
+.tier-hi { border: 1px solid var(--blue); box-shadow: 0 0 0 3px rgba(45, 107, 228, 0.12); }
+.tier-badge {
+  position: absolute; top: -11px; left: 20px;
+  background: var(--blue); color: #fff; border-radius: var(--r-chip);
+  padding: 4px 10px; font-weight: 700; font-size: 11px; line-height: 1;
+}
+.tier-tag { font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.tier-name { margin-top: 8px; font-weight: 800; font-size: 18px; letter-spacing: -0.015em; color: var(--ink); }
+.tier-price { margin-top: 12px; font-weight: 800; font-size: 34px; letter-spacing: -0.02em; color: var(--navy); }
+.tier-term { margin-top: 2px; font-size: 12px; color: var(--ink-3); }
+.tier-feats { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.tier-feat { display: flex; gap: 9px; align-items: flex-start; font-size: 13.5px; line-height: 1.4; color: var(--ink-2); }
+.tier-cta { margin-top: 20px; }

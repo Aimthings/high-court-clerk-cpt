@@ -2,7 +2,7 @@
 // The amount is a server-side constant in paise — never read from a request.
 import crypto from 'node:crypto';
 import Razorpay from 'razorpay';
-import { RAZORPAY, PRICES } from './config.js';
+import { RAZORPAY, priceOf, PRODUCTS } from './config.js';
 
 let client = null;
 function rzp() {
@@ -13,12 +13,16 @@ function rzp() {
   return client;
 }
 
-export async function createPassOrder(receipt) {
+// Create a Razorpay order for a catalog product. The amount is the server-side
+// constant price for that product — never read from the request.
+export async function createProductOrder(product, receipt) {
+  const amount = priceOf(product);
+  if (!amount) throw new Error('Unknown product');
   const order = await rzp().orders.create({
-    amount: PRICES.pass119, // 11900 paise — constant
+    amount,
     currency: 'INR',
     receipt,
-    notes: { product: 'pass' },
+    notes: { product, label: PRODUCTS[product].label },
   });
   return order;
 }

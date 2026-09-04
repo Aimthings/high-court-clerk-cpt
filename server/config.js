@@ -18,10 +18,32 @@ export const DB = {
   connectionLimit: Number(process.env.DB_POOL || 10),
 };
 
-// Product prices, in paise. Constant — never trust a client amount.
-export const PRICES = {
-  pass119: 11900,
+// Product catalog. Prices are server-side constants in paise — never trust a
+// client amount (brief §5.7). Each product grants a set of capabilities; a gate
+// checks the capability, and LAUNCH_FREE unlocks everything while the launch is on.
+export const CAPS = {
+  TYPING_COURSE: 'typingCourse', // the learn-to-type modules (home row always free)
+  TYPING_MOCKS: 'typingMocks', // rankable typing mocks beyond the free first one
+  EXCEL_MOCKS: 'excelMocks', // Excel mocks beyond the free first one
+  FORMULA_LIBRARY: 'formulaLibrary', // the locked Formula Library lessons
 };
+
+export const PRODUCTS = {
+  typing_course: { price: 6900, label: 'Typing Master course', caps: [CAPS.TYPING_COURSE] },
+  typing_complete: { price: 9900, label: 'Typing Complete', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS] },
+  excel_mock: { price: 11900, label: 'Excel Mock', caps: [CAPS.EXCEL_MOCKS] },
+  excel_complete: { price: 13900, label: 'Excel Complete', caps: [CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
+  all_access: { price: 16900, label: 'All-Access', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
+};
+
+// Legacy single pass (pre-catalog) — grants everything so any existing buyer keeps access.
+export const LEGACY_PASS_CAPS = [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY];
+
+export const priceOf = (product) => PRODUCTS[product]?.price;
+export const capsOf = (product) => (product === 'pass' ? LEGACY_PASS_CAPS : (PRODUCTS[product]?.caps || []));
+
+// Back-compat alias used by older code paths.
+export const PRICES = { pass119: 11900 };
 
 export const RAZORPAY = {
   keyId: process.env.RAZORPAY_KEY_ID || '',

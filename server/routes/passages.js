@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { passages, passageSummary, getPassage } from '../content.js';
-import { passOk } from '../requirePass.js';
+import { capabilityOk } from '../requirePass.js';
+import { CAPS } from '../config.js';
 import { streamPassagePdf } from '../services/passagePdf.js';
 
 // GET /api/passages          list (free always; body never included here)
@@ -16,8 +17,8 @@ passagesRouter.get('/', (_req, res) => {
 passagesRouter.get('/:slug/pdf', async (req, res) => {
   const p = getPassage(req.params.slug);
   if (!p) return res.status(404).json({ error: 'That passage does not exist.' });
-  if (!p.is_free && !(await passOk(req))) {
-    return res.status(402).json({ error: 'This passage needs the ₹119 pass.', paywall: true });
+  if (!p.is_free && !(await capabilityOk(req, CAPS.TYPING_MOCKS))) {
+    return res.status(402).json({ error: 'This passage needs Typing Complete.', paywall: true });
   }
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `inline; filename="${p.slug}.pdf"`);
@@ -27,8 +28,8 @@ passagesRouter.get('/:slug/pdf', async (req, res) => {
 passagesRouter.get('/:slug', async (req, res) => {
   const p = getPassage(req.params.slug);
   if (!p) return res.status(404).json({ error: 'That passage does not exist.' });
-  if (!p.is_free && !(await passOk(req))) {
-    return res.status(402).json({ error: 'This passage needs the ₹119 pass.', paywall: true });
+  if (!p.is_free && !(await capabilityOk(req, CAPS.TYPING_MOCKS))) {
+    return res.status(402).json({ error: 'This passage needs Typing Complete.', paywall: true });
   }
   return res.json({
     id: p.id,

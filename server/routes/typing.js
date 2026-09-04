@@ -3,7 +3,8 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { getPassage } from '../content.js';
 import { scoreTyping } from '../grading/typing.js';
-import { passOk } from '../requirePass.js';
+import { capabilityOk } from '../requirePass.js';
+import { CAPS } from '../config.js';
 import { getUserId } from '../auth.js';
 import { pool } from '../db.js';
 import { typingRankable } from '../services/rank.js';
@@ -30,8 +31,8 @@ typingRouter.post('/start', async (req, res) => {
   if (!p) return res.status(404).json({ error: 'That passage does not exist.' });
 
   // Entitlement checked at start only (brief §5.5); free passages are exempt.
-  if (!p.is_free && !(await passOk(req))) {
-    return res.status(402).json({ error: 'This passage needs the ₹119 pass.', paywall: true });
+  if (!p.is_free && !(await capabilityOk(req, CAPS.TYPING_MOCKS))) {
+    return res.status(402).json({ error: 'This passage needs Typing Complete.', paywall: true, cap: CAPS.TYPING_MOCKS });
   }
 
   const attemptId = randomUUID();

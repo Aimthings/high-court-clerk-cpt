@@ -28,7 +28,7 @@ export const api = {
   login: (email, password) => request('/auth/login', { method: 'POST', body: { email, password } }),
   resendCode: (email) => request('/auth/resend-code', { method: 'POST', body: { email } }),
   logout: () => request('/auth/logout', { method: 'POST' }),
-  createOrder: () => request('/orders/create', { method: 'POST' }),
+  createOrder: (product) => request('/orders/create', { method: 'POST', body: { product } }),
   leaderboard: (board) => request(`/leaderboard?board=${board}`),
   myRank: (board) => request(`/leaderboard/me?board=${board}`),
   setHandle: (handle) => request('/profile/handle', { method: 'PATCH', body: { handle } }),

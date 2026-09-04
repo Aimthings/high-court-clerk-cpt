@@ -4,12 +4,12 @@ import { api } from '../lib/api.js';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [state, setState] = useState({ user: null, profile: null, hasPass: false, expiresAt: null, launchFree: true, loading: true });
+  const [state, setState] = useState({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: true, loading: true });
 
   const refresh = useCallback(async () => {
     try {
       const me = await api.me();
-      setState({ user: me.user, profile: me.profile || null, hasPass: me.hasPass, expiresAt: me.expiresAt, launchFree: me.launchFree !== false, loading: false });
+      setState({ user: me.user, profile: me.profile || null, hasPass: me.hasPass, expiresAt: me.expiresAt, caps: me.caps || [], launchFree: me.launchFree !== false, loading: false });
       return me;
     } catch {
       setState((s) => ({ ...s, loading: false }));
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     await api.logout();
-    setState((s) => ({ user: null, profile: null, hasPass: false, expiresAt: null, launchFree: s.launchFree, loading: false }));
+    setState((s) => ({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: s.launchFree, loading: false }));
   }, []);
 
   const value = {

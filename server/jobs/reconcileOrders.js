@@ -1,7 +1,7 @@
 // Reconciliation: settle orders still 'created' after 15 minutes by asking
 // Razorpay for their real status. Guards against a missed/lost webhook.
 import { pool } from '../db.js';
-import { grantPass } from '../services/entitlements.js';
+import { grantEntitlement } from '../services/entitlements.js';
 import { RAZORPAY } from '../config.js';
 import Razorpay from 'razorpay';
 
@@ -12,7 +12,7 @@ export async function reconcileOrders() {
   const rzp = new Razorpay({ key_id: RAZORPAY.keyId, key_secret: RAZORPAY.keySecret });
 
   const [rows] = await pool.query(
-    `SELECT id, user_id, razorpay_order_id FROM orders
+    `SELECT id, user_id, product, razorpay_order_id FROM orders
      WHERE status = 'created' AND created_at < (NOW() - INTERVAL ? MINUTE)`,
     [STALE_MIN],
   );
@@ -28,7 +28,7 @@ export async function reconcileOrders() {
            WHERE id = ? AND (razorpay_payment_id IS NULL OR razorpay_payment_id = ?)`,
           [captured.id, ord.id, captured.id],
         );
-        if (r.affectedRows > 0) { await grantPass(ord.user_id, ord.id); settled += 1; }
+        if (r.affectedRows > 0) { await grantEntitlement(ord.user_id, ord.product, ord.id); settled += 1; }
       }
     } catch { /* try again next run */ }
   }

@@ -99,7 +99,7 @@ function Onboarding() {
 
 export default function CourseMap() {
   const navigate = useNavigate();
-  const { user, hasPass, launchFree } = useAuth();
+  const { user, caps, launchFree } = useAuth();
   const [ver, setVer] = useState(0); // bumped after a server sync to re-read progress
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function CourseMap() {
   const p = load();
   const stats = overallStats(p);
   const states = useMemo(() => MODULES.map((m) => moduleState(m, p)), [ver, user]); // eslint-disable-line react-hooks/exhaustive-deps
-  const courseUnlocked = launchFree || hasPass;
+  const courseUnlocked = launchFree || (caps || []).includes('typingCourse');
   const isNew = stats.clearedLessons === 0;
   const resume = resumeModule(p);
   const heat = keyHeat(p);

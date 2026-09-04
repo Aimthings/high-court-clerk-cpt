@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { pool } from '../db.js';
 import { sendVerificationEmail } from '../email.js';
-import { activePass } from '../services/entitlements.js';
+import { activePass, activeCapabilities } from '../services/entitlements.js';
 import { LAUNCH_FREE } from '../config.js';
 import {
   hashCode, generateCode, setSession, clearSession, getUserId, getAnon, clearAnon, ensureAnon,
@@ -182,12 +182,14 @@ authRouter.get('/me', async (req, res, next) => {
     const user = rows[0];
     if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE }); }
     const pass = await activePass(userId);
+    const caps = [...(await activeCapabilities(userId))];
     const [[profile]] = await pool.query('SELECT handle, region, listed FROM profiles WHERE user_id = ?', [userId]);
     return res.json({
       user,
       profile: profile ? { ...profile, listed: profile.listed === 1 } : null,
       hasPass: Boolean(pass),
       expiresAt: pass?.expires_at || null,
+      caps,
       launchFree: LAUNCH_FREE,
     });
   } catch (e) { return next(e); }
