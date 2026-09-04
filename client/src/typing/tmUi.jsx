@@ -86,6 +86,43 @@ export function TypingLine({ chars, size = 26 }) {
   );
 }
 
+// Home-row reference: the real hands photo with a coloured dot on each finger's
+// resting key (positions transcribed from the design). Aspect-locked so the dots
+// stay aligned at any width.
+const REST_DOTS = [
+  { k: 'A', l: 8.3, t: 31.1, c: '#7E62A8' },
+  { k: 'S', l: 16.1, t: 13.2, c: '#2E8C8C' },
+  { k: 'D', l: 24.0, t: 9.6, c: '#6F9A55' },
+  { k: 'F', l: 32.6, t: 17.2, c: '#B5892F' },
+  { k: '_l', l: 41.5, t: 56.5, c: '#8A93A0' },
+  { k: '_r', l: 58.5, t: 56.5, c: '#8A93A0' },
+  { k: 'J', l: 67.4, t: 17.2, c: '#BF6A4A' },
+  { k: 'K', l: 76.0, t: 9.6, c: '#C079A6' },
+  { k: 'L', l: 83.9, t: 13.2, c: '#5A7CA6' },
+  { k: ';', l: 91.7, t: 31.1, c: '#9A7C86' },
+];
+
+export function HandsRest({ max = 460 }) {
+  return (
+    <div style={{ width: '100%', maxWidth: max, margin: '0 auto' }}>
+      <div style={{ position: 'relative', width: '100%', paddingTop: '58%' }}>
+        <img src="/typinghands.png" alt="Both hands resting on the home row" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }} />
+        {REST_DOTS.map((d) => (
+          <div
+            key={d.k}
+            style={{ position: 'absolute', left: `${d.l}%`, top: `${d.t}%`, transform: 'translate(-50%,-50%)', width: 32, height: 32, borderRadius: '50%', background: d.c, border: '2px solid #fff', boxShadow: '0 1px 3px rgba(15,30,51,.28)', display: 'flex', alignItems: 'center', justifyContent: 'center', font: "700 12px/1 'JetBrains Mono',monospace", color: '#fff' }}
+          >
+            {d.k.startsWith('_') ? <span style={{ width: 13, height: 3, borderRadius: 2, background: '#fff' }} /> : d.k}
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 6, display: 'flex', justifyContent: 'space-between', padding: '0 8%', font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>
+        <span>Left hand</span><span>Right hand</span>
+      </div>
+    </div>
+  );
+}
+
 // Hand atom props (active finger 0=index..3=pinky, + hue) for a key.
 const HAND_IDX = { li: 0, ri: 0, lm: 1, rm: 1, lr: 2, rr: 2, lp: 3, rp: 3, th: -1 };
 export function handForKey(ch, fingerOf, FINGER) {

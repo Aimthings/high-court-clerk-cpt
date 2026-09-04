@@ -4,7 +4,7 @@ import Seo from '../components/Seo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../lib/api.js';
 import Keyboard from './Keyboard.jsx';
-import { Ring, LockRing, Stars } from './tmUi.jsx';
+import { Ring, LockRing, Stars, HandsRest } from './tmUi.jsx';
 import { FINGER, FINGER_NAME } from './fingerMap.js';
 import { MODULES } from './courseContent.js';
 import {
@@ -145,7 +145,7 @@ export default function CourseMap() {
 
       {/* finger legend + keyboard */}
       <div style={{ marginTop: 40 }} className="tm-eyebrow">The finger system</div>
-      <div style={{ marginTop: 16, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'stretch' }}>
+      <div style={{ marginTop: 16, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         <div className="tm-card" style={{ flex: 1, minWidth: 360, padding: '24px 26px' }}>
           <div style={{ font: "700 18px/1.2 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.015em' }}>Eight muted finger hues</div>
           <div style={{ marginTop: 8, font: "500 14px/1.5 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
@@ -162,8 +162,12 @@ export default function CourseMap() {
             ))}
           </div>
         </div>
-        <div className="tm-card" style={{ padding: '24px 26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Keyboard mode="tint" keySize={38} />
+        <div className="tm-card" style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22, flex: 1, minWidth: 360 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto', maxWidth: '100%' }}><Keyboard mode="tint" keySize={38} /></div>
+          <div style={{ width: '100%', borderTop: '1px solid var(--tm-line-2)', paddingTop: 18 }}>
+            <div className="tm-stat-lbl" style={{ textAlign: 'center' }}>Where each finger rests</div>
+            <div style={{ marginTop: 14 }}><HandsRest /></div>
+          </div>
         </div>
       </div>
 
