@@ -5,7 +5,7 @@
 // so the flow can be tested end-to-end).
 import { SMS } from './config.js';
 
-const FAST2SMS_URL = 'https://www.fast2sms.com/dev/bulkV3';
+const FAST2SMS_URL = 'https://www.fast2sms.com/dev/bulkV2';
 
 // Build the Fast2SMS request body for the configured route. `phone` is the bare
 // 10-digit Indian mobile (no +91); `code` is the six-digit OTP.
