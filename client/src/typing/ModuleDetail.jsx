@@ -1,5 +1,6 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import { Ring, Stars } from './tmUi.jsx';
 import { getModule, MODULES } from './courseContent.js';
 import {
@@ -36,8 +37,26 @@ function LessonRow({ lesson, state, stars, onStart, last }) {
 export default function ModuleDetail() {
   const { moduleSlug } = useParams();
   const navigate = useNavigate();
+  const { hasPass, launchFree } = useAuth();
   const module = getModule(moduleSlug);
   if (!module) return <div className="tm page"><p className="tm-sub">That module doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
+
+  if (module.n >= 2 && !(launchFree || hasPass)) {
+    return (
+      <div className="tm page" style={{ maxWidth: 520, margin: '0 auto' }}>
+        <Seo pathname="/learn/typing" />
+        <div className="tm-card" style={{ padding: '30px 32px', textAlign: 'center' }}>
+          <div style={{ font: '800 34px/1', color: '#0D2846' }}>🔒</div>
+          <div className="tm-h2" style={{ marginTop: 14 }}>{module.title} is part of the paid course</div>
+          <p style={{ marginTop: 10, font: "500 15px/1.55 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
+            The Home row module is free to try. Unlock all 11 modules — top row through exam speed — for ₹69.
+          </p>
+          <Link to="/pass" className="tm-btn tm-btn-navy" style={{ marginTop: 20, width: '100%' }}>Unlock the full course</Link>
+          <div style={{ marginTop: 14 }}><Link to="/learn/typing" style={{ font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>Back to the course</Link></div>
+        </div>
+      </div>
+    );
+  }
 
   const p = load();
   const mState = moduleState(module, p);

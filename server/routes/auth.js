@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { pool } from '../db.js';
 import { sendVerificationEmail } from '../email.js';
 import { activePass } from '../services/entitlements.js';
+import { LAUNCH_FREE } from '../config.js';
 import {
   hashCode, generateCode, setSession, clearSession, getUserId, getAnon, clearAnon, ensureAnon,
 } from '../auth.js';
@@ -176,10 +177,10 @@ authRouter.post('/resend-code', sendLimiter, async (req, res, next) => {
 authRouter.get('/me', async (req, res, next) => {
   try {
     const userId = getUserId(req);
-    if (!userId) { ensureAnon(req, res); return res.json({ user: null, hasPass: false, expiresAt: null }); }
+    if (!userId) { ensureAnon(req, res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE }); }
     const [rows] = await pool.query('SELECT id, email, name FROM users WHERE id = ?', [userId]);
     const user = rows[0];
-    if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null }); }
+    if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE }); }
     const pass = await activePass(userId);
     const [[profile]] = await pool.query('SELECT handle, region, listed FROM profiles WHERE user_id = ?', [userId]);
     return res.json({
@@ -187,6 +188,7 @@ authRouter.get('/me', async (req, res, next) => {
       profile: profile ? { ...profile, listed: profile.listed === 1 } : null,
       hasPass: Boolean(pass),
       expiresAt: pass?.expires_at || null,
+      launchFree: LAUNCH_FREE,
     });
   } catch (e) { return next(e); }
 });

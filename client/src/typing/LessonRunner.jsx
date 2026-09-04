@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../lib/api.js';
 import Keyboard from './Keyboard.jsx';
 import { TypingLine, Stars, Hand, handForKey } from './tmUi.jsx';
 import { useDrill, fmtTime } from './useDrill.js';
@@ -30,8 +32,10 @@ function Mark() {
 export default function LessonRunner() {
   const { moduleSlug, lessonSlug } = useParams();
   const navigate = useNavigate();
+  const { user, hasPass, launchFree } = useAuth();
   const module = getModule(moduleSlug);
   const lesson = module?.lessons.find((l) => l.slug === lessonSlug);
+  const paywalled = module ? (module.n >= 2 && !(launchFree || hasPass)) : false;
 
   const [strict, setStrict] = useState(true);
   const [seed, setSeed] = useState(0);
@@ -50,14 +54,31 @@ export default function LessonRunner() {
   const onComplete = useCallback((r) => {
     if (!module || !lesson) return;
     const { cleared, stars } = gradeLesson(module, r.accuracy, r.wpm);
-    recordAttempt(lesson.slug, { accuracy: r.accuracy, wpm: r.wpm, cleared, stars, keyStats: r.keyStats });
+    const entry = recordAttempt(lesson.slug, { accuracy: r.accuracy, wpm: r.wpm, cleared, stars, keyStats: r.keyStats });
+    if (user) api.saveTypingProgress([{ slug: lesson.slug, ...entry }]).catch(() => {});
     setResult({ ...r, cleared, stars });
-  }, [module, lesson]);
+  }, [module, lesson, user]);
 
   const drill = useDrill(target, { strict, onComplete });
 
   if (!module || !lesson) {
     return <div className="tm page"><p className="tm-sub">That lesson doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
+  }
+
+  if (paywalled) {
+    return (
+      <div className="tm tm-runner" style={{ alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div className="tm-card" style={{ maxWidth: 460, padding: '30px 32px', textAlign: 'center' }}>
+          <div style={{ font: '800 34px/1', color: '#0D2846' }}>🔒</div>
+          <div className="tm-h2" style={{ marginTop: 14 }}>This is part of the paid course</div>
+          <p style={{ marginTop: 10, font: "500 15px/1.55 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
+            The Home row module is free. Unlock all 11 modules — top row to exam speed — for ₹69.
+          </p>
+          <Link to="/pass" className="tm-btn tm-btn-navy" style={{ marginTop: 20, width: '100%' }}>Unlock the full course</Link>
+          <Link to="/learn/typing" style={{ display: 'inline-block', marginTop: 14, font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>Back to the course</Link>
+        </div>
+      </div>
+    );
   }
 
   const restart = () => { setResult(null); setSeed((s) => s + 1); };

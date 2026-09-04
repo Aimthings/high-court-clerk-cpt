@@ -83,6 +83,22 @@ CREATE TABLE IF NOT EXISTS typing_attempts (
   CONSTRAINT fk_ta_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- Typing Master (learn-to-type) progress — practice only, never rankable.
+-- One row per user per lesson; survives a cleared browser and follows the account.
+CREATE TABLE IF NOT EXISTS typing_lesson_progress (
+  user_id       BIGINT UNSIGNED NOT NULL,
+  lesson_slug   VARCHAR(60) NOT NULL,
+  best_accuracy TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  best_wpm      DECIMAL(6,2) NOT NULL DEFAULT 0,
+  stars         TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  cleared       TINYINT(1) NOT NULL DEFAULT 0,
+  attempts      INT UNSIGNED NOT NULL DEFAULT 0,
+  key_stats     JSON,
+  updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, lesson_slug),
+  CONSTRAINT fk_tlp_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS excel_mocks (
   id       BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   code     VARCHAR(40) UNIQUE NOT NULL,

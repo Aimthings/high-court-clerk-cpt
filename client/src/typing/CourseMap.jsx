@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../lib/api.js';
 import Keyboard from './Keyboard.jsx';
 import { Ring, LockRing, Stars } from './tmUi.jsx';
 import { FINGER, FINGER_NAME } from './fingerMap.js';
 import { MODULES } from './courseContent.js';
 import {
-  load, moduleState, modulePct, moduleStars, overallStats, resumeModule, keyHeat,
+  load, moduleState, modulePct, moduleStars, overallStats, resumeModule, keyHeat, syncFromServer,
 } from './progress.js';
 import './typingmaster.css';
 
@@ -15,13 +17,13 @@ const LEGEND = [
   ['lm', 'E D C 3'], ['rr', 'O L . 9'], ['li', 'R T F G V B'], ['rp', 'P ; / 0'],
 ];
 
-function ModuleCard({ module, state }) {
+function ModuleCard({ module, state, paywalled }) {
   const p = load();
   const pct = modulePct(module, p);
   const stars = moduleStars(module, p);
-  const locked = state === 'locked';
-  const active = state === 'active';
-  const to = `/learn/typing/m/${module.slug}`;
+  const locked = state === 'locked' || paywalled;
+  const active = state === 'active' && !paywalled;
+  const to = paywalled ? '/pass' : `/learn/typing/m/${module.slug}`;
   const card = (
     <div
       className="tm-card"
@@ -38,7 +40,7 @@ function ModuleCard({ module, state }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ font: "800 12px/1 'JetBrains Mono',monospace", color: '#8494A8' }}>{String(module.n).padStart(2, '0')}</span>
             <span className={`tm-chip ${active ? 'tm-chip-blue' : locked ? 'tm-chip-grey' : 'tm-chip-mint'}`}>
-              {active ? 'In progress' : locked ? 'Locked' : '✓ Done'}
+              {paywalled ? '🔒 ₹69' : active ? 'In progress' : locked ? 'Locked' : '✓ Done'}
             </span>
           </div>
           <div style={{ marginTop: 6, font: "700 16px/1.15 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.015em', color: '#0F1E33' }}>{module.title}</div>
@@ -46,16 +48,18 @@ function ModuleCard({ module, state }) {
       </div>
       <div style={{ font: "500 13px/1.4 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>{module.goal}</div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-        {locked
-          ? <span style={{ font: "500 12px/1 'Plus Jakarta Sans',sans-serif", color: '#98A3B3' }}>Clear module {module.n - 1}</span>
-          : <Stars n={stars} />}
-        <span style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: locked ? '#B7C0CE' : '#2D6BE4' }}>
-          {locked ? '' : active ? 'Continue →' : 'Review →'}
+        {paywalled
+          ? <span style={{ font: "500 12px/1 'Plus Jakarta Sans',sans-serif", color: '#98A3B3' }}>Part of the paid course</span>
+          : locked
+            ? <span style={{ font: "500 12px/1 'Plus Jakarta Sans',sans-serif", color: '#98A3B3' }}>Clear module {module.n - 1}</span>
+            : <Stars n={stars} />}
+        <span style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: paywalled ? '#2D6BE4' : locked ? '#B7C0CE' : '#2D6BE4' }}>
+          {paywalled ? 'Unlock →' : locked ? '' : active ? 'Continue →' : 'Review →'}
         </span>
       </div>
     </div>
   );
-  if (locked) return card;
+  if (locked && !paywalled) return card;
   return <Link to={to} style={{ textDecoration: 'none' }}>{card}</Link>;
 }
 
@@ -95,9 +99,17 @@ function Onboarding() {
 
 export default function CourseMap() {
   const navigate = useNavigate();
+  const { user, hasPass, launchFree } = useAuth();
+  const [ver, setVer] = useState(0); // bumped after a server sync to re-read progress
+
+  useEffect(() => {
+    if (user) syncFromServer(api).then(() => setVer((v) => v + 1));
+  }, [user]);
+
   const p = load();
   const stats = overallStats(p);
-  const states = useMemo(() => MODULES.map((m) => moduleState(m, p)), [p]);
+  const states = useMemo(() => MODULES.map((m) => moduleState(m, p)), [ver, user]); // eslint-disable-line react-hooks/exhaustive-deps
+  const courseUnlocked = launchFree || hasPass;
   const isNew = stats.clearedLessons === 0;
   const resume = resumeModule(p);
   const heat = keyHeat(p);
@@ -158,19 +170,23 @@ export default function CourseMap() {
       {/* module grid */}
       <div style={{ marginTop: 44 }} className="tm-eyebrow">The path · 11 modules</div>
       <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 16 }}>
-        {MODULES.map((m, i) => <ModuleCard key={m.slug} module={m} state={states[i]} />)}
+        {MODULES.map((m, i) => <ModuleCard key={m.slug} module={m} state={states[i]} paywalled={!courseUnlocked && m.n >= 2} />)}
       </div>
 
       <div style={{ marginTop: 28, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
         {stats.courseDone
           ? <Link to="/mocks" className="tm-btn tm-btn-blue">Take the graded mock</Link>
-          : (
-            <button type="button" className="tm-btn tm-btn-navy" onClick={() => navigate(`/learn/typing/m/${resume.slug}`)}>
-              {isNew ? 'Start — Home row' : `Continue — ${resume.title}`}
-            </button>
-          )}
+          : (!courseUnlocked && resume.n >= 2)
+            ? <Link to="/pass" className="tm-btn tm-btn-navy">Unlock the full course — ₹69</Link>
+            : (
+              <button type="button" className="tm-btn tm-btn-navy" onClick={() => navigate(`/learn/typing/m/${resume.slug}`)}>
+                {isNew ? 'Start — Home row' : `Continue — ${resume.title}`}
+              </button>
+            )}
         <div style={{ font: "500 14px/1.4 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>
-          {`You’re on module ${Math.min(stats.modulesCleared + 1, MODULES.length)} of ${MODULES.length}`}
+          {courseUnlocked
+            ? `You’re on module ${Math.min(stats.modulesCleared + 1, MODULES.length)} of ${MODULES.length}`
+            : 'Home row is free · the full 11-module course is ₹69'}
           {stats.streak > 0 && <> · <span style={{ color: '#4A5A70' }}>{stats.streak}-day streak</span></>}
         </div>
       </div>

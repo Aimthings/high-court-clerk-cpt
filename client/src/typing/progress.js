@@ -1,18 +1,19 @@
-// Typing Master progress — stored per-browser in localStorage (the course is
-// practice, never rankable, so it lives client-side and needs no account).
-// Shape: { lessons:{slug:{bestAccuracy,bestWpm,stars,cleared,attempts}},
-//          keys:{key:{correct,total}}, recentWpm:[], streak:{count,last}, updatedAt }
+// Typing Master progress. localStorage is the instant, offline-first store (works
+// for guests and before a sync completes). For signed-in users it is best-merged
+// with the server so progress survives a cleared browser and follows the account.
+// Shape: { lessons:{slug:{bestAccuracy,bestWpm,stars,cleared,attempts,keyStats:{k:{correct,total}}}},
+//          recentWpm:[], streak:{count,last}, updatedAt }
 import { MODULES, TOTAL_LESSONS } from './courseContent.js';
 
 const KEY = 'tm_progress_v1';
-const empty = () => ({ lessons: {}, keys: {}, recentWpm: [], streak: { count: 0, last: null }, updatedAt: 0 });
+const empty = () => ({ lessons: {}, recentWpm: [], streak: { count: 0, last: null }, updatedAt: 0 });
 
 export function load() {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return empty();
     const p = JSON.parse(raw);
-    return { ...empty(), ...p, lessons: p.lessons || {}, keys: p.keys || {} };
+    return { ...empty(), ...p, lessons: p.lessons || {} };
   } catch { return empty(); }
 }
 
@@ -22,24 +23,48 @@ function save(p) {
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
-// Record a finished attempt. keyStats: { key: {correct, total} }.
+function mergeKeyStats(a = {}, b = {}) {
+  const out = {};
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    const x = a[k] || { correct: 0, total: 0 };
+    const y = b[k] || { correct: 0, total: 0 };
+    // take the richer sample (more totals) rather than summing, to stay sync-safe
+    out[k] = (y.total > x.total) ? y : x;
+  }
+  return out;
+}
+
+function bestLesson(a, b) {
+  if (!a) return b; if (!b) return a;
+  return {
+    bestAccuracy: Math.max(a.bestAccuracy || 0, b.bestAccuracy || 0),
+    bestWpm: Math.max(a.bestWpm || 0, b.bestWpm || 0),
+    stars: Math.max(a.stars || 0, b.stars || 0),
+    cleared: !!(a.cleared || b.cleared),
+    attempts: Math.max(a.attempts || 0, b.attempts || 0),
+    keyStats: (a.attempts || 0) >= (b.attempts || 0) ? mergeKeyStats(a.keyStats, b.keyStats) : mergeKeyStats(b.keyStats, a.keyStats),
+  };
+}
+
+// Record a finished attempt into localStorage (instant). Returns the lesson entry
+// so the caller can push it to the server when signed in.
 export function recordAttempt(lessonSlug, { accuracy, wpm, cleared, stars, keyStats }) {
   const p = load();
-  const prev = p.lessons[lessonSlug] || { bestAccuracy: 0, bestWpm: 0, stars: 0, cleared: false, attempts: 0 };
+  const prev = p.lessons[lessonSlug] || { bestAccuracy: 0, bestWpm: 0, stars: 0, cleared: false, attempts: 0, keyStats: {} };
+  const nextKeyStats = { ...(prev.keyStats || {}) };
+  for (const [k, v] of Object.entries(keyStats || {})) {
+    const cur = nextKeyStats[k] || { correct: 0, total: 0 };
+    nextKeyStats[k] = { correct: cur.correct + v.correct, total: cur.total + v.total };
+  }
   p.lessons[lessonSlug] = {
     bestAccuracy: Math.max(prev.bestAccuracy, Math.round(accuracy)),
     bestWpm: Math.max(prev.bestWpm, Math.round(wpm * 10) / 10),
     stars: Math.max(prev.stars, stars),
     cleared: prev.cleared || cleared,
     attempts: prev.attempts + 1,
+    keyStats: nextKeyStats,
   };
-  for (const [k, v] of Object.entries(keyStats || {})) {
-    const cur = p.keys[k] || { correct: 0, total: 0 };
-    cur.correct += v.correct; cur.total += v.total;
-    p.keys[k] = cur;
-  }
   p.recentWpm = [...(p.recentWpm || []), Math.round(wpm * 10) / 10].slice(-8);
-  // streak
   const t = todayStr();
   if (p.streak.last !== t) {
     const yest = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
@@ -47,10 +72,33 @@ export function recordAttempt(lessonSlug, { accuracy, wpm, cleared, stars, keySt
   }
   p.updatedAt = Date.now();
   save(p);
+  return p.lessons[lessonSlug];
+}
+
+// Best-merge a server lessons map into localStorage. Returns the merged progress.
+export function mergeServer(serverLessons = {}) {
+  const p = load();
+  for (const slug of new Set([...Object.keys(p.lessons), ...Object.keys(serverLessons)])) {
+    p.lessons[slug] = bestLesson(p.lessons[slug], serverLessons[slug]);
+  }
+  p.updatedAt = Date.now();
+  save(p);
   return p;
 }
 
-// 'done' | 'active' | 'locked' for a module, given progress.
+// Lessons shaped for the server POST.
+export function toServerLessons(p = load()) {
+  return Object.entries(p.lessons).map(([slug, l]) => ({
+    slug,
+    bestAccuracy: l.bestAccuracy || 0,
+    bestWpm: l.bestWpm || 0,
+    stars: l.stars || 0,
+    cleared: !!l.cleared,
+    attempts: l.attempts || 0,
+    keyStats: l.keyStats || {},
+  }));
+}
+
 export function moduleState(module, p = load()) {
   const idx = MODULES.findIndex((m) => m.slug === module.slug);
   const cleared = (m) => m.lessons.every((l) => p.lessons[l.slug]?.cleared);
@@ -60,7 +108,6 @@ export function moduleState(module, p = load()) {
   return 'active';
 }
 
-// 'done' | 'active' | 'locked' for each lesson in a module.
 export function lessonStates(module, p = load()) {
   const mState = moduleState(module, p);
   let activeGiven = false;
@@ -77,15 +124,22 @@ export function modulePct(module, p = load()) {
   return Math.round((done / module.lessons.length) * 100);
 }
 export function moduleStars(module, p = load()) {
-  const s = module.lessons.map((l) => p.lessons[l.slug]?.stars || 0);
   const cleared = module.lessons.filter((l) => p.lessons[l.slug]?.cleared).length;
   if (!cleared) return 0;
+  const s = module.lessons.map((l) => p.lessons[l.slug]?.stars || 0);
   return Math.round(s.reduce((a, b) => a + b, 0) / module.lessons.length);
 }
 
 export function keyHeat(p = load()) {
+  const agg = {};
+  for (const l of Object.values(p.lessons)) {
+    for (const [k, v] of Object.entries(l.keyStats || {})) {
+      const cur = agg[k] || { correct: 0, total: 0 };
+      agg[k] = { correct: cur.correct + v.correct, total: cur.total + v.total };
+    }
+  }
   const out = {};
-  for (const [k, v] of Object.entries(p.keys)) out[k] = v.total ? Math.round((v.correct / v.total) * 100) : null;
+  for (const [k, v] of Object.entries(agg)) out[k] = v.total ? Math.round((v.correct / v.total) * 100) : null;
   return out;
 }
 
@@ -103,8 +157,18 @@ export function overallStats(p = load()) {
   };
 }
 
-// The module to resume: first non-done unlocked module, else the last.
 export function resumeModule(p = load()) {
   const active = MODULES.find((m) => moduleState(m, p) === 'active');
   return active || MODULES[MODULES.length - 1];
+}
+
+// Pull the server's progress (signed-in) and merge it locally. Best-effort.
+export async function syncFromServer(api) {
+  try {
+    const { lessons } = await api.getTypingProgress();
+    const merged = mergeServer(lessons || {});
+    // push the merged set back so the server catches any local-only progress
+    api.saveTypingProgress(toServerLessons(merged)).catch(() => {});
+    return merged;
+  } catch { return load(); }
 }
