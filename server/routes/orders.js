@@ -18,10 +18,14 @@ ordersRouter.post('/create', async (req, res, next) => {
     const parsed = createSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ error: 'Choose a valid product.' });
     const { product } = parsed.data;
-    const amount = priceOf(product);
+
+    // Founding-member pricing is decided server-side from the account, never trusted from the client.
+    const [[u]] = await pool.query('SELECT founding_member FROM users WHERE id = ?', [userId]);
+    const isFounding = u?.founding_member === 1;
+    const amount = priceOf(product, isFounding);
 
     const receipt = `${product}_${userId}_${Date.now()}`.slice(0, 40);
-    const order = await createProductOrder(product, receipt);
+    const order = await createProductOrder(product, isFounding, receipt);
     await pool.query(
       `INSERT INTO orders (user_id, product, amount_paise, razorpay_order_id, status)
        VALUES (?, ?, ?, ?, 'created')`,

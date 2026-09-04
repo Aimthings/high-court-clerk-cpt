@@ -25,11 +25,15 @@ function loadCheckout() {
 }
 
 export default function Paywall() {
-  const { user, caps = [], launchFree, refresh } = useAuth();
+  const { user, caps = [], launchFree, founding, refresh } = useAuth();
   const navigate = useNavigate();
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
 
+  // Founding rate applies during the launch (anyone signing up now locks it in)
+  // and to founding members afterward. Everyone else pays the standard rate.
+  const showFounding = launchFree || founding;
+  const priceOf = (p) => (showFounding ? p.priceFounding : p.priceStandard);
   const owns = (p) => p.caps.every((c) => caps.includes(c));
 
   async function buy(p) {
@@ -82,8 +86,8 @@ export default function Paywall() {
               {p.highlight && <div className="tier-badge">Best value</div>}
               <div className="tier-tag">{p.tag}</div>
               <div className="tier-name">{p.label}</div>
-              <div className="tier-price num">₹{p.price}</div>
-              <div className="tier-term">45 days · no auto-renewal</div>
+              <div className="tier-price num">₹{priceOf(p)}</div>
+              <div className="tier-term">{showFounding ? 'Founding-member rate · 45 days' : '45 days · no auto-renewal'}</div>
               <div className="tier-feats">
                 {p.features.map((f) => (
                   <div key={f} className="tier-feat"><span className="price-tick">✓</span><span>{f}</span></div>
@@ -96,7 +100,7 @@ export default function Paywall() {
                   <Link to={p.start} className="btn btn-block btn-ghost">Owned ✓ — open</Link>
                 ) : (
                   <button type="button" className={`btn btn-block ${p.highlight ? 'btn-primary' : 'btn-ghost'}`} onClick={() => buy(p)} disabled={busy === p.id}>
-                    {busy === p.id ? 'Opening payment…' : `Unlock · ₹${p.price}`}
+                    {busy === p.id ? 'Opening payment…' : `Unlock · ₹${priceOf(p)}`}
                   </button>
                 )}
               </div>

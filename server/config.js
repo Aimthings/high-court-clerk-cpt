@@ -28,18 +28,26 @@ export const CAPS = {
   FORMULA_LIBRARY: 'formulaLibrary', // the locked Formula Library lessons
 };
 
+// Two price tiers per product (paise): the founding-member rate for accounts
+// created during the launch, and the standard rate (+15%, rounded to the rupee)
+// for everyone who joins after the launch ends.
 export const PRODUCTS = {
-  typing_course: { price: 6900, label: 'Typing Master course', caps: [CAPS.TYPING_COURSE] },
-  typing_complete: { price: 9900, label: 'Typing Complete', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS] },
-  excel_mock: { price: 11900, label: 'Excel Mock', caps: [CAPS.EXCEL_MOCKS] },
-  excel_complete: { price: 13900, label: 'Excel Complete', caps: [CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
-  all_access: { price: 16900, label: 'All-Access', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
+  typing_course: { founding: 6900, standard: 7900, label: 'Typing Master course', caps: [CAPS.TYPING_COURSE] },
+  typing_complete: { founding: 9900, standard: 11400, label: 'Typing Complete', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS] },
+  excel_mock: { founding: 11900, standard: 13700, label: 'Excel Mock', caps: [CAPS.EXCEL_MOCKS] },
+  excel_complete: { founding: 13900, standard: 16000, label: 'Excel Complete', caps: [CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
+  all_access: { founding: 16900, standard: 19400, label: 'All-Access', caps: [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY] },
 };
 
 // Legacy single pass (pre-catalog) — grants everything so any existing buyer keeps access.
 export const LEGACY_PASS_CAPS = [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY];
 
-export const priceOf = (product) => PRODUCTS[product]?.price;
+// Server-side price for a product, honouring founding-member status.
+export const priceOf = (product, isFounding = false) => {
+  const p = PRODUCTS[product];
+  if (!p) return undefined;
+  return isFounding ? p.founding : p.standard;
+};
 export const capsOf = (product) => (product === 'pass' ? LEGACY_PASS_CAPS : (PRODUCTS[product]?.caps || []));
 
 // Back-compat alias used by older code paths.

@@ -44,6 +44,13 @@ async function migrateAuth() {
   if (!(await columnExists('users', 'email_verified'))) {
     await pool.query('ALTER TABLE users ADD COLUMN email_verified TINYINT(1) NOT NULL DEFAULT 0');
   }
+  if (!(await columnExists('users', 'founding_member'))) {
+    await pool.query('ALTER TABLE users ADD COLUMN founding_member TINYINT(1) NOT NULL DEFAULT 0');
+    // Every account that already exists was created during the free launch —
+    // grandfather them all in as founding members (only when the launch is on).
+    const { LAUNCH_FREE } = await import('./config.js');
+    if (LAUNCH_FREE) await pool.query('UPDATE users SET founding_member = 1');
+  }
   // Unique email (allows multiple NULLs in MySQL, so legacy phone-only rows are fine).
   if (!(await indexExists('users', 'email'))) {
     try { await pool.query('ALTER TABLE users ADD UNIQUE KEY email (email)'); }

@@ -79,7 +79,11 @@ authRouter.post('/register', sendLimiter, async (req, res, next) => {
       // Re-registering an unverified email updates the pending credentials.
       await pool.query('UPDATE users SET password_hash = ?, name = COALESCE(?, name) WHERE id = ?', [passwordHash, name ?? null, existing.id]);
     } else {
-      await pool.query('INSERT INTO users (email, password_hash, name, email_verified) VALUES (?, ?, ?, 0)', [email, passwordHash, name ?? null]);
+      // Accounts created during the free launch are founding members forever.
+      await pool.query(
+        'INSERT INTO users (email, password_hash, name, email_verified, founding_member) VALUES (?, ?, ?, 0, ?)',
+        [email, passwordHash, name ?? null, LAUNCH_FREE ? 1 : 0],
+      );
     }
     await issueCode(email);
     return res.json({ sent: true, email, expiresInSec: CODE_TTL_MIN * 60 });
@@ -177,20 +181,21 @@ authRouter.post('/resend-code', sendLimiter, async (req, res, next) => {
 authRouter.get('/me', async (req, res, next) => {
   try {
     const userId = getUserId(req);
-    if (!userId) { ensureAnon(req, res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE }); }
-    const [rows] = await pool.query('SELECT id, email, name FROM users WHERE id = ?', [userId]);
+    if (!userId) { ensureAnon(req, res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE, founding: false }); }
+    const [rows] = await pool.query('SELECT id, email, name, founding_member FROM users WHERE id = ?', [userId]);
     const user = rows[0];
-    if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE }); }
+    if (!user) { clearSession(res); return res.json({ user: null, hasPass: false, expiresAt: null, launchFree: LAUNCH_FREE, founding: false }); }
     const pass = await activePass(userId);
     const caps = [...(await activeCapabilities(userId))];
     const [[profile]] = await pool.query('SELECT handle, region, listed FROM profiles WHERE user_id = ?', [userId]);
     return res.json({
-      user,
+      user: { id: user.id, email: user.email, name: user.name },
       profile: profile ? { ...profile, listed: profile.listed === 1 } : null,
       hasPass: Boolean(pass),
       expiresAt: pass?.expires_at || null,
       caps,
       launchFree: LAUNCH_FREE,
+      founding: user.founding_member === 1,
     });
   } catch (e) { return next(e); }
 });

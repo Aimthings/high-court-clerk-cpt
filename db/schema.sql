@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   email         VARCHAR(255) UNIQUE,
   password_hash VARCHAR(255),
   email_verified TINYINT(1) NOT NULL DEFAULT 0,
+  founding_member TINYINT(1) NOT NULL DEFAULT 0,
   name          VARCHAR(120),
   anon_token    CHAR(36) UNIQUE,
   created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

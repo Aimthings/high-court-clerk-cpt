@@ -14,15 +14,15 @@ function rzp() {
 }
 
 // Create a Razorpay order for a catalog product. The amount is the server-side
-// constant price for that product — never read from the request.
-export async function createProductOrder(product, receipt) {
-  const amount = priceOf(product);
+// price for that product (founding vs standard) — never read from the request.
+export async function createProductOrder(product, isFounding, receipt) {
+  const amount = priceOf(product, isFounding);
   if (!amount) throw new Error('Unknown product');
   const order = await rzp().orders.create({
     amount,
     currency: 'INR',
     receipt,
-    notes: { product, label: PRODUCTS[product].label },
+    notes: { product, label: PRODUCTS[product].label, founding: isFounding ? '1' : '0' },
   });
   return order;
 }
