@@ -22,6 +22,9 @@ const TypingTest = lazy(() => import('./typing/TypingTest.jsx'));
 const ExcelMock = lazy(() => import('./excel/ExcelMock.jsx'));
 const FormulaLibrary = lazy(() => import('./formula/FormulaLibrary.jsx'));
 const FormulaLesson = lazy(() => import('./formula/FormulaLesson.jsx'));
+const CourseMap = lazy(() => import('./typing/CourseMap.jsx'));
+const ModuleDetail = lazy(() => import('./typing/ModuleDetail.jsx'));
+const LessonRunner = lazy(() => import('./typing/LessonRunner.jsx'));
 
 // All routes render under the public layout (nav + footer + SEO) for Phase 1.
 // Signed-in shells and exam runners get their own layouts in later phases.
@@ -42,6 +45,8 @@ export default function App() {
         <Route path="/mocks" element={<MockList />} />
         <Route path="/practice/formulas" element={<Suspense fallback={<PageFallback />}><FormulaLibrary /></Suspense>} />
         <Route path="/practice/formulas/:slug" element={<Suspense fallback={<PageFallback />}><FormulaLesson /></Suspense>} />
+        <Route path="/learn/typing" element={<Suspense fallback={<PageFallback />}><CourseMap /></Suspense>} />
+        <Route path="/learn/typing/m/:moduleSlug" element={<Suspense fallback={<PageFallback />}><ModuleDetail /></Suspense>} />
         <Route path="/home" element={<Home />} />
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
@@ -54,6 +59,10 @@ export default function App() {
       <Route
         path="/mocks/:code/excel"
         element={<Suspense fallback={<RunnerFallback />}><ExcelMock /></Suspense>}
+      />
+      <Route
+        path="/learn/typing/run/:moduleSlug/:lessonSlug"
+        element={<Suspense fallback={<RunnerFallback />}><LessonRunner /></Suspense>}
       />
     </Routes>
   );

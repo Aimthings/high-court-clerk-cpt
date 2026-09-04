@@ -1,0 +1,76 @@
+// Small shared UI atoms for Typing Master — transcribed from the design's
+// hand-rolled SVG (no chart library).
+
+export function Ring({ pct, color, size = 46 }) {
+  const r = (size - 7) / 2;
+  const c = 2 * Math.PI * r;
+  const off = c * (1 - pct / 100);
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flex: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#E9EDF3" strokeWidth="6" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={off} />
+      </svg>
+      <span className="num" style={{ position: 'absolute', font: `800 ${Math.round(size * 0.28)}px/1 'Plus Jakarta Sans',sans-serif`, color: '#0D2846' }}>{pct}</span>
+    </div>
+  );
+}
+
+export function LockRing({ size = 46 }) {
+  return (
+    <div style={{ width: size, height: size, borderRadius: '50%', border: '2px dashed #D5DCE9', flex: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', font: '600 16px/1', color: '#B7C0CE' }}>🔒</div>
+  );
+}
+
+export function Stars({ n, size = 15 }) {
+  return (
+    <span style={{ letterSpacing: '2px', whiteSpace: 'nowrap' }}>
+      {[0, 1, 2].map((i) => (
+        <span key={i} style={{ color: i < n ? '#B47500' : '#D9DEE8', font: `700 ${size}px/1 'Plus Jakarta Sans',sans-serif` }}>★</span>
+      ))}
+    </span>
+  );
+}
+
+// Simple 4-finger + thumb hand; the active finger is filled with its hue.
+export function Hand({ active, color }) {
+  const heights = [30, 42, 46, 40];
+  return (
+    <svg width="76" height="58" viewBox="0 0 76 58" aria-hidden="true">
+      <rect x="4" y="40" width="22" height="10" rx="5" transform="rotate(-32 15 45)" fill="#E3E7EE" stroke="#D5DCE9" strokeWidth="1" />
+      {heights.map((h, i) => (
+        <rect key={i} x={8 + i * 15} y={52 - h} width="11" height={h} rx="5.5" fill={i === active ? color : '#E3E7EE'} stroke={i === active ? color : '#D5DCE9'} strokeWidth="1" />
+      ))}
+    </svg>
+  );
+}
+
+const STATE_STYLE = {
+  pending: { color: '#B7C0CE', background: 'transparent', borderBottom: '2px solid transparent' },
+  done: { color: '#0F1E33', background: 'transparent', borderBottom: '2px solid transparent' },
+  correct: { color: '#0E9F6E', background: 'transparent', borderBottom: '2px solid transparent' },
+  wrong: { color: '#D93B47', background: '#FDE9EB', borderBottom: '2px solid #D93B47' },
+  current: { color: '#2D6BE4', background: '#E7EEFC', borderBottom: '2px solid #2D6BE4' },
+};
+
+export function TypingLine({ chars, size = 30 }) {
+  return (
+    <div style={{ display: 'inline-block', textAlign: 'left', maxWidth: 680, letterSpacing: '0.5px' }}>
+      {chars.map((ch, i) => (
+        <span
+          key={i}
+          style={{ font: `500 ${size}px/1.7 'JetBrains Mono',monospace`, padding: '2px 1px', borderRadius: 3, whiteSpace: 'pre', position: 'relative', ...(STATE_STYLE[ch.s] || STATE_STYLE.pending) }}
+        >
+          {ch.c === ' ' ? ' ' : ch.c}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// Hand atom props (active finger 0=index..3=pinky, + hue) for a key.
+const HAND_IDX = { li: 0, ri: 0, lm: 1, rm: 1, lr: 2, rr: 2, lp: 3, rp: 3, th: -1 };
+export function handForKey(ch, fingerOf, FINGER) {
+  const f = fingerOf(ch);
+  return { active: HAND_IDX[f] ?? 0, color: FINGER[f] || FINGER.th, finger: f };
+}

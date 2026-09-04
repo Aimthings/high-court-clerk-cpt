@@ -1,0 +1,57 @@
+/* Typing Master — scoped palette + shared classes, transcribed from the design.
+   Semantic hues (navy/blue/mint/amber/rose) match the app tokens; the few extra
+   neutrals are the design's panel/line greys. */
+.tm {
+  --tm-panel: #F5F7FB;
+  --tm-card: #FFFFFF;
+  --tm-line: #E6EAF2;
+  --tm-line-2: #EEF1F6;
+  --tm-ink: #0F1E33;
+  --tm-ink-2: #4A5A70;
+  --tm-ink-3: #8494A8;
+  --tm-navy: #0D2846;
+  --tm-navy-2: #08192E;
+  --tm-blue: #2D6BE4;
+  --tm-blue-2: #1E4FB0;
+  --tm-mint: #0E9F6E;
+  --tm-amber: #B47500;
+  --tm-rose: #D93B47;
+  --tm-mint-tint: #E4F7EF;
+  --tm-amber-tint: #FFF6E0;
+  --tm-rose-tint: #FDE9EB;
+  --tm-blue-tint: #E7EEFC;
+  color: var(--tm-ink);
+}
+.tm .num { font-variant-numeric: tabular-nums; }
+.tm-eyebrow { font: 700 15px/1 'Plus Jakarta Sans', sans-serif; letter-spacing: .11em; text-transform: uppercase; color: var(--tm-ink-3); }
+.tm-h1 { font: 800 34px/1.08 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.03em; color: var(--tm-navy); }
+.tm-h2 { font: 800 24px/1.1 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; color: var(--tm-navy); }
+.tm-sub { font: 500 16px/1.5 'Plus Jakarta Sans', sans-serif; color: var(--tm-ink-2); }
+
+.tm-panel { background: var(--tm-panel); border: 1px solid var(--tm-line); border-radius: 16px; box-shadow: 0 6px 24px rgba(15,30,51,.06); overflow: hidden; }
+.tm-card { background: var(--tm-card); border: 1px solid var(--tm-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(15,30,51,.05); }
+.tm-card-lg { border-radius: 14px; }
+
+.tm-btn { border-radius: 12px; padding: 13px 24px; font: 700 15px/1 'Plus Jakarta Sans', sans-serif; cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.tm-btn-navy { background: var(--tm-navy); border-bottom: 2px solid var(--tm-navy-2); color: #fff; }
+.tm-btn-navy:hover { background: #12325a; }
+.tm-btn-blue { background: var(--tm-blue); border-bottom: 2px solid var(--tm-blue-2); color: #fff; }
+.tm-btn-blue:hover { background: #245ecb; }
+.tm-btn-ghost { background: #fff; border: 1px solid #D5DCE9; color: var(--tm-navy); }
+.tm-btn-ghost:hover { border-color: var(--tm-navy); }
+.tm-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.tm-chip { border-radius: 8px; padding: 4px 9px; font: 700 10px/1 'Plus Jakarta Sans', sans-serif; }
+.tm-chip-blue { background: var(--tm-blue-tint); color: var(--tm-blue); }
+.tm-chip-mint { background: var(--tm-mint-tint); color: var(--tm-mint); }
+.tm-chip-grey { background: #F0F2F6; color: #98A3B3; }
+
+.tm-stat-val { font: 800 22px/1 'Plus Jakarta Sans', sans-serif; }
+.tm-stat-lbl { margin-top: 5px; font: 700 10px/1 'Plus Jakarta Sans', sans-serif; letter-spacing: .09em; text-transform: uppercase; color: var(--tm-ink-3); }
+
+.tm a { color: var(--tm-blue); text-decoration: none; }
+.tm a:hover { color: var(--tm-navy); }
+
+/* full-bleed lesson runner */
+.tm-runner { min-height: 100vh; background: #E9EDF3; display: flex; flex-direction: column; }
+.tm-runner-hidden-input { position: absolute; opacity: 0; pointer-events: none; }

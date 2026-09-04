@@ -83,6 +83,12 @@ export const ROUTES = {
     keywords: ['payment status'],
     noindex: true,
   },
+  '/learn/typing': {
+    title: 'Typing Master — learn to touch-type · High Court Clerk CPT',
+    description:
+      'A free, from-zero touch-typing course: home row, top row, bottom row, capitals, numbers, punctuation, words and speed. Learn the keyboard by finger, then take the graded mock.',
+    keywords: ['learn typing', 'touch typing course', 'typing practice', 'home row', 'CPT typing practice'],
+  },
 };
 
 // Ordered list of public routes for the sitemap / prerender.
