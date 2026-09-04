@@ -6,9 +6,16 @@ import Keyboard from './Keyboard.jsx';
 import { TypingLine, Stars, Hand, handForKey } from './tmUi.jsx';
 import { useDrill, fmtTime } from './useDrill.js';
 import { fingerOf, fingerNameOf, FINGER } from './fingerMap.js';
-import { getModule, buildTarget, gradeLesson, MODULES } from './courseContent.js';
+import {
+  getModule, buildTarget, gradeLesson, MODULES, ACCURACY_TARGETS, DEFAULT_TARGET,
+} from './courseContent.js';
 import { recordAttempt } from './progress.js';
 import './typingmaster.css';
+
+const TARGET_KEY = 'tm_target_accuracy';
+function loadTarget() {
+  try { const v = Number(localStorage.getItem(TARGET_KEY)); return ACCURACY_TARGETS.includes(v) ? v : DEFAULT_TARGET; } catch { return DEFAULT_TARGET; }
+}
 
 function Stat({ value, label, color, mono }) {
   return (
@@ -19,7 +26,6 @@ function Stat({ value, label, color, mono }) {
   );
 }
 
-// The mark used in the site nav, inline for the full-bleed runner.
 function Mark() {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9 }}>
@@ -37,7 +43,7 @@ export default function LessonRunner() {
   const lesson = module?.lessons.find((l) => l.slug === lessonSlug);
   const paywalled = module ? (module.n >= 2 && !(launchFree || (caps || []).includes('typingCourse'))) : false;
 
-  const [strict, setStrict] = useState(true);
+  const [target, setTarget] = useState(loadTarget);
   const [seed, setSeed] = useState(0);
   const [result, setResult] = useState(null);
   const [narrow, setNarrow] = useState(false);
@@ -49,17 +55,22 @@ export default function LessonRunner() {
     return () => mq.removeEventListener('change', on);
   }, []);
 
-  const target = useMemo(() => (lesson ? buildTarget(lesson) : ''), [lesson, seed]);
+  const drillTarget = useMemo(() => (lesson ? buildTarget(lesson) : ''), [lesson, seed]);
 
   const onComplete = useCallback((r) => {
     if (!module || !lesson) return;
-    const { cleared, stars } = gradeLesson(module, r.accuracy, r.wpm);
+    const { cleared, stars } = gradeLesson(r.accuracy, r.wpm, target);
     const entry = recordAttempt(lesson.slug, { accuracy: r.accuracy, wpm: r.wpm, cleared, stars, keyStats: r.keyStats });
     if (user) api.saveTypingProgress([{ slug: lesson.slug, ...entry }]).catch(() => {});
-    setResult({ ...r, cleared, stars });
-  }, [module, lesson, user]);
+    setResult({ ...r, cleared, stars, target });
+  }, [module, lesson, user, target]);
 
-  const drill = useDrill(target, { strict, onComplete });
+  const drill = useDrill(drillTarget, { onComplete });
+
+  function changeTarget(t) {
+    setTarget(t);
+    try { localStorage.setItem(TARGET_KEY, String(t)); } catch { /* non-fatal */ }
+  }
 
   if (!module || !lesson) {
     return <div className="tm page"><p className="tm-sub">That lesson doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
@@ -72,7 +83,7 @@ export default function LessonRunner() {
           <div style={{ font: '800 34px/1', color: '#0D2846' }}>🔒</div>
           <div className="tm-h2" style={{ marginTop: 14 }}>This is part of the paid course</div>
           <p style={{ marginTop: 10, font: "500 15px/1.55 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
-            The Home row module is free. Unlock all 11 modules — top row to exam speed — for ₹69.
+            The Home row module is free. Unlock all modules — top row to exam speed — for ₹69.
           </p>
           <Link to="/pass" className="tm-btn tm-btn-navy" style={{ marginTop: 20, width: '100%' }}>Unlock the full course</Link>
           <Link to="/learn/typing" style={{ display: 'inline-block', marginTop: 14, font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>Back to the course</Link>
@@ -83,7 +94,6 @@ export default function LessonRunner() {
 
   const restart = () => { setResult(null); setSeed((s) => s + 1); };
 
-  // where "Next" goes
   const lessonIdx = module.lessons.findIndex((l) => l.slug === lesson.slug);
   const moduleIdx = MODULES.findIndex((m) => m.slug === module.slug);
   let next = null;
@@ -110,30 +120,32 @@ export default function LessonRunner() {
 
   return (
     <div className="tm tm-runner">
-      {/* topbar */}
-      <div style={{ height: 56, background: '#fff', borderBottom: '1px solid #E6EAF2', display: 'flex', alignItems: 'center', padding: '0 24px', gap: 16 }}>
+      <div style={{ minHeight: 56, background: '#fff', borderBottom: '1px solid #E6EAF2', display: 'flex', alignItems: 'center', padding: '8px 24px', gap: 16, flexWrap: 'wrap' }}>
         <Mark />
         <span style={{ width: 1, height: 22, background: '#E6EAF2' }} />
         <span style={{ font: "800 15px/1 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.02em', color: '#0D2846' }}>{module.title} · {lesson.title.replace(/^Lesson \d+ · /, '')}</span>
         <span style={{ font: "500 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>{lesson.meta}</span>
-        <button
-          type="button"
-          onClick={() => setStrict((s) => !s)}
-          style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: strict ? '#0D2846' : '#8494A8', background: 'none', border: 'none', cursor: 'pointer' }}
-          aria-pressed={strict}
-        >
-          <span style={{ width: 34, height: 19, borderRadius: 10, background: strict ? '#2D6BE4' : '#D5DCE9', position: 'relative', display: 'inline-block' }}>
-            <span style={{ position: 'absolute', top: 2, [strict ? 'right' : 'left']: 2, width: 15, height: 15, borderRadius: '50%', background: '#fff' }} />
-          </span>
-          Strict mode
-        </button>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }} title="Clear the lesson when you reach this accuracy">
+          <span style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Advance at</span>
+          <div style={{ display: 'inline-flex', border: '1px solid #E6EAF2', borderRadius: 9, overflow: 'hidden' }}>
+            {ACCURACY_TARGETS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => changeTarget(t)}
+                style={{ border: 'none', cursor: 'pointer', padding: '7px 10px', font: "700 12px/1 'Plus Jakarta Sans',sans-serif", background: t === target ? '#2D6BE4' : '#fff', color: t === target ? '#fff' : '#4A5A70' }}
+              >
+                {t}%
+              </button>
+            ))}
+          </div>
+        </div>
         <button type="button" onClick={restart} style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: '#4A5A70', background: 'none', border: 'none', cursor: 'pointer' }}>Restart</button>
         <button type="button" onClick={() => navigate(`/learn/typing/m/${module.slug}`)} style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8', background: 'none', border: 'none', cursor: 'pointer' }}>Exit</button>
       </div>
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '32px 20px' }}>
         <div style={{ width: 860, maxWidth: '100%', background: '#fff', border: '1px solid #E6EAF2', borderRadius: 16, boxShadow: '0 6px 24px rgba(15,30,51,.06)', overflow: 'hidden' }}>
-          {/* brief strip */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 20, padding: '16px 24px', background: '#F5F7FB', borderBottom: '1px solid #E6EAF2', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span className="tm-stat-lbl" style={{ marginTop: 0 }}>Next key</span>
@@ -155,20 +167,18 @@ export default function LessonRunner() {
             )}
             <span style={{ width: 1, alignSelf: 'stretch', background: '#E6EAF2' }} />
             <div style={{ font: `500 13px/1.4 'Plus Jakarta Sans',sans-serif`, color: drill.wrong ? '#D93B47' : '#4A5A70', flex: 1, minWidth: 200 }}>
-              {drill.wrong ? 'Not that key — type the highlighted key to continue.' : lesson.tip}
+              {drill.wrong ? 'That key was wrong — keep going, or backspace to fix it.' : lesson.tip}
             </div>
           </div>
 
-          {/* typing line */}
           <div style={{ padding: '34px 30px 26px', textAlign: 'center' }}>
             <TypingLine chars={drill.chars} />
             {!drill.started && <div style={{ marginTop: 18, font: "500 13px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Start typing — the clock begins on your first key.</div>}
           </div>
 
-          {/* stat row */}
           <div style={{ display: 'flex', borderTop: '1px solid #E6EAF2', borderBottom: '1px solid #E6EAF2' }}>
             <Stat value={Math.round(drill.wpm)} label="W.P.M." />
-            <Stat value={`${Math.round(drill.accuracy)}%`} label="Accuracy" color={drill.accuracy >= 95 ? '#0E9F6E' : drill.accuracy >= 80 ? '#B47500' : '#D93B47'} />
+            <Stat value={`${Math.round(drill.accuracy)}%`} label="Accuracy" color={drill.accuracy >= target ? '#0E9F6E' : drill.accuracy >= 80 ? '#B47500' : '#D93B47'} />
             <Stat value={fmtTime(drill.elapsedMs)} label="Time" mono />
             <div style={{ flex: 1, padding: '14px 18px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -181,7 +191,6 @@ export default function LessonRunner() {
             </div>
           </div>
 
-          {/* keyboard */}
           <div style={{ padding: '26px 0 30px', display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
             <Keyboard mode="tint" next={nextChar} keySize={42} />
           </div>
@@ -199,7 +208,7 @@ function CompleteOverlay({ module, lesson, result, onRetry, next, onNext }) {
     .filter((x) => x.total >= 2 && x.acc < 100)
     .sort((a, b) => a.acc - b.acc).slice(0, 3), [result]);
   const courseDone = next === null;
-  const accColor = result.accuracy >= 95 ? '#0E9F6E' : result.accuracy >= 80 ? '#B47500' : '#D93B47';
+  const accColor = result.accuracy >= result.target ? '#0E9F6E' : result.accuracy >= 80 ? '#B47500' : '#D93B47';
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,30,51,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, zIndex: 50 }}>
@@ -208,7 +217,7 @@ function CompleteOverlay({ module, lesson, result, onRetry, next, onNext }) {
           <span style={{ width: 30, height: 30, borderRadius: '50%', background: result.cleared ? '#0E9F6E' : '#B47500', display: 'flex', alignItems: 'center', justifyContent: 'center', font: '700 15px/1', color: '#fff' }}>{result.cleared ? '✓' : '↻'}</span>
           <div>
             <div style={{ font: "800 20px/1.1 'Plus Jakarta Sans',sans-serif", color: result.cleared ? '#0E9F6E' : '#8A5A00' }}>{result.cleared ? 'Lesson cleared' : 'Almost there'}</div>
-            <div style={{ marginTop: 3, font: "500 13px/1 'Plus Jakarta Sans',sans-serif", color: result.cleared ? '#4A7A67' : '#7A5A2A' }}>{module.title} · {lesson.title.replace(/^Lesson \d+ · /, '')}{result.cleared ? '' : ` · reach ${gradeLesson(module, 0, 0).bar}% to pass`}</div>
+            <div style={{ marginTop: 3, font: "500 13px/1 'Plus Jakarta Sans',sans-serif", color: result.cleared ? '#4A7A67' : '#7A5A2A' }}>{module.title} · {lesson.title.replace(/^Lesson \d+ · /, '')}{result.cleared ? '' : ` · you set ${result.target}% to advance`}</div>
           </div>
           {result.cleared && <div style={{ marginLeft: 'auto' }}><Stars n={result.stars} size={22} /></div>}
         </div>

@@ -1,35 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Character-level drill engine for the Typing Master lesson runner.
-// Strict mode (default) blocks advance on a wrong key until it is typed correctly —
-// the accuracy-first pedagogy. Tracks live WPM (gross, a learning metric — distinct
-// from the SSSC mock formula), accuracy, per-key stats, and fires onComplete once.
-export function useDrill(target, { strict = true, onComplete } = {}) {
+// Character-level drill engine for the Typing Master lesson runner. Free-flow:
+// you type through the passage; a wrong key is marked in the line (and counts
+// against accuracy) but never blocks you — backspace to fix it if you want.
+// Tracks live WPM (gross — a learning metric, distinct from the SSSC mock
+// formula), accuracy, per-key stats, and fires onComplete once.
+export function useDrill(target, { onComplete } = {}) {
   const [index, setIndex] = useState(0);
-  const [wrong, setWrong] = useState(false);
+  const [wrongFlash, setWrongFlash] = useState(false);
   const [, setTick] = useState(0);
+  const results = useRef([]); // per-position correctness
   const startedAt = useRef(null);
   const finishedAt = useRef(null);
   const totals = useRef({ total: 0, correct: 0 });
   const keyStats = useRef({});
   const done = index >= target.length && target.length > 0;
 
-  // reset on a new target (fresh attempt / next lesson)
   useEffect(() => {
-    setIndex(0); setWrong(false);
+    setIndex(0); setWrongFlash(false);
+    results.current = [];
     startedAt.current = null; finishedAt.current = null;
     totals.current = { total: 0, correct: 0 };
     keyStats.current = {};
   }, [target]);
 
-  // live timer for WPM / elapsed while typing
   useEffect(() => {
     if (done || startedAt.current == null) return undefined;
     const id = setInterval(() => setTick((t) => t + 1), 200);
     return () => clearInterval(id);
   }, [done, index]);
 
-  // fire completion once
   useEffect(() => {
     if (!done) return;
     if (finishedAt.current == null) finishedAt.current = Date.now();
@@ -46,7 +46,7 @@ export function useDrill(target, { strict = true, onComplete } = {}) {
       if (done) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const { key } = e;
-      if (key === 'Backspace') { e.preventDefault(); if (index > 0) { setIndex((i) => i - 1); setWrong(false); } return; }
+      if (key === 'Backspace') { e.preventDefault(); if (index > 0) { results.current.pop(); setWrongFlash(false); setIndex((i) => i - 1); } return; }
       if (key.length !== 1) return; // ignore Enter, arrows, Shift, etc.
       e.preventDefault();
       if (startedAt.current == null) startedAt.current = Date.now();
@@ -57,18 +57,18 @@ export function useDrill(target, { strict = true, onComplete } = {}) {
       ks.total += 1; if (matched) ks.correct += 1;
       keyStats.current[kk] = ks;
       totals.current.total += 1; if (matched) totals.current.correct += 1;
-      if (matched) { setWrong(false); setIndex((i) => i + 1); }
-      else if (strict) { setWrong(true); }
-      else { setWrong(false); setIndex((i) => i + 1); }
+      results.current[index] = matched;
+      setWrongFlash(!matched);
+      setIndex((i) => i + 1);
     }
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [index, done, strict, target]);
+  }, [index, done, target]);
 
   const chars = target.split('').map((c, i) => {
     let s = 'pending';
-    if (i < index) s = 'done';
-    else if (i === index) s = wrong ? 'wrong' : 'current';
+    if (i < index) s = results.current[i] ? 'done' : 'errdone';
+    else if (i === index) s = 'current';
     return { c, s };
   });
 
@@ -80,7 +80,7 @@ export function useDrill(target, { strict = true, onComplete } = {}) {
   const tokensDone = target.slice(0, index).trim() ? target.slice(0, index).trim().split(/\s+/).length : 0;
   const nextChar = index < target.length ? target[index] : '';
 
-  return { chars, index, length: target.length, wrong, wpm, accuracy, elapsedMs, tokensDone, tokensTotal, nextChar, done, started: startedAt.current != null };
+  return { chars, index, length: target.length, wrong: wrongFlash, wpm, accuracy, elapsedMs, tokensDone, tokensTotal, nextChar, done, started: startedAt.current != null };
 }
 
 export function fmtTime(ms) {

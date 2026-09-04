@@ -48,20 +48,39 @@ export function Hand({ active, color }) {
 const STATE_STYLE = {
   pending: { color: '#B7C0CE', background: 'transparent', borderBottom: '2px solid transparent' },
   done: { color: '#0F1E33', background: 'transparent', borderBottom: '2px solid transparent' },
-  correct: { color: '#0E9F6E', background: 'transparent', borderBottom: '2px solid transparent' },
+  errdone: { color: '#D93B47', background: 'transparent', borderBottom: '2px solid #F4C9CE' },
   wrong: { color: '#D93B47', background: '#FDE9EB', borderBottom: '2px solid #D93B47' },
   current: { color: '#2D6BE4', background: '#E7EEFC', borderBottom: '2px solid #2D6BE4' },
 };
 
-export function TypingLine({ chars, size = 30 }) {
+// The passage wraps by word so every character that must be typed is visible at
+// once — each word is a non-breaking group, and a real space between words gives
+// the wrap point. The space also carries its own typed state.
+export function TypingLine({ chars, size = 26 }) {
+  const charSpan = (ch) => (
+    <span
+      key={ch.i}
+      style={{ font: `500 ${size}px/1.9 'JetBrains Mono',monospace`, padding: '2px 1px', borderRadius: 3, ...(STATE_STYLE[ch.s] || STATE_STYLE.pending) }}
+    >
+      {ch.c === ' ' ? ' ' : ch.c}
+    </span>
+  );
+
+  const groups = [];
+  let word = [];
+  chars.forEach((ch, i) => {
+    if (ch.c === ' ') { groups.push({ word, space: { ...ch, i } }); word = []; }
+    else word.push({ ...ch, i });
+  });
+  if (word.length) groups.push({ word, space: null });
+
   return (
-    <div style={{ display: 'inline-block', textAlign: 'left', maxWidth: 680, letterSpacing: '0.5px' }}>
-      {chars.map((ch, i) => (
-        <span
-          key={i}
-          style={{ font: `500 ${size}px/1.7 'JetBrains Mono',monospace`, padding: '2px 1px', borderRadius: 3, whiteSpace: 'pre', position: 'relative', ...(STATE_STYLE[ch.s] || STATE_STYLE.pending) }}
-        >
-          {ch.c === ' ' ? ' ' : ch.c}
+    <div style={{ textAlign: 'left', maxWidth: 720, margin: '0 auto', wordBreak: 'break-word' }}>
+      {groups.map((g, gi) => (
+        <span key={gi}>
+          <span style={{ whiteSpace: 'nowrap' }}>{g.word.map(charSpan)}</span>
+          {g.space && charSpan(g.space)}
+          {gi < groups.length - 1 ? ' ' : null}
         </span>
       ))}
     </div>
