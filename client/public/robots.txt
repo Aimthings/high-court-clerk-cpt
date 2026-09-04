@@ -3,4 +3,4 @@ Allow: /
 Disallow: /pass/status
 Disallow: /account
 
-Sitemap: https://highcourtclerkcpt.in/sitemap.xml
+Sitemap: https://highcourtexam.online/sitemap.xml

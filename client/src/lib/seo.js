@@ -4,9 +4,9 @@
 export const SITE = {
   name: 'High Court Clerk CPT',
   short: 'Clerk CPT',
-  url: 'https://highcourtclerkcpt.in', // update to the live domain at deploy
+  url: 'https://highcourtexam.online', // live domain
   locale: 'en_IN',
-  twitter: '@highcourtclerkcpt',
+  twitter: '@highcourtexam',
 };
 
 // Public, prerendered routes and their metadata.

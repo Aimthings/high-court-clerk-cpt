@@ -74,13 +74,13 @@ npm run build --workspace client
 
 # 5. nginx
 sudo apt install -y nginx
-sudo cp deploy/nginx.conf /etc/nginx/sites-available/highcourtclerkcpt
-sudo ln -s /etc/nginx/sites-available/highcourtclerkcpt /etc/nginx/sites-enabled/
+sudo cp deploy/nginx.conf /etc/nginx/sites-available/highcourtexam
+sudo ln -s /etc/nginx/sites-available/highcourtexam /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 
 # 6. TLS
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d highcourtclerkcpt.in -d www.highcourtclerkcpt.in
+sudo certbot --nginx -d highcourtexam.online -d www.highcourtexam.online
 
 # 7. PM2 (API + crons) and start-on-boot
 pm2 start deploy/ecosystem.config.cjs --env production
@@ -91,7 +91,7 @@ chmod +x deploy/backup.sh
 ( crontab -l 2>/dev/null; echo "15 2 * * * DB_PASSWORD='...' /var/www/high-court-clerk-cpt/deploy/backup.sh >> /var/log/hcc/backup.log 2>&1" ) | crontab -
 ```
 
-Razorpay: add the webhook `https://highcourtclerkcpt.in/api/orders/webhook` in the
+Razorpay: add the webhook `https://highcourtexam.online/api/orders/webhook` in the
 Razorpay dashboard with the `RAZORPAY_WEBHOOK_SECRET` you set in `.env`, subscribe to
 `payment.captured`. Redeploy later with `deploy/deploy.sh`.
 
