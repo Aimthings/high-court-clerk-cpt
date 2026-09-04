@@ -10,6 +10,7 @@ export default function Nav() {
     <header className="nav">
       <div className="nav-inner">
         <Link to="/" className="nav-brand" aria-label="High Court Clerk CPT — home">
+          <img src="/favicon.svg" alt="" className="nav-mark" width="26" height="26" />
           Clerk CPT
         </Link>
         <nav className="nav-links" aria-label="Primary">

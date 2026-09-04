@@ -16,12 +16,16 @@
   gap: 34px;
 }
 .nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-weight: 800;
   font-size: 16px;
   letter-spacing: -0.02em;
   color: var(--navy);
 }
 .nav-brand:hover { color: var(--navy); }
+.nav-mark { display: block; border-radius: 7px; flex: none; }
 .nav-links {
   display: flex;
   gap: 26px;
