@@ -30,3 +30,15 @@ export const RAZORPAY = {
 };
 
 export const COOKIE_SECRET = process.env.COOKIE_SECRET || 'dev-only-change-me';
+
+// SMS / OTP delivery. Fast2SMS is the wired provider. With no key set (or
+// SMS_PROVIDER unset) the app falls back to logging the code in dev — no send.
+//   route 'otp' : Fast2SMS OTP route, sends "Your OTP: <code>" — no DLT needed.
+//   route 'dlt' : DLT route, needs an approved SMS_SENDER_ID + SMS_DLT_MESSAGE_ID.
+export const SMS = {
+  provider: (process.env.SMS_PROVIDER || '').toLowerCase(),
+  apiKey: process.env.SMS_API_KEY || '',
+  route: (process.env.SMS_ROUTE || 'otp').toLowerCase(),
+  senderId: process.env.SMS_SENDER_ID || '',
+  dltMessageId: process.env.SMS_DLT_MESSAGE_ID || '',
+};

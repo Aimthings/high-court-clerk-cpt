@@ -22,6 +22,11 @@ import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
 const app = express();
 
+// Behind a reverse proxy (Hostinger Web App, nginx on the VPS) the client IP
+// arrives in X-Forwarded-For. Trust the first proxy hop so express-rate-limit
+// keys on the real IP instead of throwing ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+app.set('trust proxy', 1);
+
 app.disable('x-powered-by');
 app.use(helmet());
 app.use(pinoHttp({ level: NODE_ENV === 'production' ? 'info' : 'debug' }));

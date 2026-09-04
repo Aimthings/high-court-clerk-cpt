@@ -7,6 +7,9 @@ module.exports = {
       name: 'hcc-api',
       cwd: '/var/www/high-court-clerk-cpt',
       script: 'server/index.js',
+      // Load the untracked .env at the repo root (cwd) natively — the server
+      // reads process.env, so real secrets must be injected here.
+      node_args: '--env-file-if-exists=.env',
       instances: 1,
       exec_mode: 'fork',
       max_memory_restart: '300M',

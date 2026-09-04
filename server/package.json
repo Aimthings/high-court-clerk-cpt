@@ -5,10 +5,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch index.js",
-    "start": "node index.js",
+    "dev": "node --env-file-if-exists=../.env --watch index.js",
+    "start": "node --env-file-if-exists=../.env index.js",
     "test": "vitest run",
-    "migrate": "node db-migrate.js"
+    "migrate": "node --env-file-if-exists=../.env db-migrate.js"
   },
   "dependencies": {
     "express": "^4.21.0",
