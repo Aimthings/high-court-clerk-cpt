@@ -1,15 +1,14 @@
 import './reference.css';
 import { Row1, Strip, InfoStrip } from './refparts.jsx';
 
-// Contact & policies — deck artboard 25. Three policies + one contact route,
-// with the grievance officer named as the payment gateway requires.
+// Contact & policies — deck artboard 25. Three policies + one contact route.
 export default function Contact() {
   return (
     <div className="page">
       <div className="ref-header">
         <h1 className="page-title">Contact and policies</h1>
         <p className="page-sub">
-          Write to help@highcourtexam.online · replies on working days between 10 a.m. and 6 p.m.
+          Write to info@highcourtexam.online · replies on working days between 10 a.m. and 6 p.m.
         </p>
       </div>
 
@@ -22,7 +21,7 @@ export default function Contact() {
                 Full refund within 48 hours of payment if fewer than three mocks have been attempted.
               </div>
               <p className="policy-body">
-                Write to help@highcourtexam.online with the payment reference. Refunds are credited to
+                Write to info@highcourtexam.online with the payment reference. Refunds are credited to
                 the paying instrument in 5 to 7 working days. A pass that has been used for three or
                 more mocks is not refundable.
               </p>
@@ -60,26 +59,14 @@ export default function Contact() {
               <div className="card-h">Reach us</div>
               <div className="card-meta">One address for everything. There is no phone queue.</div>
             </div>
-            <Row1 label="Email" val="help@highcourtexam.online" />
-            <Row1 label="First reply within" val={<span className="v-mint num">12 working hours</span>} />
-            <Row1 label="Payment and refunds" val="help@highcourtexam.online" />
-            <Row1 label="Grievance officer" val="Manpreet Kaur" />
-            <Strip tone="blue">Include your phone number and the mock name. It halves the reply time.</Strip>
-          </div>
-
-          <div className="card">
-            <div className="card-simple-head">Registered address</div>
-            <p className="policy-body" style={{ padding: '0 16px 14px', marginTop: 0 }}>
-              High Court Clerk CPT Practice Labs<br />
-              SCO 42, Sector 34-A<br />
-              Chandigarh 160022
-            </p>
+            <Row1 label="Email" val="info@highcourtexam.online" />
+            <Strip tone="blue">Include the mock name in your email. It halves the reply time.</Strip>
           </div>
 
           <div className="card">
             <div className="card-pad" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span className="card-h" style={{ fontSize: 13.5 }}>Found a wrong answer key?</span>
-              <a href="mailto:help@highcourtexam.online" className="link-btn">Report it</a>
+              <a href="mailto:info@highcourtexam.online" className="link-btn">Report it</a>
             </div>
             <p className="policy-body" style={{ padding: '0 16px 14px', marginTop: 0 }}>
               Corrections are checked against the official criteria and published in the mock's notes.

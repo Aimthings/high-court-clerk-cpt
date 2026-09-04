@@ -62,13 +62,13 @@ export const ROUTES = {
   '/contact': {
     title: 'Contact & policies · High Court Clerk CPT',
     description:
-      'Contact routes, response times, and the terms, refund and privacy policies on one page, with the grievance contact stated as the payment gateway requires.',
+      'Contact routes, response times, and the terms, refund and privacy policies on one page.',
     keywords: ['high court clerk cpt contact', 'refund policy', 'privacy policy'],
   },
   '/sign-in': {
     title: 'Sign in · High Court Clerk CPT',
     description:
-      'Sign in with a phone number and a six-digit code. No password. Signing in is never required to read the rank list or take the first mock.',
+      'Sign in with your email and password. New accounts verify with a six-digit email code. Signing in is never required to read the rank list or take the first mock.',
     keywords: ['sign in', 'high court clerk cpt login'],
   },
   '/pass': {
