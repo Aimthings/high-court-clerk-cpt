@@ -1,7 +1,7 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Ring, Stars } from './tmUi.jsx';
+import { Ring, Stars, SignInGate } from './tmUi.jsx';
 import { getModule, MODULES } from './courseContent.js';
 import {
   load, moduleState, modulePct, moduleStars, lessonStates,
@@ -37,9 +37,13 @@ function LessonRow({ lesson, state, stars, onStart, last }) {
 export default function ModuleDetail() {
   const { moduleSlug } = useParams();
   const navigate = useNavigate();
-  const { caps, launchFree } = useAuth();
+  const { caps, launchFree, user, loading: authLoading } = useAuth();
   const module = getModule(moduleSlug);
   if (!module) return <div className="tm page"><p className="tm-sub">That module doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
+
+  if (!authLoading && !user) {
+    return <div className="tm page"><SignInGate next={`/learn/typing/m/${moduleSlug}`} /></div>;
+  }
 
   if (module.n >= 2 && !(launchFree || (caps || []).includes('typingCourse'))) {
     return (

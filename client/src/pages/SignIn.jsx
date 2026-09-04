@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import './reference.css';
 import './signin.css';
@@ -10,6 +10,9 @@ import './signin.css';
 export default function SignIn() {
   const { register, verifyEmail, login, resendCode } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const nextParam = params.get('next');
+  const dest = nextParam && nextParam.startsWith('/') ? nextParam : '/mocks';
   const [mode, setMode] = useState('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -37,7 +40,7 @@ export default function SignIn() {
     setError(''); setBusy(true);
     try {
       await login(email, password);
-      navigate('/mocks');
+      navigate(dest);
     } catch (err) {
       // Unverified accounts are asked to verify; the server sends a fresh code.
       if (/verify your email/i.test(err.message)) { setCode(''); setMode('verify'); }
@@ -51,7 +54,7 @@ export default function SignIn() {
     setError(''); setBusy(true);
     try {
       await verifyEmail(email, code);
-      navigate('/mocks');
+      navigate(dest);
     } catch (err) { setError(err.message); } finally { setBusy(false); }
   }
 

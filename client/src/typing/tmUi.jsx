@@ -1,5 +1,25 @@
+import { Link } from 'react-router-dom';
+import './typingmaster.css';
+
 // Small shared UI atoms for Typing Master — transcribed from the design's
 // hand-rolled SVG (no chart library).
+
+// Sign-in gate shown to guests. After sign-in the app returns to `next`.
+export function SignInGate({ next }) {
+  const to = `/sign-in${next ? `?next=${encodeURIComponent(next)}` : ''}`;
+  return (
+    <div className="tm-card" style={{ maxWidth: 460, margin: '0 auto', padding: '30px 32px', textAlign: 'center' }}>
+      <img src="/favicon.svg" alt="" width="44" height="44" style={{ borderRadius: 11, display: 'inline-block' }} />
+      <div className="tm-h2" style={{ marginTop: 16 }}>Create a free account to start</div>
+      <p style={{ marginTop: 10, font: "500 15px/1.55 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
+        Typing Master saves your progress, stars and per-key accuracy to your account — so it
+        follows you across devices. It’s free during the launch, and early members keep founding perks.
+      </p>
+      <Link to={to} className="tm-btn tm-btn-navy" style={{ marginTop: 20, width: '100%' }}>Create free account · sign in</Link>
+      <div style={{ marginTop: 14 }}><Link to="/learn/typing" style={{ font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>Back to the course</Link></div>
+    </div>
+  );
+}
 
 export function Ring({ pct, color, size = 46 }) {
   const r = (size - 7) / 2;

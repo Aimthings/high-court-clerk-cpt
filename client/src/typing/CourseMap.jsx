@@ -17,13 +17,15 @@ const LEGEND = [
   ['lm', 'E D C 3'], ['rr', 'O L . 9'], ['li', 'R T F G V B'], ['rp', 'P ; / 0'],
 ];
 
-function ModuleCard({ module, state, paywalled }) {
+function ModuleCard({ module, state, paywalled, guest }) {
   const p = load();
   const pct = modulePct(module, p);
   const stars = moduleStars(module, p);
   const locked = state === 'locked' || paywalled;
   const active = state === 'active' && !paywalled;
-  const to = paywalled ? '/pass' : `/learn/typing/m/${module.slug}`;
+  const to = guest
+    ? `/sign-in?next=${encodeURIComponent(`/learn/typing/m/${module.slug}`)}`
+    : paywalled ? '/pass' : `/learn/typing/m/${module.slug}`;
   const card = (
     <div
       className="tm-card"
@@ -59,6 +61,7 @@ function ModuleCard({ module, state, paywalled }) {
       </div>
     </div>
   );
+  if (guest) return <Link to={to} style={{ textDecoration: 'none' }}>{card}</Link>;
   if (locked && !paywalled) return card;
   return <Link to={to} style={{ textDecoration: 'none' }}>{card}</Link>;
 }
@@ -99,7 +102,8 @@ function Onboarding() {
 
 export default function CourseMap() {
   const navigate = useNavigate();
-  const { user, caps, launchFree } = useAuth();
+  const { user, caps, launchFree, loading } = useAuth();
+  const needsAuth = !loading && !user;
   const [ver, setVer] = useState(0); // bumped after a server sync to re-read progress
 
   useEffect(() => {
@@ -174,24 +178,28 @@ export default function CourseMap() {
       {/* module grid */}
       <div style={{ marginTop: 44 }} className="tm-eyebrow">The path · {MODULES.length} modules</div>
       <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 16 }}>
-        {MODULES.map((m, i) => <ModuleCard key={m.slug} module={m} state={states[i]} paywalled={!courseUnlocked && m.n >= 2} />)}
+        {MODULES.map((m, i) => <ModuleCard key={m.slug} module={m} state={states[i]} paywalled={!courseUnlocked && m.n >= 2} guest={needsAuth} />)}
       </div>
 
       <div style={{ marginTop: 28, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-        {stats.courseDone
-          ? <Link to="/mocks" className="tm-btn tm-btn-blue">Take the graded mock</Link>
-          : (!courseUnlocked && resume.n >= 2)
-            ? <Link to="/pass" className="tm-btn tm-btn-navy">Unlock the full course — ₹69</Link>
-            : (
-              <button type="button" className="tm-btn tm-btn-navy" onClick={() => navigate(`/learn/typing/m/${resume.slug}`)}>
-                {isNew ? 'Start — Home row' : `Continue — ${resume.title}`}
-              </button>
-            )}
+        {needsAuth
+          ? <Link to="/sign-in?next=/learn/typing" className="tm-btn tm-btn-navy">Create a free account to start</Link>
+          : stats.courseDone
+            ? <Link to="/mocks" className="tm-btn tm-btn-blue">Take the graded mock</Link>
+            : (!courseUnlocked && resume.n >= 2)
+              ? <Link to="/pass" className="tm-btn tm-btn-navy">Unlock the full course — ₹69</Link>
+              : (
+                <button type="button" className="tm-btn tm-btn-navy" onClick={() => navigate(`/learn/typing/m/${resume.slug}`)}>
+                  {isNew ? 'Start — Home row' : `Continue — ${resume.title}`}
+                </button>
+              )}
         <div style={{ font: "500 14px/1.4 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>
-          {courseUnlocked
-            ? `You’re on module ${Math.min(stats.modulesCleared + 1, MODULES.length)} of ${MODULES.length}`
-            : 'Home row is free · the full 11-module course is ₹69'}
-          {stats.streak > 0 && <> · <span style={{ color: '#4A5A70' }}>{stats.streak}-day streak</span></>}
+          {needsAuth
+            ? 'Free during launch — sign in to save your progress across devices'
+            : courseUnlocked
+              ? `You’re on module ${Math.min(stats.modulesCleared + 1, MODULES.length)} of ${MODULES.length}`
+              : `Home row is free · the full ${MODULES.length}-module course is ₹69`}
+          {!needsAuth && stats.streak > 0 && <> · <span style={{ color: '#4A5A70' }}>{stats.streak}-day streak</span></>}
         </div>
       </div>
 

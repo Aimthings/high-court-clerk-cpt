@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../lib/api.js';
 import Keyboard from './Keyboard.jsx';
-import { TypingLine, Stars, Hand, handForKey } from './tmUi.jsx';
+import { TypingLine, Stars, Hand, handForKey, SignInGate } from './tmUi.jsx';
 import { useDrill, fmtTime } from './useDrill.js';
 import { fingerOf, fingerNameOf, FINGER } from './fingerMap.js';
 import {
@@ -38,7 +38,7 @@ function Mark() {
 export default function LessonRunner() {
   const { moduleSlug, lessonSlug } = useParams();
   const navigate = useNavigate();
-  const { user, caps, launchFree } = useAuth();
+  const { user, caps, launchFree, loading: authLoading } = useAuth();
   const module = getModule(moduleSlug);
   const lesson = module?.lessons.find((l) => l.slug === lessonSlug);
   const paywalled = module ? (module.n >= 2 && !(launchFree || (caps || []).includes('typingCourse'))) : false;
@@ -74,6 +74,17 @@ export default function LessonRunner() {
 
   if (!module || !lesson) {
     return <div className="tm page"><p className="tm-sub">That lesson doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
+  }
+
+  if (authLoading) {
+    return <div className="tm tm-runner" style={{ alignItems: 'center', justifyContent: 'center' }}><span style={{ font: "500 14px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Loading…</span></div>;
+  }
+  if (!user) {
+    return (
+      <div className="tm tm-runner" style={{ alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <SignInGate next={`/learn/typing/run/${moduleSlug}/${lessonSlug}`} />
+      </div>
+    );
   }
 
   if (paywalled) {
