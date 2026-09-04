@@ -5,7 +5,7 @@
 export const CATALOG = [
   {
     id: 'typing_course', label: 'Typing Master course', priceFounding: 69, priceStandard: 79, caps: ['typingCourse'], start: '/learn/typing',
-    tag: 'Learn to type', features: ['All 11 learn-to-type modules', 'On-screen finger guidance', 'Saved progress & per-key heat map'],
+    tag: 'Learn to type', features: ['Every learn-to-type module', 'On-screen finger guidance', 'Saved progress & per-key heat map'],
   },
   {
     id: 'typing_complete', label: 'Typing Complete', priceFounding: 99, priceStandard: 114, caps: ['typingCourse', 'typingMocks'], start: '/mocks',

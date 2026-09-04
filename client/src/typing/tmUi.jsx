@@ -80,7 +80,6 @@ export function TypingLine({ chars, size = 26 }) {
         <span key={gi}>
           <span style={{ whiteSpace: 'nowrap' }}>{g.word.map(charSpan)}</span>
           {g.space && charSpan(g.space)}
-          {gi < groups.length - 1 ? ' ' : null}
         </span>
       ))}
     </div>

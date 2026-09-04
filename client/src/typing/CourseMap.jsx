@@ -121,7 +121,7 @@ export default function CourseMap() {
       <div className="tm-eyebrow">Typing Master · new section</div>
       <h1 className="tm-h1" style={{ marginTop: 12 }}>Learn to touch-type</h1>
       <p className="tm-sub" style={{ marginTop: 12, maxWidth: 760 }}>
-        Eleven modules from the home row to exam speed. Finish the path, then take the
+        {MODULES.length} modules from the home row to exam speed. Finish the path, then take the
         graded mock that puts you on the rank list.
       </p>
 
@@ -168,7 +168,7 @@ export default function CourseMap() {
       </div>
 
       {/* module grid */}
-      <div style={{ marginTop: 44 }} className="tm-eyebrow">The path · 11 modules</div>
+      <div style={{ marginTop: 44 }} className="tm-eyebrow">The path · {MODULES.length} modules</div>
       <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 16 }}>
         {MODULES.map((m, i) => <ModuleCard key={m.slug} module={m} state={states[i]} paywalled={!courseUnlocked && m.n >= 2} />)}
       </div>

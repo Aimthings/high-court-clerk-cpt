@@ -49,7 +49,7 @@ export default function ModuleDetail() {
           <div style={{ font: '800 34px/1', color: '#0D2846' }}>🔒</div>
           <div className="tm-h2" style={{ marginTop: 14 }}>{module.title} is part of the paid course</div>
           <p style={{ marginTop: 10, font: "500 15px/1.55 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
-            The Home row module is free to try. Unlock all 11 modules — top row through exam speed — for ₹69.
+            The Home row module is free to try. Unlock every module — top row through exam speed — for ₹69.
           </p>
           <Link to="/pass" className="tm-btn tm-btn-navy" style={{ marginTop: 20, width: '100%' }}>Unlock the full course</Link>
           <div style={{ marginTop: 14 }}><Link to="/learn/typing" style={{ font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>Back to the course</Link></div>

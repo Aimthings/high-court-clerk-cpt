@@ -102,7 +102,8 @@ export default function LessonRunner() {
   const goNext = () => { if (!next) return; setResult(null); setSeed(0); navigate(`/learn/typing/run/${next.m.slug}/${next.l.slug}`); };
 
   const nextChar = drill.nextChar;
-  const hand = nextChar ? handForKey(nextChar, fingerOf, FINGER) : null;
+  const hand = nextChar ? handForKey(nextChar, fingerOf, FINGER) : { active: -1, color: '#8A93A0', finger: 'th' };
+  const fingerLabel = nextChar ? fingerNameOf(nextChar) : 'Done';
 
   if (narrow) {
     return (
@@ -146,34 +147,32 @@ export default function LessonRunner() {
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '32px 20px' }}>
         <div style={{ width: 860, maxWidth: '100%', background: '#fff', border: '1px solid #E6EAF2', borderRadius: 16, boxShadow: '0 6px 24px rgba(15,30,51,.06)', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20, padding: '16px 24px', background: '#F5F7FB', borderBottom: '1px solid #E6EAF2', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20, padding: '14px 24px', height: 74, boxSizing: 'border-box', background: '#F5F7FB', borderBottom: '1px solid #E6EAF2' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 'none' }}>
               <span className="tm-stat-lbl" style={{ marginTop: 0 }}>Next key</span>
               <span style={{ width: 30, height: 30, borderRadius: 8, border: '1px solid #2D6BE4', background: '#2D6BE4', boxShadow: '0 0 0 4px rgba(45,107,228,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', font: "700 15px/1 'JetBrains Mono',monospace", color: '#fff', textTransform: 'none' }}>
                 {nextChar === ' ' ? '␣' : (nextChar || '✓')}
               </span>
             </div>
-            <span style={{ width: 1, alignSelf: 'stretch', background: '#E6EAF2' }} />
-            {hand && hand.finger !== 'th' ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Hand active={hand.active} color={hand.color} />
-                <div>
-                  <div className="tm-stat-lbl" style={{ marginTop: 0 }}>Finger</div>
-                  <div style={{ marginTop: 5, font: "700 13px/1 'Plus Jakarta Sans',sans-serif", color: hand.color }}>{fingerNameOf(nextChar)}</div>
-                </div>
+            <span style={{ width: 1, alignSelf: 'stretch', background: '#E6EAF2', flex: 'none' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: 168, flex: 'none' }}>
+              <Hand active={hand.active} color={hand.color} />
+              <div>
+                <div className="tm-stat-lbl" style={{ marginTop: 0 }}>Finger</div>
+                <div style={{ marginTop: 5, font: "700 13px/1 'Plus Jakarta Sans',sans-serif", color: hand.color }}>{fingerLabel}</div>
               </div>
-            ) : (
-              <div style={{ font: "700 13px/1 'Plus Jakarta Sans',sans-serif", color: '#8A93A0' }}>Thumb · space bar</div>
-            )}
-            <span style={{ width: 1, alignSelf: 'stretch', background: '#E6EAF2' }} />
-            <div style={{ font: `500 13px/1.4 'Plus Jakarta Sans',sans-serif`, color: drill.wrong ? '#D93B47' : '#4A5A70', flex: 1, minWidth: 200 }}>
+            </div>
+            <span style={{ width: 1, alignSelf: 'stretch', background: '#E6EAF2', flex: 'none' }} />
+            <div style={{ font: `500 13px/1.4 'Plus Jakarta Sans',sans-serif`, color: drill.wrong ? '#D93B47' : '#4A5A70', flex: 1, overflow: 'hidden' }}>
               {drill.wrong ? 'That key was wrong — keep going, or backspace to fix it.' : lesson.tip}
             </div>
           </div>
 
-          <div style={{ padding: '34px 30px 26px', textAlign: 'center' }}>
+          <div style={{ padding: '34px 30px 20px', textAlign: 'center' }}>
             <TypingLine chars={drill.chars} />
-            {!drill.started && <div style={{ marginTop: 18, font: "500 13px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Start typing — the clock begins on your first key.</div>}
+            <div style={{ height: 18, marginTop: 16 }}>
+              {!drill.started && <span style={{ font: "500 13px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Start typing — the clock begins on your first key.</span>}
+            </div>
           </div>
 
           <div style={{ display: 'flex', borderTop: '1px solid #E6EAF2', borderBottom: '1px solid #E6EAF2' }}>

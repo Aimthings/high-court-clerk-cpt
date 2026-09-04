@@ -25,6 +25,18 @@ const BIGRAMS = ['th', 'he', 'in', 'er', 'an', 're', 'on', 'at', 'en', 'nd', 'ti
 const COMMON_WORDS = ['the', 'and', 'for', 'you', 'that', 'with', 'have', 'this', 'from', 'they', 'will', 'would', 'there', 'their', 'what', 'about', 'which', 'when', 'make', 'like', 'time', 'just', 'know', 'take', 'into', 'year', 'your', 'good', 'some', 'them', 'other', 'than', 'then', 'look', 'only', 'come', 'over', 'think', 'also', 'back', 'after', 'work', 'first', 'well', 'even', 'want', 'because', 'these', 'give', 'most', 'people', 'could', 'should', 'through', 'before', 'between'];
 const COURT_WORDS = ['court', 'clerk', 'file', 'notice', 'order', 'case', 'bench', 'hearing', 'affidavit', 'petition', 'register', 'summons', 'judgment', 'appeal', 'record', 'cause', 'list', 'oath', 'stamp', 'copy', 'office', 'clause', 'section', 'draft', 'report', 'entry', 'index', 'seal', 'date', 'fee'];
 const CAP_WORDS = ['Delhi', 'India', 'Punjab', 'Court', 'Clerk', 'Ravi', 'Simran', 'Amit', 'Kaur', 'Singh', 'Monday', 'August', 'Chandigarh', 'Haryana', 'Notice', 'Exam', 'Register', 'Bench'];
+// Capitals on LEFT-hand letters (Q-T, A-G, Z-B) — typed with the RIGHT shift.
+const CAP_LEFT = ['Ravi', 'Data', 'Fact', 'Ward', 'Base', 'Case', 'Test', 'Gate', 'Area', 'Star', 'Team', 'Bear', 'Deed', 'Ever', 'Rate'];
+// Capitals on RIGHT-hand letters (Y-P, H-L, N-M) — typed with the LEFT shift.
+const CAP_RIGHT = ['Home', 'Lion', 'Nine', 'Milk', 'Judge', 'Kite', 'Lamp', 'Moon', 'Noun', 'Play', 'Unit', 'Yoke', 'Poll', 'Hunt', 'Mill'];
+const ALLCAPS_WORDS = ['COURT', 'INDIA', 'NOTICE', 'ORDER', 'CLERK', 'EXAM', 'FILE', 'OATH', 'SEAL', 'BENCH', 'RECORD', 'APPEAL', 'PUNJAB', 'HIGH'];
+const CAP_SENTENCES = [
+  'The Court opened on Monday in Chandigarh.',
+  'Ravi and Simran filed the Notice with the Registrar.',
+  'India and Punjab share the High Court at Chandigarh.',
+  'The Clerk signed the Order and sealed the File.',
+  'Amit Kaur typed the Judgment for the August Bench.',
+];
 
 const SENTENCES = [
   'the clerk filed every notice before the court opened.',
@@ -93,19 +105,23 @@ const RAW = [
     ],
   },
   {
+    slug: 'capitals', title: 'Capital letters', goal: 'Shift with the opposite hand — capitals, names and ALL CAPS.',
+    lessons: [
+      L('shift-rule', 'Lesson 1 · The shift rule', 'Shift with the opposite hand', [], 'Pinky', 'Hold Shift with the hand OPPOSITE the letter, tap the letter, then release.', { type: 'words', words: CAP_WORDS, count: 12 }),
+      L('right-shift', 'Lesson 2 · Right-shift capitals', 'Capitals on left-hand letters', [], 'Right pinky', 'Left-hand letter? Hold the RIGHT Shift with your right pinky.', { type: 'words', words: CAP_LEFT, count: 14 }),
+      L('left-shift', 'Lesson 3 · Left-shift capitals', 'Capitals on right-hand letters', [], 'Left pinky', 'Right-hand letter? Hold the LEFT Shift with your left pinky.', { type: 'words', words: CAP_RIGHT, count: 14 }),
+      L('names', 'Lesson 4 · Names & places', 'Proper nouns', [], 'Pinky', 'Capitalise the first letter cleanly, then carry on in lower case.', { type: 'words', words: CAP_WORDS, count: 16 }),
+      L('all-caps', 'Lesson 5 · ALL CAPS', 'Whole words in capitals', [], 'Pinky', 'Keep Shift held (or Caps Lock) for a full capitalised word.', { type: 'words', words: ALLCAPS_WORDS, count: 12 }),
+      L('cap-sentences', 'Lesson 6 · Sentences with capitals', 'Capitals inside real lines', [], 'All', 'Capital at the start and on names — everything else lower case.', { type: 'sentences', sentences: CAP_SENTENCES, count: 2 }),
+      L('cap-check', 'Lesson 7 · Capitals check', 'Put it together', [], 'All', 'Reach your target across mixed-case lines to clear the module.', { type: 'sentences', sentences: CAP_SENTENCES, count: 3 }),
+    ],
+  },
+  {
     slug: 'left-right', title: 'Left & right hand', goal: 'Build each hand on its own, then alternate.',
     lessons: [
       L('left', 'Lesson 1 · Left-hand words', 'Only left-hand keys', [], 'Left hand', 'Words your left hand types alone — Q W E R T · A S D F G · Z X C V B.', { type: 'words', words: LEFT_HAND, count: 16 }),
       L('right', 'Lesson 2 · Right-hand words', 'Only right-hand keys', [], 'Right hand', 'Words your right hand types alone — Y U I O P · H J K L · N M.', { type: 'words', words: RIGHT_HAND, count: 16 }),
       L('alternate', 'Lesson 3 · Alternating hands', 'Both hands, back and forth', [], 'All', 'Fast, even rhythm as the work passes from hand to hand.', { type: 'words', words: [...LEFT_HAND, ...RIGHT_HAND], count: 20 }),
-    ],
-  },
-  {
-    slug: 'capitals', title: 'Capitals & shift', goal: 'Both shift keys with the opposite hand.',
-    lessons: [
-      L('shift-basics', 'Lesson 1 · The shift rule', 'Opposite-hand shift', [], 'Pinky', 'Shift with the hand OPPOSITE the letter, then release.', { type: 'words', words: CAP_WORDS, count: 12 }),
-      L('names', 'Lesson 2 · Names & places', 'Proper nouns', [], 'Pinky', 'Capital first letter — reach the far pinky and let go cleanly.', { type: 'words', words: CAP_WORDS, count: 16 }),
-      L('cap-check', 'Lesson 3 · Capitals check', 'Put it together', [], 'All', 'Reach your target to move on.', { type: 'words', words: CAP_WORDS, count: 20 }),
     ],
   },
   {
