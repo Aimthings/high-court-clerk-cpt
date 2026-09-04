@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './reference.css';
-import { Row1, Row2, Strip, InfoStrip } from './refparts.jsx';
+import { Row2, Strip, InfoStrip } from './refparts.jsx';
 
 // The exam — deck artboard 26. Scoring is LINKED, never restated.
 export default function TheExam() {
@@ -61,10 +61,8 @@ export default function TheExam() {
               <div className="card-h">Dates for this cycle</div>
               <div className="card-meta">As published in the recruitment notice.</div>
             </div>
-            <DateRow label="Written result declared" pill="14 Jul 2026" tone="neutral" />
             <DateRow label="C.P.T. admit card" pill="Awaited" tone="amber" />
-            <DateRow label="C.P.T. window" pill="Oct 2026" tone="blue" />
-            <Row1 label="Centres" val="Chandigarh only" />
+            <DateRow label="C.P.T. window" pill="Tentative" tone="blue" />
             <Strip tone="neutral">
               Dates are copied from the notice on the day it is published, with the date of copying
               shown below.
