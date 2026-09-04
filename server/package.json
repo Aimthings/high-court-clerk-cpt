@@ -22,7 +22,9 @@
     "razorpay": "^2.9.4",
     "pdfkit": "^0.15.0",
     "@formulajs/formulajs": "^4.4.6",
-    "@napi-rs/canvas": "^0.1.65"
+    "@napi-rs/canvas": "^0.1.65",
+    "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.9.15"
   },
   "devDependencies": {
     "vitest": "^2.1.2"

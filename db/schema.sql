@@ -7,12 +7,15 @@ SET NAMES utf8mb4;
 CREATE TABLE IF NOT EXISTS users (
   id            BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   phone         VARCHAR(20) UNIQUE,
-  email         VARCHAR(255),
+  email         VARCHAR(255) UNIQUE,
+  password_hash VARCHAR(255),
+  email_verified TINYINT(1) NOT NULL DEFAULT 0,
   name          VARCHAR(120),
   anon_token    CHAR(36) UNIQUE,
   created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- Legacy phone OTP codes (kept for back-compat; email sign-up uses email_codes).
 CREATE TABLE IF NOT EXISTS otp_codes (
   id          BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   phone       VARCHAR(20) NOT NULL,
@@ -22,6 +25,18 @@ CREATE TABLE IF NOT EXISTS otp_codes (
   consumed_at TIMESTAMP NULL,
   created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX (phone)
+) ENGINE=InnoDB;
+
+-- Email verification codes for sign-up (salted+hashed, TTL + attempt cap).
+CREATE TABLE IF NOT EXISTS email_codes (
+  id          BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  email       VARCHAR(255) NOT NULL,
+  code_hash   CHAR(64) NOT NULL,
+  attempts    TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  expires_at  TIMESTAMP NOT NULL,
+  consumed_at TIMESTAMP NULL,
+  created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (email)
 ) ENGINE=InnoDB;
 
 -- The ONLY table the public rank list may read identity from.

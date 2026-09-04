@@ -17,7 +17,7 @@ const TYPING_SQL = `
            COUNT(*) OVER (PARTITION BY ta.user_id) AS attempts
     FROM typing_attempts ta
     JOIN profiles p ON p.user_id = ta.user_id AND p.listed = 1
-    JOIN users u ON u.id = ta.user_id AND u.phone IS NOT NULL
+    JOIN users u ON u.id = ta.user_id AND u.email_verified = 1
     WHERE ta.rankable = 1 AND ta.status = 'complete'
   ) x
   WHERE rn = 1
@@ -33,7 +33,7 @@ const EXCEL_SQL = `
            COUNT(*) OVER (PARTITION BY ea.user_id) AS attempts
     FROM excel_attempts ea
     JOIN profiles p ON p.user_id = ea.user_id AND p.listed = 1
-    JOIN users u ON u.id = ea.user_id AND u.phone IS NOT NULL
+    JOIN users u ON u.id = ea.user_id AND u.email_verified = 1
     WHERE ea.rankable = 1 AND ea.status = 'submitted'
   ) x
   WHERE rn = 1

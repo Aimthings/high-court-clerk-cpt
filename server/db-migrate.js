@@ -15,7 +15,40 @@ export async function migrate() {
   for (const stmt of statements) {
     await pool.query(stmt);
   }
+  await migrateAuth();
   await seedContent();
+}
+
+// Idempotent column/index adds for the email+password auth (MySQL 8 has no
+// ADD COLUMN IF NOT EXISTS, so guard each change against information_schema).
+async function columnExists(table, column) {
+  const [[r]] = await pool.query(
+    `SELECT COUNT(*) AS n FROM information_schema.columns
+     WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?`,
+    [table, column],
+  );
+  return r.n > 0;
+}
+async function indexExists(table, index) {
+  const [[r]] = await pool.query(
+    `SELECT COUNT(*) AS n FROM information_schema.statistics
+     WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ?`,
+    [table, index],
+  );
+  return r.n > 0;
+}
+async function migrateAuth() {
+  if (!(await columnExists('users', 'password_hash'))) {
+    await pool.query('ALTER TABLE users ADD COLUMN password_hash VARCHAR(255) NULL');
+  }
+  if (!(await columnExists('users', 'email_verified'))) {
+    await pool.query('ALTER TABLE users ADD COLUMN email_verified TINYINT(1) NOT NULL DEFAULT 0');
+  }
+  // Unique email (allows multiple NULLs in MySQL, so legacy phone-only rows are fine).
+  if (!(await indexExists('users', 'email'))) {
+    try { await pool.query('ALTER TABLE users ADD UNIQUE KEY email (email)'); }
+    catch (e) { console.error('users.email unique index skipped:', e.message); }
+  }
 }
 
 async function seedContent() {

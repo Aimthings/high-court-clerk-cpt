@@ -39,7 +39,7 @@ export function Account() {
 
         <div className="card">
           <div className="card-simple-head">Identity</div>
-          <Row1 label="Mobile number" val={<span className="mono">+91 {user.phone}</span>} />
+          <Row1 label="Email" val={<span className="mono">{user.email}</span>} />
           <Row1 label="Handle" val={profile?.handle || '—'} />
           <Row1 label="Pass" val={hasPass
             ? <span className="v-mint">Active · ends {new Date(expiresAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
@@ -55,7 +55,7 @@ export function Account() {
             </button>
           </div>
           <p className="policy-body" style={{ padding: '0 16px 14px', marginTop: 0 }}>
-            Turning this off removes your row from the board. Your number is never shown either way.
+            Turning this off removes your row from the board. Your email is never shown either way.
           </p>
         </div>
 

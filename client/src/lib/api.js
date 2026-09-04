@@ -23,8 +23,10 @@ export const api = {
   submitExcel: (attemptId, workbook) =>
     request('/excel/submit', { method: 'POST', body: { attemptId, workbook } }),
   me: () => request('/auth/me'),
-  sendOtp: (phone) => request('/auth/otp/send', { method: 'POST', body: { phone } }),
-  verifyOtp: (phone, code) => request('/auth/otp/verify', { method: 'POST', body: { phone, code } }),
+  register: (email, password, name) => request('/auth/register', { method: 'POST', body: { email, password, name } }),
+  verifyEmail: (email, code) => request('/auth/verify-email', { method: 'POST', body: { email, code } }),
+  login: (email, password) => request('/auth/login', { method: 'POST', body: { email, password } }),
+  resendCode: (email) => request('/auth/resend-code', { method: 'POST', body: { email } }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   createOrder: () => request('/orders/create', { method: 'POST' }),
   leaderboard: (board) => request(`/leaderboard?board=${board}`),

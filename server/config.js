@@ -42,3 +42,15 @@ export const SMS = {
   senderId: process.env.SMS_SENDER_ID || '',
   dltMessageId: process.env.SMS_DLT_MESSAGE_ID || '',
 };
+
+// Email delivery (SMTP) — used for the sign-up verification code. Defaults suit
+// a Hostinger mailbox (smtp.hostinger.com:465, SSL). With no SMTP_USER/SMTP_PASS
+// the code is logged in dev instead of sent. SMTP_FROM defaults to SMTP_USER.
+export const SMTP = {
+  host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+  port: Number(process.env.SMTP_PORT || 465),
+  user: process.env.SMTP_USER || '',
+  pass: process.env.SMTP_PASS || '',
+  from: process.env.SMTP_FROM || process.env.SMTP_USER || '',
+  fromName: process.env.SMTP_FROM_NAME || 'High Court Clerk CPT',
+};

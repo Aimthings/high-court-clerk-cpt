@@ -19,8 +19,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  const verifyOtp = useCallback(async (phone, code) => {
-    const res = await api.verifyOtp(phone, code);
+  const verifyEmail = useCallback(async (email, code) => {
+    const res = await api.verifyEmail(email, code);
+    await refresh();
+    return res;
+  }, [refresh]);
+
+  const login = useCallback(async (email, password) => {
+    const res = await api.login(email, password);
     await refresh();
     return res;
   }, [refresh]);
@@ -32,8 +38,10 @@ export function AuthProvider({ children }) {
 
   const value = {
     ...state,
-    sendOtp: api.sendOtp,
-    verifyOtp,
+    register: api.register,
+    verifyEmail,
+    login,
+    resendCode: api.resendCode,
     logout,
     refresh,
   };
