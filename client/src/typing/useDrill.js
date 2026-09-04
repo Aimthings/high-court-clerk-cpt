@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 export function useDrill(target, { onComplete } = {}) {
   const [index, setIndex] = useState(0);
   const [wrongFlash, setWrongFlash] = useState(false);
+  const [spaces, setSpaces] = useState(0); // spacebar presses (for the guest trial)
   const [, setTick] = useState(0);
   const results = useRef([]); // per-position correctness
   const startedAt = useRef(null);
@@ -17,7 +18,7 @@ export function useDrill(target, { onComplete } = {}) {
   const done = index >= target.length && target.length > 0;
 
   useEffect(() => {
-    setIndex(0); setWrongFlash(false);
+    setIndex(0); setWrongFlash(false); setSpaces(0);
     results.current = [];
     startedAt.current = null; finishedAt.current = null;
     totals.current = { total: 0, correct: 0 };
@@ -58,6 +59,7 @@ export function useDrill(target, { onComplete } = {}) {
       keyStats.current[kk] = ks;
       totals.current.total += 1; if (matched) totals.current.correct += 1;
       results.current[index] = matched;
+      if (key === ' ') setSpaces((s) => s + 1);
       setWrongFlash(!matched);
       setIndex((i) => i + 1);
     }
@@ -80,7 +82,7 @@ export function useDrill(target, { onComplete } = {}) {
   const tokensDone = target.slice(0, index).trim() ? target.slice(0, index).trim().split(/\s+/).length : 0;
   const nextChar = index < target.length ? target[index] : '';
 
-  return { chars, index, length: target.length, wrong: wrongFlash, wpm, accuracy, elapsedMs, tokensDone, tokensTotal, nextChar, done, started: startedAt.current != null };
+  return { chars, index, length: target.length, wrong: wrongFlash, wpm, accuracy, elapsedMs, tokensDone, tokensTotal, spacesTyped: spaces, nextChar, done, started: startedAt.current != null };
 }
 
 export function fmtTime(ms) {

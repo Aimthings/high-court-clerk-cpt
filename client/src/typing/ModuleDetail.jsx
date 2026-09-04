@@ -41,7 +41,8 @@ export default function ModuleDetail() {
   const module = getModule(moduleSlug);
   if (!module) return <div className="tm page"><p className="tm-sub">That module doesn’t exist. <Link to="/learn/typing">Back to the course</Link>.</p></div>;
 
-  if (!authLoading && !user) {
+  // Guests may open the Home row (a 3-word taste in the runner); other modules need an account.
+  if (!authLoading && !user && module.slug !== 'home-row') {
     return <div className="tm page"><SignInGate next={`/learn/typing/m/${moduleSlug}`} /></div>;
   }
 

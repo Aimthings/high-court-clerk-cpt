@@ -67,6 +67,16 @@ export default function LessonRunner() {
 
   const drill = useDrill(drillTarget, { onComplete });
 
+  // Guests may taste the Home row: after 3 words (3 spacebar presses) send them
+  // to sign in. Other modules need an account up front.
+  const isGuest = !authLoading && !user;
+  const guestTrial = isGuest && module?.slug === 'home-row';
+  const GUEST_WORD_LIMIT = 3;
+  const signInHere = `/sign-in?next=${encodeURIComponent(`/learn/typing/run/${moduleSlug}/${lessonSlug}`)}`;
+  useEffect(() => {
+    if (guestTrial && drill.spacesTyped >= GUEST_WORD_LIMIT) navigate(signInHere);
+  }, [guestTrial, drill.spacesTyped, navigate, signInHere]);
+
   function changeTarget(t) {
     setTarget(t);
     try { localStorage.setItem(TARGET_KEY, String(t)); } catch { /* non-fatal */ }
@@ -79,7 +89,8 @@ export default function LessonRunner() {
   if (authLoading) {
     return <div className="tm tm-runner" style={{ alignItems: 'center', justifyContent: 'center' }}><span style={{ font: "500 14px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Loading…</span></div>;
   }
-  if (!user) {
+  // Guests can only taste the Home row; everything else needs an account.
+  if (isGuest && module.slug !== 'home-row') {
     return (
       <div className="tm tm-runner" style={{ alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <SignInGate next={`/learn/typing/run/${moduleSlug}/${lessonSlug}`} />
@@ -137,6 +148,7 @@ export default function LessonRunner() {
         <span style={{ width: 1, height: 22, background: '#E6EAF2' }} />
         <span style={{ font: "800 15px/1 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.02em', color: '#0D2846' }}>{module.title} · {lesson.title.replace(/^Lesson \d+ · /, '')}</span>
         <span style={{ font: "500 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>{lesson.meta}</span>
+        {guestTrial && <span className="tm-chip tm-chip-blue">Guest preview · {GUEST_WORD_LIMIT} words free</span>}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }} title="Clear the lesson when you reach this accuracy">
           <span style={{ font: "600 12px/1 'Plus Jakarta Sans',sans-serif", color: '#8494A8' }}>Advance at</span>
           <div style={{ display: 'inline-flex', border: '1px solid #E6EAF2', borderRadius: 9, overflow: 'hidden' }}>
