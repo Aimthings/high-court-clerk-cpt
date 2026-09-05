@@ -14,6 +14,7 @@ import PaymentStatus from './pages/PaymentStatus.jsx';
 import RankList from './rank/RankList.jsx';
 import MockList from './pages/MockList.jsx';
 import Home from './pages/Home.jsx';
+import RankPredictor from './pages/RankPredictor.jsx';
 import { Account, NotFound } from './pages/Placeholder.jsx';
 
 // Exam runners are lazy-loaded so the heavy formula engine (formulajs) stays out
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/the-exam" element={<TheExam />} />
         <Route path="/syllabus" element={<Syllabus />} />
         <Route path="/rank" element={<RankList />} />
+        <Route path="/rank-predictor" element={<RankPredictor />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/scoring" element={<Scoring />} />
         <Route path="/contact" element={<Contact />} />

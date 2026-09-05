@@ -43,6 +43,19 @@ export const ROUTES = {
       'The public leaderboard for typing W.P.M. and Excel marks. No account needed to read it. Only exam-mode attempts are ranked; one number per candidate.',
     keywords: ['CPT rank list', 'high court clerk typing leaderboard', 'CPT wpm ranking'],
   },
+  '/rank-predictor': {
+    title: 'Clerk Rank Predictor 2026 — P&H High Court Answer Key',
+    description:
+      'Predict your rank in the P&H High Court / S.S.S.C. Clerk exam 2026. Upload the Commission’s official response-sheet-cum-answer-key PDF, pick your category, and get your exact score with negative marking, section-wise analysis and a predicted rank with expected cutoff.',
+    keywords: [
+      'high court clerk rank predictor 2026',
+      'P&H high court clerk answer key 2026',
+      'clerk exam rank predictor',
+      'clerk expected cutoff 2026',
+      'SSSC clerk answer key 2026',
+      'clerk score calculator',
+    ],
+  },
   '/practice/formulas': {
     title: 'Excel Formula Practice for Clerk C.P.T. — 37 formulas',
     description:
@@ -95,7 +108,7 @@ export const ROUTES = {
 
 // Ordered list of public routes for the sitemap / prerender.
 export const PUBLIC_ROUTES = [
-  '/', '/the-exam', '/syllabus', '/learn/typing', '/practice/formulas', '/rank', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
+  '/', '/the-exam', '/syllabus', '/learn/typing', '/practice/formulas', '/rank', '/rank-predictor', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
 ];
 
 export function metaFor(pathname) {
@@ -104,6 +117,7 @@ export function metaFor(pathname) {
 
 const CRUMB = {
   '/the-exam': 'The exam', '/syllabus': 'Syllabus', '/rank': 'Rank list',
+  '/rank-predictor': 'Rank Predictor',
   '/learn/typing': 'Typing Master', '/practice/formulas': 'Excel formula practice',
   '/pricing': 'Pricing', '/scoring': 'How scoring works', '/contact': 'Contact',
   '/sign-in': 'Sign in', '/pass': 'Get the pass',
@@ -135,6 +149,14 @@ const FAQ = {
       'One-time purchases, no subscription: Typing Master ₹69, Typing Complete ₹99, Excel Mock ₹119, Excel Complete ₹139, or All-Access ₹169 for two months. Everything is free during the launch.'],
     ['Is there a subscription or auto-renewal?',
       'No. Every plan is a one-time payment valid for two months, with no auto-renewal.'],
+  ],
+  '/rank-predictor': [
+    ['How does the Clerk rank predictor work?',
+      'You upload the Commission’s official response-sheet-cum-answer-key PDF for the P&H High Court / S.S.S.C. Clerk exam and choose your category. The tool reads your marked answers and the correct answers, computes your exact score with negative marking, and predicts your rank against other candidates who used the predictor.'],
+    ['When will the 2026 rank predictor open?',
+      'It opens the same day the Commission releases the 2026 answer key. Until then the page shows a preview with a "Coming soon" state.'],
+    ['Is the predicted rank official?',
+      'No. It is a prediction based on the predictor pool and past-year cutoffs — not the official result, and not affiliated with the High Court or the Commission.'],
   ],
 };
 
