@@ -40,9 +40,11 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", 'https://checkout.razorpay.com'],
+      'script-src': ["'self'", 'https://checkout.razorpay.com', 'https://www.googletagmanager.com'],
       'frame-src': ["'self'", 'https://api.razorpay.com', 'https://checkout.razorpay.com'],
-      'connect-src': ["'self'", 'https://api.razorpay.com', 'https://lumberjack.razorpay.com'],
+      'connect-src': ["'self'", 'https://api.razorpay.com', 'https://lumberjack.razorpay.com',
+        'https://www.googletagmanager.com', 'https://www.google-analytics.com',
+        'https://*.google-analytics.com', 'https://*.analytics.google.com'],
       'style-src': ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
       'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
       'img-src': ["'self'", 'data:', 'https:'],
