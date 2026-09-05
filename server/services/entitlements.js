@@ -2,9 +2,22 @@
 // capabilities, no auto-renewal. Capabilities are resolved by unioning the caps
 // of every active entitlement the user holds.
 import { pool } from '../db.js';
-import { capsOf } from '../config.js';
+import { capsOf, isAdminEmail, ALL_CAPS } from '../config.js';
 
 export const PASS_DAYS = 60; // 2 months
+
+// Is this user a master admin (by their account email)? Admins hold every
+// capability at all times. Cheap single lookup; the result is only consulted in
+// capability checks, not on every request.
+export async function isAdminUser(userId) {
+  if (!userId) return false;
+  try {
+    const [[u]] = await pool.query('SELECT email FROM users WHERE id = ?', [userId]);
+    return isAdminEmail(u?.email);
+  } catch {
+    return false;
+  }
+}
 
 // Compute an expiry PASS_DAYS after a start instant (pure — unit-tested).
 export function passExpiry(startAt = new Date()) {
@@ -34,8 +47,11 @@ export async function activeProducts(userId) {
   return rows;
 }
 
-// The union of capabilities the user currently holds.
-export async function activeCapabilities(userId) {
+// The union of capabilities the user currently holds. A master admin always
+// holds every capability. Pass { adminAware: false } to get only the caps a user
+// has actually purchased (used by the admin console to report real access).
+export async function activeCapabilities(userId, { adminAware = true } = {}) {
+  if (adminAware && (await isAdminUser(userId))) return new Set(ALL_CAPS);
   const rows = await activeProducts(userId);
   const caps = new Set();
   for (const r of rows) for (const c of capsOf(r.product)) caps.add(c);
@@ -43,6 +59,7 @@ export async function activeCapabilities(userId) {
 }
 
 export async function hasCapability(userId, cap) {
+  if (await isAdminUser(userId)) return true;
   const caps = await activeCapabilities(userId);
   return caps.has(cap);
 }

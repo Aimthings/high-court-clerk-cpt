@@ -25,6 +25,7 @@ const FormulaLesson = lazy(() => import('./formula/FormulaLesson.jsx'));
 const CourseMap = lazy(() => import('./typing/CourseMap.jsx'));
 const ModuleDetail = lazy(() => import('./typing/ModuleDetail.jsx'));
 const LessonRunner = lazy(() => import('./typing/LessonRunner.jsx'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard.jsx'));
 
 // All routes render under the public layout (nav + footer + SEO) for Phase 1.
 // Signed-in shells and exam runners get their own layouts in later phases.
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/learn/typing" element={<Suspense fallback={<PageFallback />}><CourseMap /></Suspense>} />
         <Route path="/learn/typing/m/:moduleSlug" element={<Suspense fallback={<PageFallback />}><ModuleDetail /></Suspense>} />
         <Route path="/home" element={<Home />} />
+        <Route path="/admin" element={<Suspense fallback={<PageFallback />}><AdminDashboard /></Suspense>} />
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Route>

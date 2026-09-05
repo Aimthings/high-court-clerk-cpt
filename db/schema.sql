@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
   founding_member TINYINT(1) NOT NULL DEFAULT 0,
   name          VARCHAR(120),
   anon_token    CHAR(36) UNIQUE,
+  last_seen     TIMESTAMP NULL,
   created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 

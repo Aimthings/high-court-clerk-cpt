@@ -46,6 +46,23 @@ export const PRODUCTS = {
 // Legacy single pass (pre-catalog) — grants everything so any existing buyer keeps access.
 export const LEGACY_PASS_CAPS = [CAPS.TYPING_COURSE, CAPS.TYPING_MOCKS, CAPS.EXCEL_MOCKS, CAPS.FORMULA_LIBRARY];
 
+// Every capability that exists — a master-admin account holds all of these at all
+// times, regardless of LAUNCH_FREE or any purchase.
+export const ALL_CAPS = Object.values(CAPS);
+
+// Master-admin allowlist (by email, lower-cased). These accounts get complete
+// access to everything at all times and can open the admin console. Set the
+// ADMIN_EMAILS env var (comma-separated) to change or extend it; the site owner
+// is the default. Admin status is a server-side check on the signed-in account's
+// email — it is never taken from the client.
+export const ADMIN_EMAILS = new Set(
+  (process.env.ADMIN_EMAILS || 'mahla.amit1077@gmail.com')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean),
+);
+export const isAdminEmail = (email) => !!email && ADMIN_EMAILS.has(String(email).trim().toLowerCase());
+
 // Server-side price for a product, honouring founding-member status.
 export const priceOf = (product, isFounding = false) => {
   const p = PRODUCTS[product];

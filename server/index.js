@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { existsSync } from 'node:fs';
 import { PORT, NODE_ENV, COOKIE_SECRET } from './config.js';
-import { ping } from './db.js';
+import { ping, pool } from './db.js';
+import { getUserId } from './auth.js';
 import { passagesRouter } from './routes/passages.js';
 import { typingRouter } from './routes/typing.js';
 import { excelRouter } from './routes/excel.js';
@@ -19,6 +20,7 @@ import { leaderboardRouter, profileRouter } from './routes/leaderboard.js';
 import { formulasRouter } from './routes/formulas.js';
 import { typingCourseRouter } from './routes/typingCourse.js';
 import { statsRouter } from './routes/stats.js';
+import { adminRouter } from './routes/admin.js';
 import { startReconcileCron } from './jobs/reconcileOrders.js';
 import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
@@ -68,6 +70,22 @@ app.use(express.json({ limit: '256kb' }));
 
 app.use(rateLimit({ windowMs: 60_000, max: 120, standardHeaders: true, legacyHeaders: false }));
 
+// Throttled last-seen tracker — powers the admin dashboard's live "online now"
+// count. Writes at most once per user per 60s, so it never adds a DB write to
+// the hot path of an active session.
+const lastSeenTouch = new Map();
+app.use((req, _res, next) => {
+  const uid = getUserId(req);
+  if (uid) {
+    const now = Date.now();
+    if (now - (lastSeenTouch.get(uid) || 0) > 60_000) {
+      lastSeenTouch.set(uid, now);
+      pool.query('UPDATE users SET last_seen = NOW() WHERE id = ?', [uid]).catch(() => {});
+    }
+  }
+  next();
+});
+
 app.get('/api/health', async (_req, res) => {
   const db = await ping();
   res.json({ status: 'ok', db, env: NODE_ENV });
@@ -83,6 +101,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/formulas', formulasRouter);
 app.use('/api/typing-course', typingCourseRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/admin', adminRouter);
 
 // Unknown API routes return JSON, not HTML.
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));

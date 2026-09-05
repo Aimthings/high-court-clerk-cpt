@@ -88,7 +88,7 @@ try {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap);
 
-  const robots = `User-agent: *\nAllow: /\nDisallow: /pass/status\nDisallow: /account\n\nSitemap: ${SITE.url}/sitemap.xml\n`;
+  const robots = `User-agent: *\nAllow: /\nDisallow: /pass/status\nDisallow: /account\nDisallow: /admin\n\nSitemap: ${SITE.url}/sitemap.xml\n`;
   fs.writeFileSync(path.join(dist, 'robots.txt'), robots);
   console.log('wrote sitemap.xml + robots.txt');
 } finally {

@@ -51,6 +51,10 @@ async function migrateAuth() {
     const { LAUNCH_FREE } = await import('./config.js');
     if (LAUNCH_FREE) await pool.query('UPDATE users SET founding_member = 1');
   }
+  // last_seen powers the admin dashboard's "online now" count.
+  if (!(await columnExists('users', 'last_seen'))) {
+    await pool.query('ALTER TABLE users ADD COLUMN last_seen TIMESTAMP NULL');
+  }
   // Unique email (allows multiple NULLs in MySQL, so legacy phone-only rows are fine).
   if (!(await indexExists('users', 'email'))) {
     try { await pool.query('ALTER TABLE users ADD UNIQUE KEY email (email)'); }

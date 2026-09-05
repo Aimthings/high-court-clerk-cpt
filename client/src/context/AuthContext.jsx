@@ -4,12 +4,12 @@ import { api } from '../lib/api.js';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [state, setState] = useState({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: true, founding: false, loading: true });
+  const [state, setState] = useState({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: true, founding: false, admin: false, loading: true });
 
   const refresh = useCallback(async () => {
     try {
       const me = await api.me();
-      setState({ user: me.user, profile: me.profile || null, hasPass: me.hasPass, expiresAt: me.expiresAt, caps: me.caps || [], launchFree: me.launchFree !== false, founding: !!me.founding, loading: false });
+      setState({ user: me.user, profile: me.profile || null, hasPass: me.hasPass, expiresAt: me.expiresAt, caps: me.caps || [], launchFree: me.launchFree !== false, founding: !!me.founding, admin: !!me.admin, loading: false });
       return me;
     } catch {
       setState((s) => ({ ...s, loading: false }));
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     await api.logout();
-    setState((s) => ({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: s.launchFree, founding: false, loading: false }));
+    setState((s) => ({ user: null, profile: null, hasPass: false, expiresAt: null, caps: [], launchFree: s.launchFree, founding: false, admin: false, loading: false }));
   }, []);
 
   const value = {

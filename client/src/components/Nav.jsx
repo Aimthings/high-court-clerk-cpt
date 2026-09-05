@@ -5,7 +5,7 @@ import './nav.css';
 // Public top nav — 60px white bar on a hairline (deck artboard 16).
 // Blue is only ever a link / active tab; navy is only ever the button fill.
 export default function Nav() {
-  const { user, hasPass, expiresAt } = useAuth();
+  const { user, hasPass, expiresAt, admin } = useAuth();
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -20,6 +20,7 @@ export default function Nav() {
           <NavLink to="/practice/formulas" className="nav-link">Formulas</NavLink>
           <NavLink to="/rank" className="nav-link">Rank list</NavLink>
           <NavLink to="/pricing" className="nav-link">Pricing</NavLink>
+          {admin && <NavLink to="/admin" className="nav-link">Admin</NavLink>}
         </nav>
         {user ? (
           <Link to="/account" className="nav-account">

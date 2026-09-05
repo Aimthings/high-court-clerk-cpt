@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { pool } from '../db.js';
 import { sendVerificationEmail } from '../email.js';
 import { activePass, activeCapabilities } from '../services/entitlements.js';
-import { LAUNCH_FREE } from '../config.js';
+import { LAUNCH_FREE, isAdminEmail } from '../config.js';
 import {
   hashCode, generateCode, setSession, clearSession, getUserId, getAnon, clearAnon, ensureAnon,
 } from '../auth.js';
@@ -196,6 +196,7 @@ authRouter.get('/me', async (req, res, next) => {
       caps,
       launchFree: LAUNCH_FREE,
       founding: user.founding_member === 1,
+      admin: isAdminEmail(user.email),
     });
   } catch (e) { return next(e); }
 });
