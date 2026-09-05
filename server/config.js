@@ -87,11 +87,12 @@ export const COOKIE_SECRET = process.env.COOKIE_SECRET || 'dev-only-change-me';
 // off => the page shows the "coming soon" state to everyone). Admins can always
 // use it, so the full flow can be tested before the 2026 answer key is out.
 export const RANK_PREDICTOR_LIVE = process.env.RANK_PREDICTOR_LIVE === 'true';
-// Marking scheme (per question). Negative marking is 0 by default; set
-// RANK_NEG_MARK once the official 2026 notice specifies it.
+// Marking scheme (per question): +1 for a correct answer, −0.25 for a wrong one,
+// 0 for unattempted. Override with RANK_POS_MARK / RANK_NEG_MARK if the official
+// 2026 notice specifies different values.
 export const RANK_MARKING = {
   pos: Number(process.env.RANK_POS_MARK || 1),
-  neg: Number(process.env.RANK_NEG_MARK || 0),
+  neg: process.env.RANK_NEG_MARK !== undefined ? Number(process.env.RANK_NEG_MARK) : 0.25,
 };
 export const RANK_CATEGORIES = ['General', 'EWS', 'SC', 'BC-A', 'BC-B', 'Ex-serviceman', 'PwD'];
 // Optional projection inputs (fill from the official notice for a tighter rank).
