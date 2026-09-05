@@ -3,10 +3,12 @@
 // All 37 formulas always exist. This module decides, for a visitor who has NOT
 // bought Excel practice, which formulas are FREE (open), which are LOCKED
 // (visible with a lock chip, click opens the upsell) and which are HIDDEN
-// (absent from the list entirely). Buyers — and everyone during the free
-// launch — see every formula unlocked.
+// (absent from the list entirely). Only buyers of the Formula Library capability
+// see every formula unlocked — the free launch does NOT unlock formulas (product
+// decision: formulas stay on the free/locked map at all times).
 
-import { capabilityOk } from './requirePass.js';
+import { getUserId } from './auth.js';
+import { hasCapability } from './services/entitlements.js';
 import { CAPS } from './config.js';
 
 // The free set: the first formula of each track, plus the early Math & stats
@@ -28,11 +30,14 @@ export const isFreeFormula = (slug) => FREE_FORMULAS.has(slug);
 export const isHiddenFormula = (slug) => HIDDEN_FORMULAS.has(slug);
 
 // Does this request come from someone who may open EVERY formula?
-// Unlocked while the launch is free, or for anyone holding the Formula Library
-// capability (Excel Complete / All-Access). Otherwise the locked preview applies.
+// Only a holder of the Formula Library capability (Excel Complete / All-Access).
+// The free launch does NOT unlock formulas — the locked preview always applies to
+// non-buyers, so signed-in visitors during the launch still see free/locked.
 export async function hasExcelAccess(req) {
+  const userId = getUserId(req);
+  if (!userId) return false;
   try {
-    return await capabilityOk(req, CAPS.FORMULA_LIBRARY);
+    return await hasCapability(userId, CAPS.FORMULA_LIBRARY);
   } catch {
     return false; // DB hiccup: fail closed to the locked preview, never crash
   }

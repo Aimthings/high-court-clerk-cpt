@@ -4,9 +4,13 @@
 export const PORT = Number(process.env.PORT || 4000);
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Free-launch master switch. While true, everything is unlocked (typing mocks,
-// Excel mocks and every formula). Flip to false (LAUNCH_FREE=false in the env)
-// to end the launch and apply the per-formula lock map to non-buyers.
+// Free-launch master switch. While true, LAUNCH_FREE unlocks the paid areas for
+// everyone signed in — the Typing Master course and all typing + Excel mocks.
+// EXCEPTION: the Formula Library always follows its free/locked map (see
+// access.js), so formulas are NOT fully unlocked even during the launch.
+// Flip to false (set env LAUNCH_FREE=false, then redeploy) to end the launch:
+// non-buyers then get only the Home row, the first typing mock and the first
+// Excel mock, everything else gated to the matching purchase.
 export const LAUNCH_FREE = process.env.LAUNCH_FREE !== 'false';
 
 export const DB = {
