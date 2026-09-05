@@ -92,8 +92,20 @@ export default function WorkbookPane({
                           autoFocus
                           onChange={(e) => setCell(ref, e.target.value)}
                           onKeyDown={(e) => {
+                            // Arrow keys move between cells, just like Excel. Up/Down
+                            // always navigate; Left/Right navigate only when the caret
+                            // sits at the edge of the text, so you can still edit within
+                            // a cell's contents. Enter goes down, Tab goes right.
                             if (e.key === 'Enter') { e.preventDefault(); move(1, 0); }
                             else if (e.key === 'Tab') { e.preventDefault(); move(0, 1); }
+                            else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1, 0); }
+                            else if (e.key === 'ArrowDown') { e.preventDefault(); move(1, 0); }
+                            else if (e.key === 'ArrowLeft') {
+                              if (e.target.selectionStart === 0 && e.target.selectionEnd === 0) { e.preventDefault(); move(0, -1); }
+                            } else if (e.key === 'ArrowRight') {
+                              const end = e.target.value.length;
+                              if (e.target.selectionStart === end && e.target.selectionEnd === end) { e.preventDefault(); move(0, 1); }
+                            }
                           }}
                           spellCheck={false}
                         />

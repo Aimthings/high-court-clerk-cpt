@@ -105,6 +105,9 @@ export default function ExcelMock() {
         <div className="xl-header-title">{attempt.spec.title} · Spreadsheet practical</div>
         <span className="pill pill-blue pill-sans">Part I · MS Excel</span>
         <span className="xl-header-meta">Practical exercise · 10 marks · 4 to pass · no live marking</span>
+        <div className="xl-header-timer">
+          <Timer remainingMs={remainingMs} totalMs={totalMsRef.current} stopped={locked} size={32} />
+        </div>
       </header>
 
       <div className="xl-body">
@@ -117,7 +120,6 @@ export default function ExcelMock() {
       </div>
 
       <footer className="xl-status">
-        <Timer remainingMs={remainingMs} totalMs={totalMsRef.current} stopped={locked} size={34} />
         <div className="xl-status-marks num">{marksLine}</div>
         {phase === 'done'
           ? <Link to="/mocks" className="btn btn-primary xl-submit">View another mock</Link>
