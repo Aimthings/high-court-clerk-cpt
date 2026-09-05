@@ -143,28 +143,30 @@ export default function CourseMap() {
 
       {isNew && <div style={{ marginTop: 32 }}><Onboarding /></div>}
 
-      {/* finger legend + keyboard */}
+      {/* finger system: full keyboard on top, then legend + hands side by side */}
       <div style={{ marginTop: 40 }} className="tm-eyebrow">The finger system</div>
-      <div style={{ marginTop: 16, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <div className="tm-card" style={{ flex: 1, minWidth: 360, padding: '24px 26px' }}>
-          <div style={{ font: "700 18px/1.2 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.015em' }}>Eight muted finger hues</div>
-          <div style={{ marginTop: 8, font: "500 14px/1.5 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
-            One hue per finger; thumbs share a neutral slate. Chosen away from the app’s
-            navy, blue, mint, amber and rose so a tinted key never reads as a verdict.
-          </div>
-          <div style={{ marginTop: 18, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 22px' }}>
-            {LEGEND.map(([f, keys]) => (
-              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ width: 20, height: 20, borderRadius: 6, background: FINGER[f], flex: 'none' }} />
-                <span style={{ font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>{FINGER_NAME[f]}</span>
-                <span className="num" style={{ marginLeft: 'auto', font: "500 11px/1 'JetBrains Mono',monospace", color: '#8494A8' }}>{keys}</span>
-              </div>
-            ))}
-          </div>
+      <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="tm-card" style={{ padding: '26px 26px', display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
+          <Keyboard mode="tint" keySize={44} />
         </div>
-        <div className="tm-card" style={{ padding: '24px 26px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22, flex: 1, minWidth: 360 }}>
-          <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto', maxWidth: '100%' }}><Keyboard mode="tint" keySize={38} /></div>
-          <div style={{ width: '100%', borderTop: '1px solid var(--tm-line-2)', paddingTop: 18 }}>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'stretch' }}>
+          <div className="tm-card" style={{ flex: '1 1 340px', minWidth: 300, padding: '24px 26px' }}>
+            <div style={{ font: "700 18px/1.2 'Plus Jakarta Sans',sans-serif", letterSpacing: '-0.015em' }}>Eight muted finger hues</div>
+            <div style={{ marginTop: 8, font: "500 14px/1.5 'Plus Jakarta Sans',sans-serif", color: '#4A5A70' }}>
+              One hue per finger; thumbs share a neutral slate. Chosen away from the app’s
+              navy, blue, mint, amber and rose so a tinted key never reads as a verdict.
+            </div>
+            <div style={{ marginTop: 18, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 22px' }}>
+              {LEGEND.map(([f, keys]) => (
+                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ width: 20, height: 20, borderRadius: 6, background: FINGER[f], flex: 'none' }} />
+                  <span style={{ font: "600 13px/1 'Plus Jakarta Sans',sans-serif" }}>{FINGER_NAME[f]}</span>
+                  <span className="num" style={{ marginLeft: 'auto', font: "500 11px/1 'JetBrains Mono',monospace", color: '#8494A8' }}>{keys}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="tm-card" style={{ flex: '1 1 340px', minWidth: 300, padding: '24px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className="tm-stat-lbl" style={{ textAlign: 'center' }}>Where each finger rests</div>
             <div style={{ marginTop: 14 }}><HandsRest /></div>
           </div>
