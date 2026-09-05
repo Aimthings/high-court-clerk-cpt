@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { Upsell } from '../components/Upsell.jsx';
+import { GUEST_FREE_FORMULA } from './FormulaLibrary.jsx';
 import { FormulaLessonSkeleton } from '../components/Skeletons.jsx';
 import MiniSheet from './MiniSheet.jsx';
 import '../pages/reference.css';
@@ -10,6 +12,8 @@ import './formula.css';
 // A single formula lesson: tutorial + a graded practice on a live mini-sheet.
 export default function FormulaLesson() {
   const { slug } = useParams();
+  const { user, loading: authLoading } = useAuth();
+  const isGuest = !authLoading && !user;
   const [lesson, setLesson] = useState(null);
   const [error, setError] = useState('');
   const [formula, setFormula] = useState('');
@@ -30,8 +34,29 @@ export default function FormulaLesson() {
     catch (err) { setError(err.message); } finally { setBusy(false); }
   }
 
+  // Guests may only practise SUM; every other formula needs an account. Checked
+  // before anything API-dependent so a guest never depends on the lesson fetch.
+  if (isGuest && slug !== GUEST_FREE_FORMULA) {
+    return (
+      <div className="page centre-wrap">
+        <div className="card-420">
+          <div className="card card-pad" style={{ textAlign: 'center' }}>
+            <div style={{ font: '800 34px/1', color: 'var(--navy)' }}>🔒</div>
+            <div className="card-h" style={{ marginTop: 12, fontSize: 20 }}>Sign in to practise this formula</div>
+            <p className="secondary" style={{ marginTop: 10, fontSize: 13.5, lineHeight: 1.55 }}>
+              <b className="mono">SUM</b> is free to try. Create a free account to practise all 37 formulas — it’s
+              free during the launch, and early members keep founding perks.
+            </p>
+            <Link to={`/sign-in?next=${encodeURIComponent(`/practice/formulas/${slug}`)}`} className="btn btn-primary btn-block" style={{ marginTop: 16 }}>Create free account · sign in</Link>
+            <Link to="/practice/formulas" className="link-btn" style={{ display: 'inline-block', marginTop: 14 }}>Back to the library</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (error) return <div className="page centre-wrap"><div className="card-420" style={{ textAlign: 'center' }}><p className="secondary">{error}</p><Link to="/practice/formulas" className="btn btn-primary" style={{ marginTop: 16 }}>Back to the library</Link></div></div>;
-  if (!lesson) return <FormulaLessonSkeleton />;
+  if (authLoading || !lesson) return <FormulaLessonSkeleton />;
 
   // Locked formula (non-buyer, launch ended): show the upsell in place of the
   // lesson (deck 29·L → 32). No tutorial or answer key is sent for these.
