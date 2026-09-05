@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { MockGridSkeleton } from '../components/Skeletons.jsx';
 import './reference.css';
 import './mocklist.css';
@@ -9,9 +10,15 @@ import './mocklist.css';
 // Loading is a skeleton at the real row geometry; free items are open, the rest
 // are gated (requirePass lands in Phase 4).
 export default function MockList() {
+  const { caps, launchFree } = useAuth();
   const [mocks, setMocks] = useState(null);
   const [passages, setPassages] = useState(null);
   const [error, setError] = useState('');
+
+  // Mirror the server gate (requirePass.capabilityOk): during the launch every
+  // item is open to everyone; otherwise a gated item needs its capability.
+  const canExcel = (m) => m.is_free || launchFree || (caps || []).includes('excelMocks');
+  const canTyping = (p) => p.is_free || launchFree || (caps || []).includes('typingMocks');
 
   useEffect(() => {
     api.listMocks().then((d) => setMocks(d.mocks)).catch((e) => setError(e.message));
@@ -52,7 +59,7 @@ export default function MockList() {
                 <div className="card-meta">Tier {m.difficulty} · {m.totalMarks} marks · {m.passMarks} to pass</div>
               </div>
               <div className="mock-card-foot">
-                {m.is_free
+                {canExcel(m)
                   ? <Link to={`/mocks/${m.code}/excel`} className="btn btn-ghost btn-block">Start 10-minute practical</Link>
                   : <Link to="/pass" className="btn btn-ghost btn-block">Unlock · Excel Mock ₹119</Link>}
               </div>
@@ -76,7 +83,7 @@ export default function MockList() {
                 <div className="card-meta">{p.category} · Part II — Typing</div>
               </div>
               <div className="mock-card-foot">
-                {p.is_free
+                {canTyping(p)
                   ? <Link to={`/mocks/${p.slug}/run?mode=practice`} className="btn btn-ghost btn-block">Start 10-minute test</Link>
                   : <Link to="/pass" className="btn btn-ghost btn-block">Unlock · Typing Complete ₹99</Link>}
               </div>
