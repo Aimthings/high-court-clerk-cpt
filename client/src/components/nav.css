@@ -37,6 +37,13 @@
 }
 .nav-link:hover { color: var(--ink); }
 .nav-link.active { color: var(--blue); } /* blue = active tab */
+.nav-rp { position: relative; display: inline-flex; align-items: center; }
+.nav-badge {
+  margin-left: 6px; background: var(--blue); color: #fff;
+  border-radius: 6px; padding: 2px 7px;
+  font: 700 9.5px/1 'Plus Jakarta Sans', sans-serif; letter-spacing: .01em;
+  white-space: nowrap; box-shadow: 0 1px 3px rgba(45, 107, 228, .3);
+}
 .nav-signin {
   margin-left: auto;
   font-weight: 700;

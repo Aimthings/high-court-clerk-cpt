@@ -1,11 +1,17 @@
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../lib/api.js';
 import './nav.css';
 
 // Public top nav — 60px white bar on a hairline (deck artboard 16).
 // Blue is only ever a link / active tab; navy is only ever the button fill.
 export default function Nav() {
   const { user, hasPass, expiresAt, admin } = useAuth();
+  // Show a "Coming soon" badge on Rank Predictor until it's live for the viewer
+  // (hidden for admins, and for everyone once RANK_PREDICTOR_LIVE=true).
+  const [rankLive, setRankLive] = useState(true);
+  useEffect(() => { api.rankConfig().then((c) => setRankLive(!!c.live)).catch(() => setRankLive(true)); }, [user]);
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -19,7 +25,10 @@ export default function Nav() {
           <NavLink to="/syllabus" className="nav-link">Syllabus</NavLink>
           <NavLink to="/practice/formulas" className="nav-link">Formulas</NavLink>
           <NavLink to="/rank" className="nav-link">Rank list</NavLink>
-          <NavLink to="/rank-predictor" className="nav-link">Rank Predictor</NavLink>
+          <span className="nav-rp">
+            <NavLink to="/rank-predictor" className="nav-link">Rank Predictor</NavLink>
+            {!rankLive && <span className="nav-badge">Coming soon</span>}
+          </span>
           <NavLink to="/pricing" className="nav-link">Pricing</NavLink>
           {admin && <NavLink to="/admin" className="nav-link">Admin</NavLink>}
         </nav>
