@@ -65,8 +65,8 @@
 .rr-subname { width: 160px; flex: none; font: 600 13.5px/1.2 'Plus Jakarta Sans', sans-serif; color: #0F1E33; }
 .rr-subbar { flex: 1; height: 10px; border-radius: 5px; background: #EEF1F6; overflow: hidden; }
 .rr-subbar span { display: block; height: 100%; border-radius: 5px; background: #6B7A90; }
-.rr-subscore { width: 64px; flex: none; text-align: right; font: 700 13px/1 'JetBrains Mono', monospace; color: #0F1E33; }
-.rr-subacc { width: 48px; flex: none; text-align: right; font: 700 13px/1 'JetBrains Mono', monospace; }
+.rr-subscore { width: 92px; flex: none; text-align: right; white-space: nowrap; font: 700 13px/1 'JetBrains Mono', monospace; color: #0F1E33; }
+.rr-subacc { width: 52px; flex: none; text-align: right; white-space: nowrap; font: 700 13px/1 'JetBrains Mono', monospace; }
 
 /* cohort */
 .rr-cohort-legend { margin-top: 16px; display: flex; gap: 20px; flex-wrap: wrap; }
