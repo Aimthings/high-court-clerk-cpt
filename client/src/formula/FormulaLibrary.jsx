@@ -39,13 +39,13 @@ export default function FormulaLibrary() {
             </p>
             {!unlocked && (
               <div className="fl-preview-note">
-                You're previewing the free formulas. Unlock all 35 for ₹119.
+                You're previewing the free formulas. Unlock all 37 with Excel Complete for ₹139.
                 <span className="fl-lock-legend"><LockGlyph /><span>Locked</span></span>
               </div>
             )}
           </div>
           {!unlocked && (
-            <Link to="/pass?product=excel" className="btn btn-primary fl-unlock-cta">Unlock Excel · ₹119</Link>
+            <Link to="/pass" className="btn btn-primary fl-unlock-cta">Unlock Excel Complete · ₹139</Link>
           )}
         </div>
       </div>

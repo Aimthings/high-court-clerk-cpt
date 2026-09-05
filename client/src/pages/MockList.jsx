@@ -54,7 +54,7 @@ export default function MockList() {
               <div className="mock-card-foot">
                 {m.is_free
                   ? <Link to={`/mocks/${m.code}/excel`} className="btn btn-ghost btn-block">Start 10-minute practical</Link>
-                  : <Link to="/pass" className="btn btn-ghost btn-block">Unlock with the ₹119 pass</Link>}
+                  : <Link to="/pass" className="btn btn-ghost btn-block">Unlock · Excel Mock ₹119</Link>}
               </div>
             </div>
           ))}
@@ -78,7 +78,7 @@ export default function MockList() {
               <div className="mock-card-foot">
                 {p.is_free
                   ? <Link to={`/mocks/${p.slug}/run?mode=practice`} className="btn btn-ghost btn-block">Start 10-minute test</Link>
-                  : <Link to="/pass" className="btn btn-ghost btn-block">Unlock with the ₹119 pass</Link>}
+                  : <Link to="/pass" className="btn btn-ghost btn-block">Unlock · Typing Complete ₹99</Link>}
               </div>
             </div>
           ))}

@@ -74,7 +74,7 @@ export function Account() {
         {msg && <div className="strip strip-mint" style={{ marginTop: 12, borderRadius: 'var(--r-btn)' }}>{msg}</div>}
         {err && <div className="strip strip-rose" style={{ marginTop: 12, borderRadius: 'var(--r-btn)' }}><span className="dot" style={{ background: 'var(--rose)' }}>!</span>{err}</div>}
 
-        {!hasPass && <Link to="/pass" className="btn btn-primary btn-block" style={{ marginTop: 16 }}>Get the ₹119 pass</Link>}
+        {!hasPass && <Link to="/pass" className="btn btn-primary btn-block" style={{ marginTop: 16 }}>See all plans · from ₹69</Link>}
         <button className="btn btn-ghost btn-block" style={{ marginTop: 12 }} onClick={logout}>Sign out</button>
       </div>
     </div>

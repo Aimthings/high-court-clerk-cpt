@@ -17,7 +17,7 @@ export default function Landing() {
           </p>
           <div className="hero-cta">
             <Link to="/mocks" className="btn btn-primary">Take a free mock</Link>
-            <span className="hero-cta-note">No sign-up for the first mock · full access ₹119 for 45 days</span>
+            <span className="hero-cta-note">No sign-up for the first mock · all-access ₹169 for 2 months</span>
           </div>
           <div className="stats hero-stats">
             <Stat n="12,480" k="Candidates ranked" />
@@ -100,7 +100,7 @@ export default function Landing() {
         </div>
 
         <aside className="rail">
-          <h2 className="section-label">One price</h2>
+          <h2 className="section-label">Full access</h2>
           <PriceCard />
           <p className="fineprint">
             The first mock needs no sign-up and no payment. UPI, card or netbanking after that.
@@ -175,18 +175,21 @@ export function PriceCard() {
   return (
     <div className="card price-card">
       <div className="price-head">
-        <div className="price-amount num">₹119</div>
-        <div className="price-term">45 days · no auto-renewal</div>
+        <div className="price-amount num">₹169</div>
+        <div className="price-term">All-Access · 2 months · no auto-renewal</div>
       </div>
       <ul className="price-features">
-        <PriceFeature>25 Excel mocks · 125 graded questions</PriceFeature>
-        <PriceFeature>60 court-English passages</PriceFeature>
-        <PriceFeature>Printed-passage exam mode with A4 PDFs</PriceFeature>
-        <PriceFeature>Mistake breakdown and key heat map</PriceFeature>
+        <PriceFeature>Typing Master course + every typing mock</PriceFeature>
+        <PriceFeature>Every Excel mock · 125 graded questions</PriceFeature>
+        <PriceFeature>Full Formula Library — 37 lessons</PriceFeature>
+        <PriceFeature>Exam mode, rank list & mistake breakdown</PriceFeature>
       </ul>
       <div className="price-cta">
         <Link to="/mocks" className="btn btn-primary btn-block">Take a free mock</Link>
       </div>
+      <p className="fineprint" style={{ textAlign: 'center', marginTop: 10 }}>
+        Or pick a single paper from ₹69 · <Link to="/pricing" className="link-btn">see all plans</Link>
+      </p>
     </div>
   );
 }

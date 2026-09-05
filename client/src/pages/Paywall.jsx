@@ -7,7 +7,7 @@ import { CATALOG } from '../lib/catalog.js';
 import './reference.css';
 import './pricing.css';
 
-// Unlock — the product catalog. One-time purchases, 45 days, no auto-renewal.
+// Unlock — the product catalog. One-time purchases, 2 months, no auto-renewal.
 // While the launch is free, everything is open and the cards link to the content
 // instead of a checkout.
 const CHECKOUT_SRC = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -49,7 +49,7 @@ export default function Paywall() {
         currency: order.currency,
         order_id: order.razorpayOrderId,
         name: 'High Court Clerk CPT',
-        description: `${p.label} · 45 days`,
+        description: `${p.label} · 2 months`,
         handler: async () => { await refresh(); navigate('/pass/status?state=success'); },
         modal: { ondismiss: () => setBusy('') },
         theme: { color: '#0D2846' },
@@ -65,7 +65,7 @@ export default function Paywall() {
       <div className="ref-header">
         <h1 className="page-title">Unlock full practice</h1>
         <p className="page-sub">
-          One-time purchases. 45 days of access, no auto-renewal. Pick just the paper you need,
+          One-time purchases. 2 months of access, no auto-renewal. Pick just the paper you need,
           or take everything.
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function Paywall() {
               <div className="tier-tag">{p.tag}</div>
               <div className="tier-name">{p.label}</div>
               <div className="tier-price num">₹{priceOf(p)}</div>
-              <div className="tier-term">{showFounding ? 'Founding-member rate · 45 days' : '45 days · no auto-renewal'}</div>
+              <div className="tier-term">{showFounding ? 'Founding-member rate · 2 months' : '2 months · no auto-renewal'}</div>
               <div className="tier-feats">
                 {p.features.map((f) => (
                   <div key={f} className="tier-feat"><span className="price-tick">✓</span><span>{f}</span></div>

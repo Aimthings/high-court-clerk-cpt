@@ -6,16 +6,16 @@ import './upsell.css';
 // unlocks, one navy button with the exact price, and a "See what's included" link.
 const PRODUCTS = {
   excel: {
-    title: "You've used your 7 free formula practices",
-    body: 'Unlock all 35 formulas and every Excel mock. Your practice so far is saved.',
-    cta: 'Unlock Excel practice · ₹119',
-    to: '/pass?product=excel',
+    title: "You've used your free formula practices",
+    body: 'Unlock all 37 formulas and every Excel mock. Your practice so far is saved.',
+    cta: 'Unlock Excel Complete · ₹139',
+    to: '/pass',
   },
   typing: {
-    title: "You've used your 5 free typing mocks",
+    title: "You've used your free typing mock",
     body: 'Unlock every typing mock, passage and W.P.M. report. Your practice so far is saved.',
-    cta: 'Unlock all typing · ₹79',
-    to: '/pass?product=typing',
+    cta: 'Unlock Typing Complete · ₹99',
+    to: '/pass',
   },
 };
 

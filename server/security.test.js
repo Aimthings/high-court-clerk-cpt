@@ -36,11 +36,11 @@ describe('pricing + entitlement', () => {
   it('price is the server constant 11900 paise (₹119)', () => {
     expect(PRICES.pass119).toBe(11900);
   });
-  it('pass expiry is exactly 45 days after start', () => {
+  it('pass expiry is exactly PASS_DAYS (2 months) after start', () => {
     const start = new Date('2026-09-02T10:00:00Z');
     const end = passExpiry(start);
-    expect(PASS_DAYS).toBe(45);
-    expect(end.getTime() - start.getTime()).toBe(45 * 24 * 60 * 60 * 1000);
+    expect(PASS_DAYS).toBe(60);
+    expect(end.getTime() - start.getTime()).toBe(60 * 24 * 60 * 60 * 1000);
   });
 });
 

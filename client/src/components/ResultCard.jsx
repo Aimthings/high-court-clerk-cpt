@@ -80,8 +80,8 @@ export default function ResultCard({ result }) {
           <aside className="ref-rail stack">
             <div className="card card-pad result-unlock">
               <div>
-                <div className="muted" style={{ fontSize: 11 }}>Unlock all 25 mocks</div>
-                <div className="num" style={{ fontWeight: 800, fontSize: 20, marginTop: 5 }}>₹119</div>
+                <div className="muted" style={{ fontSize: 11 }}>Unlock full practice</div>
+                <div className="num" style={{ fontWeight: 800, fontSize: 20, marginTop: 5 }}>from ₹69</div>
               </div>
               <Link to="/pass" className="btn btn-primary">Unlock</Link>
             </div>

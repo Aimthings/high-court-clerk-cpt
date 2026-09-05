@@ -74,7 +74,7 @@ export const ROUTES = {
   '/pass': {
     title: 'Unlock full practice · High Court Clerk CPT',
     description:
-      'Unlock the practice you need: Typing Master ₹69, Typing Complete ₹99, Excel Mock ₹119, Excel Complete ₹139, or everything with All-Access ₹169. One-time, 45 days, no auto-renewal.',
+      'Unlock the practice you need: Typing Master ₹69, Typing Complete ₹99, Excel Mock ₹119, Excel Complete ₹139, or everything with All-Access ₹169. One-time, 2 months, no auto-renewal.',
     keywords: ['CPT pass', 'unlock all mocks', 'CPT typing course', 'CPT all access'],
   },
   '/pass/status': {

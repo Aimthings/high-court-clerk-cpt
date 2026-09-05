@@ -1,12 +1,12 @@
-// Entitlement service. A purchase grants 45 days of access to a product's
+// Entitlement service. A purchase grants 2 months of access to a product's
 // capabilities, no auto-renewal. Capabilities are resolved by unioning the caps
 // of every active entitlement the user holds.
 import { pool } from '../db.js';
 import { capsOf } from '../config.js';
 
-export const PASS_DAYS = 45;
+export const PASS_DAYS = 60; // 2 months
 
-// Compute an expiry 45 days after a start instant (pure — unit-tested).
+// Compute an expiry PASS_DAYS after a start instant (pure — unit-tested).
 export function passExpiry(startAt = new Date()) {
   return new Date(startAt.getTime() + PASS_DAYS * 24 * 60 * 60 * 1000);
 }
