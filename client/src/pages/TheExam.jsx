@@ -62,7 +62,7 @@ export default function TheExam() {
               <div className="card-meta">As published in the recruitment notice.</div>
             </div>
             <DateRow label="C.P.T. admit card" pill="Awaited" tone="amber" />
-            <DateRow label="C.P.T. window" pill="Tentative" tone="blue" />
+            <DateRow label="C.P.T. window" pill="Not declared" tone="blue" />
             <Strip tone="neutral">
               Dates are copied from the notice on the day it is published, with the date of copying
               shown below.
