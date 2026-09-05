@@ -46,9 +46,16 @@ function headFor(pathname) {
     `<meta property="og:url" content="${esc(canonical)}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${esc(SITE.name)}" />`,
+    `<meta property="og:locale" content="en_IN" />`,
+    `<meta property="og:image" content="${esc(SITE.url + '/og.png')}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${esc(SITE.name)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:site" content="${esc(SITE.twitter)}" />`,
     `<meta name="twitter:title" content="${esc(m.title)}" />`,
     `<meta name="twitter:description" content="${esc(m.description)}" />`,
+    `<meta name="twitter:image" content="${esc(SITE.url + '/og.png')}" />`,
     `<script type="application/ld+json">${JSON.stringify(jsonLdFor(pathname))}</script>`,
   ];
   return tags.filter(Boolean).join('\n    ');

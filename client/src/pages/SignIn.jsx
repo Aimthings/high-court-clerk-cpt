@@ -12,7 +12,10 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const nextParam = params.get('next');
-  const dest = nextParam && nextParam.startsWith('/') ? nextParam : '/mocks';
+  // Same-origin path only: one leading slash, not protocol-relative (//host), no
+  // backslash or scheme. Guards against open-redirect (incl. the react-router
+  // backslash bypass, CVE-2025-68470). Anything else falls back to /mocks.
+  const dest = nextParam && /^\/(?!\/)[\w\-./?=&#]*$/.test(nextParam) ? nextParam : '/mocks';
   const [mode, setMode] = useState('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

@@ -30,7 +30,30 @@ const app = express();
 app.set('trust proxy', 1);
 
 app.disable('x-powered-by');
-app.use(helmet());
+// Security headers. An explicit Content-Security-Policy locks scripts to our own
+// origin plus Razorpay checkout (for when payments go live), allows Google Fonts
+// and the inline styles React sets via style attributes, and keeps object-src
+// off and frame-ancestors self (clickjacking protection). HSTS, no-sniff, etc.
+// come from helmet's defaults.
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      'default-src': ["'self'"],
+      'script-src': ["'self'", 'https://checkout.razorpay.com'],
+      'frame-src': ["'self'", 'https://api.razorpay.com', 'https://checkout.razorpay.com'],
+      'connect-src': ["'self'", 'https://api.razorpay.com', 'https://lumberjack.razorpay.com'],
+      'style-src': ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
+      'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
+      'img-src': ["'self'", 'data:', 'https:'],
+      'object-src': ["'none'"],
+      'base-uri': ["'self'"],
+      'frame-ancestors': ["'self'"],
+      'upgrade-insecure-requests': [],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // avoid blocking cross-origin fonts/images
+}));
 app.use(pinoHttp({ level: NODE_ENV === 'production' ? 'info' : 'debug' }));
 app.use(cookieParser(COOKIE_SECRET));
 

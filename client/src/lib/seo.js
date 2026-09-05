@@ -12,15 +12,17 @@ export const SITE = {
 // Public, prerendered routes and their metadata.
 export const ROUTES = {
   '/': {
-    title: 'High Court Clerk CPT — practise both C.P.T. papers',
+    title: 'High Court Clerk Typing & Excel Practice — C.P.T. Mock Tests',
     description:
-      'Practice for the Punjab & Haryana High Court / S.S.S.C. Clerk Computer Proficiency Test: a 10-minute MS Excel spreadsheet paper and a 10-minute English typing paper, scored the way the exam runs them. First mock free.',
+      'Free practice for the Punjab & Haryana High Court / S.S.S.C. Clerk Computer Proficiency Test: high court clerk typing tests (30 W.P.M.) and MS Excel spreadsheet practice, scored exactly the way the exam runs them. A fresh typing passage and Excel mock every day. First mock free.',
     keywords: [
-      'High Court Clerk CPT',
+      'high court clerk typing practice',
+      'high court clerk excel practice',
+      'high court clerk CPT',
+      'clerk CPT typing test 30 wpm',
+      'clerk CPT excel mock test',
       'P&H High Court Clerk CPT',
       'SSSC Clerk CPT practice',
-      'CPT typing test 30 wpm',
-      'Excel practical exam clerk',
     ],
   },
   '/the-exam': {
@@ -42,10 +44,10 @@ export const ROUTES = {
     keywords: ['CPT rank list', 'high court clerk typing leaderboard', 'CPT wpm ranking'],
   },
   '/practice/formulas': {
-    title: 'Excel formula practice — 35 formulas · High Court Clerk CPT',
+    title: 'Excel Formula Practice for Clerk C.P.T. — 37 formulas',
     description:
-      'Learn and practise every Excel formula the C.P.T. can use — SUM, IF, VLOOKUP, INDEX/MATCH, SUMIF, text, date and more. A short lesson and a graded hands-on practice for each. Excel 2007 compatible.',
-    keywords: ['excel formulas practice', 'CPT excel formulas', 'VLOOKUP INDEX MATCH practice', 'SUMIF IF formula tutorial'],
+      'Learn and practise every Excel formula the High Court Clerk C.P.T. can use — SUM, IF, VLOOKUP, INDEX/MATCH, SUMIF, text, date and more. A short lesson and a graded hands-on practice for each. Excel 2007 compatible.',
+    keywords: ['excel formulas practice', 'CPT excel formulas', 'high court clerk excel practice', 'VLOOKUP INDEX MATCH practice', 'SUMIF IF formula tutorial'],
   },
   '/pricing': {
     title: 'Pricing — from ₹69, everything ₹169 · High Court Clerk CPT',
@@ -84,16 +86,16 @@ export const ROUTES = {
     noindex: true,
   },
   '/learn/typing': {
-    title: 'Typing Master — learn to touch-type · High Court Clerk CPT',
+    title: 'Typing Master — free touch-typing course for Clerk C.P.T.',
     description:
-      'A free, from-zero touch-typing course: home row, top row, bottom row, capitals, numbers, punctuation, words and speed. Learn the keyboard by finger, then take the graded mock.',
-    keywords: ['learn typing', 'touch typing course', 'typing practice', 'home row', 'CPT typing practice'],
+      'A free, from-zero touch-typing course for the High Court Clerk C.P.T.: home row, top row, bottom row, capitals, numbers, punctuation, words and speed. Learn the keyboard by finger, then take the graded 30 W.P.M. mock.',
+    keywords: ['learn typing', 'touch typing course', 'high court clerk typing practice', 'CPT typing practice', 'typing speed 30 wpm', 'home row'],
   },
 };
 
 // Ordered list of public routes for the sitemap / prerender.
 export const PUBLIC_ROUTES = [
-  '/', '/the-exam', '/syllabus', '/practice/formulas', '/rank', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
+  '/', '/the-exam', '/syllabus', '/learn/typing', '/practice/formulas', '/rank', '/pricing', '/scoring', '/contact', '/sign-in', '/pass',
 ];
 
 export function metaFor(pathname) {
@@ -102,11 +104,20 @@ export function metaFor(pathname) {
 
 const CRUMB = {
   '/the-exam': 'The exam', '/syllabus': 'Syllabus', '/rank': 'Rank list',
+  '/learn/typing': 'Typing Master', '/practice/formulas': 'Excel formula practice',
   '/pricing': 'Pricing', '/scoring': 'How scoring works', '/contact': 'Contact',
   '/sign-in': 'Sign in', '/pass': 'Get the pass',
 };
 
 const FAQ = {
+  '/': [
+    ['Is the High Court Clerk typing and Excel practice free?',
+      'Yes — during the launch every typing passage and Excel mock is free once you sign in, and the first mock needs no account at all. A fresh passage and a fresh Excel mock are added every day.'],
+    ['How is the typing test scored?',
+      'By the S.S.S.C. rule: W.P.M. = (words typed − mistakes) ÷ minutes, with a pass at 30 W.P.M. The Excel paper is marked out of 10 with a pass at 4.'],
+    ['Which exam is this practice for?',
+      'The Computer Proficiency Test (C.P.T.) for the Punjab & Haryana High Court / S.S.S.C. Clerk recruitment — an English typing paper and an MS Excel spreadsheet practical.'],
+  ],
   '/the-exam': [
     ['What is the C.P.T. for the High Court Clerk recruitment?',
       'A 20-minute practical test in two qualifying papers — English typing and an MS Excel spreadsheet practical — taken after the written exam. Both are pass/fail and do not add to the merit list.'],
@@ -119,18 +130,51 @@ const FAQ = {
     ['How is the Excel paper marked?',
       'Five parts of two marks each, out of ten, pass at four. There is no negative marking; a wrong answer scores zero.'],
   ],
+  '/pricing': [
+    ['How much does the practice cost?',
+      'One-time purchases, no subscription: Typing Master ₹69, Typing Complete ₹99, Excel Mock ₹119, Excel Complete ₹139, or All-Access ₹169 for two months. Everything is free during the launch.'],
+    ['Is there a subscription or auto-renewal?',
+      'No. Every plan is a one-time payment valid for two months, with no auto-renewal.'],
+  ],
 };
 
 // JSON-LD graph for a route (Organization + Breadcrumb always; Course/FAQ where relevant).
+// Provider org, reused by Course nodes.
+const provider = () => ({ '@type': 'Organization', name: SITE.name, url: SITE.url });
+
+// Topic-specific Course schema per route (helps Google understand each page).
+const COURSE = {
+  '/': {
+    name: 'High Court Clerk C.P.T. — typing and Excel practice',
+    description: 'Practice for the Computer Proficiency Test: an MS Excel spreadsheet practical and an English typing test, with a fresh passage and mock added daily.',
+  },
+  '/learn/typing': {
+    name: 'Typing Master — touch-typing for the High Court Clerk C.P.T.',
+    description: 'A free, from-zero touch-typing course: home row to full speed, then a graded 30 W.P.M. mock.',
+  },
+  '/practice/formulas': {
+    name: 'Excel formula practice for the High Court Clerk C.P.T.',
+    description: 'Every Excel formula the C.P.T. can use, each with a short lesson and a graded hands-on practice. Excel 2007 compatible.',
+  },
+};
+
 export function jsonLdFor(pathname) {
   const org = {
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.url,
+    logo: `${SITE.url}/apple-touch-icon.png`,
     description:
       'Practice platform for the Punjab & Haryana High Court / S.S.S.C. Clerk Computer Proficiency Test.',
   };
-  const graph = [org];
+  const website = {
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    inLanguage: 'en-IN',
+    publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  };
+  const graph = [org, website];
 
   const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url }];
   if (CRUMB[pathname]) {
@@ -138,13 +182,14 @@ export function jsonLdFor(pathname) {
   }
   graph.push({ '@type': 'BreadcrumbList', itemListElement: crumbs });
 
-  if (pathname === '/') {
+  if (COURSE[pathname]) {
     graph.push({
       '@type': 'Course',
-      name: 'High Court Clerk CPT practice',
-      description:
-        'Practice material for the Computer Proficiency Test: MS Excel spreadsheet practical and English typing.',
-      provider: { '@type': 'Organization', name: SITE.name, sameAs: SITE.url },
+      name: COURSE[pathname].name,
+      description: COURSE[pathname].description,
+      provider: provider(),
+      inLanguage: 'en-IN',
+      isAccessibleForFree: true,
     });
   }
   if (FAQ[pathname]) {
