@@ -59,24 +59,26 @@ async function migrateAuth() {
 }
 
 async function seedContent() {
-  const [[{ n: pc }]] = await pool.query('SELECT COUNT(*) AS n FROM passages');
-  if (pc === 0) {
-    for (const p of passages) {
-      await pool.query(
-        `INSERT INTO passages (slug, title, category, difficulty, body, word_count, is_free)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [p.slug, p.title, p.category, p.difficulty || null, p.body, p.word_count, p.is_free ? 1 : 0],
-      );
-    }
+  // Upsert so the DB always mirrors the seed files. New drip passages and mocks
+  // are added on each deploy; existing rows keep their id (so typing-history
+  // joins on passage_id stay valid). Insertion order matches the JSON, so DB ids
+  // line up with the in-memory content ids.
+  for (const p of passages) {
+    await pool.query(
+      `INSERT INTO passages (slug, title, category, difficulty, body, word_count, is_free)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE title = VALUES(title), category = VALUES(category),
+         difficulty = VALUES(difficulty), body = VALUES(body),
+         word_count = VALUES(word_count), is_free = VALUES(is_free)`,
+      [p.slug, p.title, p.category, p.difficulty || null, p.body, p.word_count, p.is_free ? 1 : 0],
+    );
   }
-  const [[{ n: mc }]] = await pool.query('SELECT COUNT(*) AS n FROM excel_mocks');
-  if (mc === 0) {
-    for (const m of mocks) {
-      await pool.query(
-        'INSERT INTO excel_mocks (code, title, spec, is_free) VALUES (?, ?, ?, ?)',
-        [m.code, m.title, JSON.stringify(m.spec), m.is_free ? 1 : 0],
-      );
-    }
+  for (const m of mocks) {
+    await pool.query(
+      `INSERT INTO excel_mocks (code, title, spec, is_free) VALUES (?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE title = VALUES(title), spec = VALUES(spec), is_free = VALUES(is_free)`,
+      [m.code, m.title, JSON.stringify(m.spec), m.is_free ? 1 : 0],
+    );
   }
 }
 

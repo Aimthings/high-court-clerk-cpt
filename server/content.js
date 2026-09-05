@@ -18,6 +18,46 @@ export const passages = JSON.parse(
 const bySlug = new Map(passages.map((p) => [p.slug, p]));
 export const getPassage = (slug) => bySlug.get(slug);
 
+// ---- Daily content drip ------------------------------------------------------
+// Every passage and Excel mock carries a `release_offset` (default 0). The base
+// set (offset 0) is available from launch. From day 7 onward exactly one new
+// passage and one new Excel mock unlock each day: offset 1 on day 7, offset 2 on
+// day 8, and so on. This gives buyers fresh daily practice without any runtime
+// generation — the whole bank is pre-authored and simply revealed on schedule.
+//
+// Day 0 is LAUNCH_DATE (IST). Override with the LAUNCH_DATE env var if the launch
+// anchor ever needs to move; the drip schedule shifts with it.
+const LAUNCH_DATE = process.env.LAUNCH_DATE || '2026-09-05';
+const DAY_MS = 86_400_000;
+const DRIP_START_DAY = 7; // first drip item unlocks on day 7 (after day 6)
+
+export function daysSinceLaunch(now = Date.now()) {
+  const anchor = Date.parse(`${LAUNCH_DATE}T00:00:00+05:30`);
+  if (Number.isNaN(anchor)) return 0;
+  return Math.max(0, Math.floor((now - anchor) / DAY_MS));
+}
+
+// Is this item revealed as of `now`? Base items (offset 0) always; a drip item
+// with offset k on day (DRIP_START_DAY - 1 + k) = day 6+k.
+export function isReleased(item, now = Date.now()) {
+  const off = Number(item?.release_offset || 0);
+  if (off <= 0) return true;
+  return daysSinceLaunch(now) >= (DRIP_START_DAY - 1) + off;
+}
+
+export const availablePassages = (now = Date.now()) => passages.filter((p) => isReleased(p, now));
+export const availableMocks = (now = Date.now()) => mocks.filter((m) => isReleased(m, now));
+
+// The freshest item unlocked as of `now` — the highest released drip offset.
+// null when only the base set is out (before day 7). Used by "Today's practice".
+function newestReleased(list, now) {
+  const drip = list.filter((x) => Number(x.release_offset || 0) > 0 && isReleased(x, now));
+  if (!drip.length) return null;
+  return drip.reduce((a, b) => (Number(a.release_offset) >= Number(b.release_offset) ? a : b));
+}
+export const todaysPassage = (now = Date.now()) => newestReleased(passages, now);
+export const todaysMock = (now = Date.now()) => newestReleased(mocks, now);
+
 // ---- Excel mocks ----
 export const mocks = JSON.parse(
   readFileSync(join(here, 'seed', 'mocks.json'), 'utf-8'),

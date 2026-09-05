@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { mocks, mockSummary, getMock, sanitizeSpec } from '../content.js';
+import { mockSummary, getMock, sanitizeSpec, availableMocks, todaysMock, isReleased } from '../content.js';
 import { gradeExcel } from '../grading/excel.js';
 import { capabilityOk } from '../requirePass.js';
 import { CAPS } from '../config.js';
@@ -17,8 +17,19 @@ export const excelRouter = Router();
 
 const attempts = new Map(); // attemptId -> { code, startedAt }
 
+// Only mocks released by today's drip schedule are listed. `new: true` flags the
+// freshest one so the client can badge it as today's addition.
 excelRouter.get('/mocks', (_req, res) => {
-  res.json({ mocks: mocks.map(mockSummary) });
+  const today = todaysMock();
+  res.json({
+    mocks: availableMocks().map((m) => ({ ...mockSummary(m), new: today ? m.code === today.code : false })),
+  });
+});
+
+// Today's fresh Excel mock (the newest one the drip has unlocked). null before day 7.
+excelRouter.get('/today', (_req, res) => {
+  const m = todaysMock();
+  res.json({ mock: m ? mockSummary(m) : null });
 });
 
 const startBody = z.object({ mockCode: z.string().min(1) });
@@ -27,7 +38,8 @@ excelRouter.post('/start', async (req, res) => {
   const parsed = startBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'Choose a mock to start.' });
   const m = getMock(parsed.data.mockCode);
-  if (!m) return res.status(404).json({ error: 'That mock does not exist.' });
+  // A mock not yet reached by the daily drip is treated as non-existent.
+  if (!m || !isReleased(m)) return res.status(404).json({ error: 'That mock does not exist.' });
 
   // Entitlement is checked HERE ONLY (brief §5.5): a pass expiring mid-attempt
   // cannot eject the candidate, because it is never re-checked at /submit.

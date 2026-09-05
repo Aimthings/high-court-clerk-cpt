@@ -31,6 +31,9 @@ statsRouter.get('/', async (_req, res) => {
   }
 
   const data = {
+    // Full library size — the whole authored bank that members get, released a
+    // fresh piece each day. This is the real count of content that exists (not a
+    // fabricated figure); the daily drip governs when each item unlocks.
     passages: passages.length,
     excelMocks: mocks.length,
     formulas: formulas.length,

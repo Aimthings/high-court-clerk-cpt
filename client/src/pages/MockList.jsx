@@ -24,7 +24,7 @@ export default function MockList() {
         <h1 className="page-title">Mocks</h1>
         <p className="page-sub">
           Part I — MS Excel practical (10 marks, 4 to pass) and Part II — typing (30 W.P.M. to pass).
-          Ten minutes each.
+          Ten minutes each. A fresh Excel mock and a fresh passage are added every day.
         </p>
       </div>
 
@@ -46,7 +46,7 @@ export default function MockList() {
               <div className="card-pad">
                 <div className="mock-card-top">
                   <span className={`pill pill-sans ${m.is_free ? 'pill-mint' : 'pill-neutral'}`}>{m.is_free ? 'Free' : 'Pass'}</span>
-                  <span className="pill pill-blue pill-sans">Part I · Excel</span>
+                  {m.new ? <span className="pill pill-amber pill-sans">New today</span> : <span className="pill pill-blue pill-sans">Part I · Excel</span>}
                 </div>
                 <div className="card-h" style={{ marginTop: 12 }}>{m.code} · {m.title}</div>
                 <div className="card-meta">Tier {m.difficulty} · {m.totalMarks} marks · {m.passMarks} to pass</div>
@@ -70,7 +70,7 @@ export default function MockList() {
               <div className="card-pad">
                 <div className="mock-card-top">
                   <span className={`pill pill-sans ${p.is_free ? 'pill-mint' : 'pill-neutral'}`}>{p.is_free ? 'Free' : 'Pass'}</span>
-                  <span className="muted num" style={{ fontSize: 11.5 }}>{p.word_count} words</span>
+                  {p.new ? <span className="pill pill-amber pill-sans">New today</span> : <span className="muted num" style={{ fontSize: 11.5 }}>{p.word_count} words</span>}
                 </div>
                 <div className="card-h" style={{ marginTop: 12 }}>{p.title}</div>
                 <div className="card-meta">{p.category} · Part II — Typing</div>
