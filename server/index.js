@@ -18,6 +18,7 @@ import { ordersRouter, webhookHandler } from './routes/orders.js';
 import { leaderboardRouter, profileRouter } from './routes/leaderboard.js';
 import { formulasRouter } from './routes/formulas.js';
 import { typingCourseRouter } from './routes/typingCourse.js';
+import { statsRouter } from './routes/stats.js';
 import { startReconcileCron } from './jobs/reconcileOrders.js';
 import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
@@ -56,6 +57,7 @@ app.use('/api/leaderboard', leaderboardRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/formulas', formulasRouter);
 app.use('/api/typing-course', typingCourseRouter);
+app.use('/api/stats', statsRouter);
 
 // Unknown API routes return JSON, not HTML.
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));

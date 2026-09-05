@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../lib/api.js';
 import './landing.css';
 
 // Landing — deck artboards 16 (above fold) + 17 (lower page).
@@ -19,12 +21,7 @@ export default function Landing() {
             <Link to="/mocks" className="btn btn-primary">Take a free mock</Link>
             <span className="hero-cta-note">No sign-up for the first mock · all-access ₹169 for 2 months</span>
           </div>
-          <div className="stats hero-stats">
-            <Stat n="12,480" k="Candidates ranked" />
-            <Stat n="25" k="Excel mocks" />
-            <Stat n="60" k="Court-English passages" />
-            <Stat n="4 min" k="Since last update" />
-          </div>
+          <HeroStats />
         </div>
 
         <aside className="hero-rail">
@@ -108,6 +105,25 @@ export default function Landing() {
           </p>
         </aside>
       </section>
+    </div>
+  );
+}
+
+// Hero stats — all figures are REAL. Content counts come from the live catalogue.
+// The member count appears only once the server reports it (i.e. once verified
+// accounts pass the 10k floor); until then we simply don't show a member stat —
+// never a placed-holder or fabricated number.
+function HeroStats() {
+  const [s, setS] = useState(null);
+  useEffect(() => { api.getStats().then(setS).catch(() => setS(null)); }, []);
+  return (
+    <div className="stats hero-stats">
+      {s?.members != null && (
+        <Stat n={s.members.toLocaleString('en-IN')} k="Members" />
+      )}
+      <Stat n={s ? String(s.excelMocks) : '—'} k="Excel mocks" />
+      <Stat n={s ? String(s.passages) : '—'} k="Court-English passages" />
+      <Stat n={s ? String(s.formulas) : '—'} k="Excel formulas" />
     </div>
   );
 }

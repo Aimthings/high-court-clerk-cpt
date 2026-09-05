@@ -38,4 +38,5 @@ export const api = {
   submitFormula: (slug, formula) => request(`/formulas/${slug}/practice`, { method: 'POST', body: { formula } }),
   getTypingProgress: () => request('/typing-course/progress'),
   saveTypingProgress: (lessons) => request('/typing-course/progress', { method: 'POST', body: { lessons } }),
+  getStats: () => request('/stats'),
 };
