@@ -41,4 +41,15 @@ export const api = {
   getStats: () => request('/stats'),
   adminStats: () => request('/admin/stats'),
   adminUsers: () => request('/admin/users'),
+  rankConfig: () => request('/rank-predictor/config'),
+  // Uploads the PDF as a raw body; returns { token, meta, totalQ, answered, left }.
+  rankPreview: async (file) => {
+    const res = await fetch('/api/rank-predictor/preview', {
+      method: 'POST', headers: { 'Content-Type': 'application/pdf' }, body: file, credentials: 'include',
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'We could not read that PDF.');
+    return data;
+  },
+  rankSubmit: (token, category) => request('/rank-predictor/submit', { method: 'POST', body: { token, category } }),
 };

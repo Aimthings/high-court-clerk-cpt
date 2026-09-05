@@ -164,6 +164,27 @@ CREATE TABLE IF NOT EXISTS leaderboard_entries (
   INDEX (board, metric)
 ) ENGINE=InnoDB;
 
+-- Rank Predictor submissions. One row per parsed response sheet; ranked within
+-- (exam_key, category). roll_hash de-dupes repeat uploads by the same candidate.
+CREATE TABLE IF NOT EXISTS rank_submissions (
+  id            BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  user_id       BIGINT UNSIGNED NULL,
+  exam_key      VARCHAR(80) NOT NULL,
+  category      VARCHAR(40) NOT NULL,
+  roll_hash     CHAR(64) NULL,
+  total_q       INT UNSIGNED NOT NULL,
+  answered      INT UNSIGNED NOT NULL,
+  correct       INT UNSIGNED NOT NULL,
+  wrong         INT UNSIGNED NOT NULL,
+  left_blank    INT UNSIGNED NOT NULL,
+  score         DECIMAL(7,2) NOT NULL,
+  max_score     DECIMAL(7,2) NOT NULL,
+  sections      JSON,
+  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_roll (exam_key, roll_hash),
+  INDEX (exam_key, category, score)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS leads (
   id       BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   phone    VARCHAR(20),

@@ -21,6 +21,7 @@ import { formulasRouter } from './routes/formulas.js';
 import { typingCourseRouter } from './routes/typingCourse.js';
 import { statsRouter } from './routes/stats.js';
 import { adminRouter } from './routes/admin.js';
+import { rankPredictorRouter } from './routes/rankPredictor.js';
 import { startReconcileCron } from './jobs/reconcileOrders.js';
 import { startLeaderboardCron } from './jobs/rebuildLeaderboard.js';
 
@@ -102,6 +103,7 @@ app.use('/api/formulas', formulasRouter);
 app.use('/api/typing-course', typingCourseRouter);
 app.use('/api/stats', statsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/rank-predictor', rankPredictorRouter);
 
 // Unknown API routes return JSON, not HTML.
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));

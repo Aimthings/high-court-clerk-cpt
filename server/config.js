@@ -82,6 +82,24 @@ export const RAZORPAY = {
 
 export const COOKIE_SECRET = process.env.COOKIE_SECRET || 'dev-only-change-me';
 
+// ---- Rank Predictor -------------------------------------------------------
+// The predictor goes public only when RANK_PREDICTOR_LIVE is 'true' (default
+// off => the page shows the "coming soon" state to everyone). Admins can always
+// use it, so the full flow can be tested before the 2026 answer key is out.
+export const RANK_PREDICTOR_LIVE = process.env.RANK_PREDICTOR_LIVE === 'true';
+// Marking scheme (per question). Negative marking is 0 by default; set
+// RANK_NEG_MARK once the official 2026 notice specifies it.
+export const RANK_MARKING = {
+  pos: Number(process.env.RANK_POS_MARK || 1),
+  neg: Number(process.env.RANK_NEG_MARK || 0),
+};
+export const RANK_CATEGORIES = ['General', 'EWS', 'SC', 'BC-A', 'BC-B', 'Ex-serviceman', 'PwD'];
+// Optional projection inputs (fill from the official notice for a tighter rank).
+export const RANK_EXAM = {
+  label: process.env.RANK_EXAM_LABEL || 'P&H High Court Clerk 2026',
+  totalCandidates: Number(process.env.RANK_TOTAL_CANDIDATES || 0), // 0 => pool-only rank
+};
+
 // SMS / OTP delivery. Fast2SMS is the wired provider. With no key set (or
 // SMS_PROVIDER unset) the app falls back to logging the code in dev — no send.
 //   route 'otp' : Fast2SMS OTP route, sends "Your OTP: <code>" — no DLT needed.

@@ -111,6 +111,44 @@
 
 .rp-disclaimer { margin-top: 20px; font: 500 12px/1.5 'Plus Jakarta Sans', sans-serif; color: #98A3B3; text-align: center; text-wrap: pretty; }
 
+/* ---- functional flow (live / admin) ---- */
+.rp-error { margin-bottom: 14px; background: #FCEBEC; border: 1px solid #F3C9CD; color: #B02330; border-radius: 10px; padding: 11px 14px; font: 500 13px/1.5 'Plus Jakarta Sans', sans-serif; }
+
+/* dropzone as a real button */
+.rp-dropzone { display: block; width: 100%; margin-top: 14px; border: 1.5px dashed #C6D0DE; border-radius: 12px; background: #FAFBFD; padding: 30px 24px; text-align: center; cursor: pointer; font-family: inherit; }
+.rp-dropzone:hover { border-color: #2D6BE4; background: #F6F9FE; }
+.rp-dropzone[aria-disabled="true"] { cursor: not-allowed; }
+.rp-dropzone-set { border-style: solid; border-color: #BDE9D4; background: #F3FBF7; }
+
+/* real select */
+.rp-selectbox { margin-top: 10px; width: 100%; border: 1px solid #D5DCE9; border-radius: 12px; padding: 13px 15px; background: #FFF; font: 500 14px/1.2 'Plus Jakarta Sans', sans-serif; color: #0F1E33; cursor: pointer; appearance: auto; }
+.rp-selectbox:focus { outline: 2px solid #2D6BE4; outline-offset: -1px; }
+.rp-checkbox { width: 18px; height: 18px; margin-top: 1px; flex: none; accent-color: #2D6BE4; }
+
+/* live CTA (navy) */
+.rp-cta-live { margin-top: 22px; width: 100%; background: #0D2846; border: 0; border-bottom: 2px solid #08192E; border-radius: 12px; padding: 15px 0; text-align: center; font: 700 16px/1 'Plus Jakarta Sans', sans-serif; color: #FFF; cursor: pointer; }
+.rp-cta-live:hover:not(:disabled) { background: #0a2138; }
+.rp-cta-live:disabled { background: #EBEEF3; border-bottom-color: #E1E6EE; color: #A9B3C1; cursor: not-allowed; }
+.rp-linkbtn { background: none; border: 0; color: #2D6BE4; font: 700 13px/1 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.rp-linkbtn:hover { text-decoration: underline; }
+.rp-admin-note { margin-top: 12px; font: 500 12px/1.5 'Plus Jakarta Sans', sans-serif; color: #B47500; text-align: center; }
+
+/* loading */
+.rp-loading { display: flex; align-items: center; gap: 16px; }
+.rp-spinner { width: 26px; height: 26px; flex: none; border: 3px solid #D9E2F1; border-top-color: #2D6BE4; border-radius: 50%; animation: rp-spin 0.8s linear infinite; }
+@keyframes rp-spin { to { transform: rotate(360deg); } }
+.rp-load-title { font: 700 15px/1.2 'Plus Jakarta Sans', sans-serif; color: #0F1E33; }
+.rp-load-sub { margin-top: 5px; font: 500 12.5px/1 'JetBrains Mono', monospace; color: #8494A8; }
+
+/* confirm */
+.rp-confirm-h { margin-top: 14px; font: 800 28px/1.1 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.025em; color: #0D2846; }
+.rp-rows { margin-top: 20px; }
+.rp-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #EEF1F6; }
+.rp-row:last-child { border-bottom: 0; }
+.rp-row-k { flex: 1; font: 600 13.5px/1 'Plus Jakarta Sans', sans-serif; color: #8494A8; }
+.rp-row-v { display: inline-flex; align-items: center; gap: 9px; font: 700 15px/1 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; color: #0F1E33; }
+.rp-row-tag { font: 600 11px/1 'Plus Jakarta Sans', sans-serif; color: #2D6BE4; font-style: normal; }
+
 /* responsive */
 @media (max-width: 620px) {
   .rp-card { padding: 22px 18px; }
