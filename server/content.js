@@ -27,7 +27,7 @@ export const getPassage = (slug) => bySlug.get(slug);
 //
 // Day 0 is LAUNCH_DATE (IST). Override with the LAUNCH_DATE env var if the launch
 // anchor ever needs to move; the drip schedule shifts with it.
-const LAUNCH_DATE = process.env.LAUNCH_DATE || '2026-09-05';
+const LAUNCH_DATE = process.env.LAUNCH_DATE || '2026-09-06';
 const DAY_MS = 86_400_000;
 const DRIP_START_DAY = 7; // first drip item unlocks on day 7 (after day 6)
 
